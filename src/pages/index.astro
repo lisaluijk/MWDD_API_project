@@ -1,4 +1,12 @@
 ---
+const discogsKey = import.meta.env.DISCOG_TOKEN
+const discogsURL = `https://api.discogs.com/users/lisa_luijk/collection/folders/0/releases?token=${discogsKey}&per_page=100&sort=artist
+ `;
+const response = await fetch(discogsURL);
+const data = await response.json();
+const records = data.releases
+// console.log(records)
+// console.log("testttttttttttttttttt")
 
 ---
 
@@ -7,11 +15,19 @@
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport"
+		 content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>Your record playlist</title>
+		<link rel="stylesheet" href="./src/styles/style.css">
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<!-- <script>console.log(records)</script> -->
+		<h1>Mijn collectie: </h1>
+		<p>Aantal platen: {records.length}</p>
+		<ul>
+			{records.map(recordTitle => <li></li><img src={recordTitle.basic_information.cover_image} alt={recordTitle.basic_information.title}/></li> )}
+		
+		</ul>
 	</body>
 </html>
