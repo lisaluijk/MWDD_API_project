@@ -1,0 +1,93 @@
+---
+const discogsKey = import.meta.env.DISCOG_TOKEN
+const discogsURL = `https://api.discogs.com/users/lisa_luijk/collection/folders/0/releases?token=${discogsKey}&per_page=100&sort=artist`
+const response = await fetch(discogsURL)
+const data = await response.json()
+const records = data.releases
+
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport"
+		 content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>testttt</title>
+		<link rel="stylesheet" href="./src/styles/style.css">
+	</head>
+	<body>
+ 
+		<h1 id="counter">0</h1>
+		<button id="add">+1</button>
+		<h1>Mijn collectie: </h1>
+		<p>Aantal platen: {records.length}</p>
+		<ul>
+			{records.map(recordTitle => <li></li><img src={recordTitle.basic_information.cover_image} alt={recordTitle.basic_information.title}/></li> )}
+		
+		</ul>
+	</body>
+
+	<script>
+		
+			// local storage workshop
+			localStorage.getItem("ik-besta-nog-niet")
+
+			localStorage.setItem("name", "Lisa")
+			localStorage.setItem("age", 22)
+
+			localStorage.setItem("dark_mode", false)
+
+			const user = {
+				id:1,
+				dark_theme: true,
+				name: "Alex"
+			}
+
+			JSON.stringify(user)
+
+			localStorage.setItem("user", JSON.stringify(user))
+
+			const value = localStorage.getItem("user")
+
+
+			JSON.parse(localStorage.getItem("user"))
+
+			// belangrijk is stingify en parsew
+
+
+		//  ronde twee workshop
+
+		const cards = [{
+			id: 1,
+			name: "Queen of light",
+			sequence: 10
+		}, {
+			id: 2,
+			name: "King of light",
+			sequence: 15
+		}]
+
+		// derde ronde 
+
+		// @ts-nocheck
+		let test = 0
+		const counter = document.querySelector("#counter")
+		const button = document.querySelector("#add")
+		
+		button.addEventListener("click", () => {
+			test = test + 1
+			counter.textContent = test
+			console.log(value)
+		})
+		
+
+		localStorage.setItem("cards", JSON.stringify(cards))
+		
+		// localStorage.clear() verwijderd ALLES alleen voor die website
+		//  localStorage.removeItem("name")
+
+	</script>
+</html>

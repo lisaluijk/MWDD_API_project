@@ -195,6 +195,34 @@ wat heb je aan praatjes gehad?
 
 8 april (ziek)
 1455 dlo doornemen op basis van feedback randvoorwaarden -> concept uitwerken met wireframes enzo
-1515 kijken naar code inladen api
+1515 1530 kijken naar code inladen api
+
+1540 1600 research en uidenken verder
+1630 onderzoek naar die minuten
+
+9 april 
+1000 filteren 
+1045 workshop local storage
+1110 verder werken
+1230 pauze
+1345 pan revisen en maken eig 
+
+
+geen gevoelige data opslaan want scripts kunnen dit lezen
+local storage alleen in een script aan de client side nooit op de server kant
+alles wordt opgeslagen als string :(
+het is makkelijk als je objecten in local storage opslaan en die moet je omzetten naar een string
+window.localStorage is hetzelfde
+session storage werkt hetzelfde maar dan weg als je tabblad sluit
+
+
+
+
+
+
+
+https://youtu.be/LzOtbUw6f_o?si=eGxFUZ1Ha0KtKXUD
+https://youtu.be/cuEtnrL9-H0?si=1GsPsvdsegPV-4_e
+https://youtu.be/37vxWr0WgQk?si=wbm5apYqIMd7o1BF
 
 

@@ -1,13 +1,14 @@
 ---
 const discogsKey = import.meta.env.DISCOG_TOKEN
-const discogsURL = `https://api.discogs.com/users/lisa_luijk/collection/folders/0/releases?token=${discogsKey}&per_page=100&sort=artist
- `;
-const response = await fetch(discogsURL);
-const data = await response.json();
+const userName = "lisa_luijk"
+const discogsURL = `https://api.discogs.com/users/${userName}/collection/folders/0/releases?token=${discogsKey}&per_page=100&sort=artist`
+const response = await fetch(discogsURL)
+const data = await response.json()
 const records = data.releases
-// console.log(records)
-// console.log("testttttttttttttttttt")
 
+// let displayRecords = records
+
+// console.log(records)
 ---
 
 <html lang="en">
@@ -22,12 +23,59 @@ const records = data.releases
 		<link rel="stylesheet" href="./src/styles/style.css">
 	</head>
 	<body>
-		<!-- <script>console.log(records)</script> -->
+		<p>Hi welcome</p>
+		<h1>What are you in the mood for?</h1>
+
+		
+
+		<!-- <h1>Mijn collectie: </h1>
+		<p>Aantal platen: {records.length}</p> -->
+
+		<!-- <form action="post">
+			<input type="text">
+		</form> -->
+
+
+		<button id="filter">Get only rock records</button>
+
+
 		<h1>Mijn collectie: </h1>
 		<p>Aantal platen: {records.length}</p>
 		<ul>
 			{records.map(recordTitle => <li></li><img src={recordTitle.basic_information.cover_image} alt={recordTitle.basic_information.title}/></li> )}
 		
 		</ul>
+
+		<script define:vars={{records}}> 
+
+
+		// source: Sabrina via Cyd
+			// const filteredRecords = new Set(
+    		// records.filter((record) => record.basic_information.genres.value),
+			// );
+
+			const filterButton = document.querySelector("#filter");
+
+			// console.log(button);
+			// console.log(filteredRecords);
+			let displayRecords = records
+
+			console.log(displayRecords)
+
+			filterButton.addEventListener("click", () => {
+    			const filteredRecords = records.filter(r =>
+     			 r.basic_information.genres?.includes("Pop")
+   			 	);
+
+				displayRecords = filteredRecords
+
+    			console.log(filteredRecords);
+  			});
+
+			// const filteredRecords = new Set(
+    		// records.filter((record) => record.basic_information.genres?.includes("value")),
+			// );
+ 
+		</script>
 	</body>
 </html>
