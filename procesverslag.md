@@ -206,6 +206,11 @@ wat heb je aan praatjes gehad?
 1110 verder werken
 1230 pauze
 1345 pan revisen en maken eig 
+1405 records updaten 
+1450 ik kan filteren yay
+niet heel veel nuttigs meer
+1530 daily check ou
+1600 ob
 
 
 geen gevoelige data opslaan want scripts kunnen dit lezen
@@ -225,4 +230,22 @@ https://youtu.be/LzOtbUw6f_o?si=eGxFUZ1Ha0KtKXUD
 https://youtu.be/cuEtnrL9-H0?si=1GsPsvdsegPV-4_e
 https://youtu.be/37vxWr0WgQk?si=wbm5apYqIMd7o1BF
 
+
+10 april (ziek)
+1030 alle genres krijgen
+
+const allGenres = [];
+			console.log(allGenres)
+			
+			// get all possible genres
+			records.forEach((record) => {
+				allGenres.push(record.basic_information.genres)
+			})
+
+            dit had ik nu sneller
+
+1045 knopjes aanmaken voor alle genres
+1140 dat is gelukt maar nu de volgende stap, eerst ff pauze tho
+1400 in de trein hih
+1415 omgezet naar checkboxes
 

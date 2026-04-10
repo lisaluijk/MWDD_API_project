@@ -25,24 +25,55 @@ const records = data.releases;
 		<p>Hi welcome</p>
 		<h1>What are you in the mood for?</h1>
 
-		<form method="GET" action="/results" >
+		<!-- <h1>Mijn collectie: </h1>
+		<p>Aantal platen: {records.length}</p> -->
+
+		<!-- <form>
 			<label for="amountTime">
 				how long do you want to listen for?
 			</label>
-			<input id="amountTime" type="text" name="listenTime"/>
+			<input id="amountTime" type="text" />
 
 			<fieldset id="genreButtons">
 				<legend>What genres do you want to listen to?</legend>
 			</fieldset>
+		</form> -->
 
-			<button type="submit">verstuur</button>
-		</form>
+		<div>
+			<label for="amountTime">
+				how long do you want to listen for?
+			</label>
+			<input id="amountTime" type="text" />
+
+			<fieldset id="genreButtons">
+				<legend>What genres do you want to listen to?</legend>
+			</fieldset>
+		</div>
 
 		<ul id="recordList"></ul>
 
+		<button id="filter">Get only rock records</button>
+
+		<h1>Mijn collectie:</h1>
+		<p>Aantal platen: {records.length}</p>
+		<!-- <ul id="recordList">
+			{
+				records.map((recordTitle) => (
+					<li>
+						<img
+							src={recordTitle.basic_information.cover_image}
+							alt={recordTitle.basic_information.title}
+						/>
+					</li>
+				))
+			}
+		</ul> -->
 
 		<script define:vars={{ records }}>
-		
+			// source: Sabrina via Cyd
+			// const filteredRecords = new Set(
+			// records.filter((record) => record.basic_information.genres.value),
+			// );
 
 			const recordsList = document.querySelector("#recordList");
 			const recordsListItems =
@@ -102,20 +133,16 @@ const records = data.releases;
 
 			// create filter buttons
 			genres.forEach((genre) => {
-				const checkbox = document.createElement("input");
-				checkbox.type = "checkbox";
-				checkbox.name = "genres";
-				checkbox.value = genre;
-				
-				const checkboxLabel = document.createElement("label")
-				checkboxLabel.textContent = genre;
+				const button = document.createElement("button");
+				button.textContent = genre;
 
-				checkbox.addEventListener("click", () => {
+				button.addEventListener("click", () => {
 					renderList(genre);
 				});
 
-				checkboxLabel.appendChild(checkbox)
-				buttonContainer.appendChild(checkboxLabel);
+				console.log(genre)
+
+				buttonContainer.appendChild(button);
 			});
 
 			// filter function
@@ -145,7 +172,6 @@ const records = data.releases;
 			}
 
 			//  show all records already
-			// 👉 4. Optional: show all records initially
 			renderList(genres[0]);
 		</script>
 	</body>
