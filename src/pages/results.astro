@@ -1,10 +1,25 @@
 ---
+export const prerender = false;
+
 const discogsKey = import.meta.env.DISCOG_TOKEN;
 const userName = "lisa_luijk";
 const discogsURL = `https://api.discogs.com/users/${userName}/collection/folders/0/releases?token=${discogsKey}&per_page=100&sort=artist`;
 const response = await fetch(discogsURL);
 const data = await response.json();
 const records = data.releases;
+
+
+// source gpt
+const url = Astro.url;
+// const url = document.url;
+
+const genres = url.searchParams.getAll("genres");
+const time = url.searchParams.get("listenTime");
+
+// console.log(url)
+// console.log(genres)
+console.log("this is the url!!!!")
+console.log(Astro.request.url);
 
 // let displayRecords = records
 
@@ -18,31 +33,26 @@ const records = data.releases;
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Your record playlist</title>
+		<title>Results</title>
 		<link rel="stylesheet" href="./src/styles/style.css" />
 	</head>
 	<body>
 		<p>Hi welcome</p>
 		<h1>What are you in the mood for?</h1>
 
-		<form method="GET" action="/results" >
-			<label for="amountTime">
-				how long do you want to listen for?
-			</label>
-			<input id="amountTime" type="text" name="listenTime"/>
-
-			<fieldset id="genreButtons">
-				<legend>What genres do you want to listen to?</legend>
-			</fieldset>
-
-			<button type="submit">verstuur</button>
-		</form>
-
-		<ul id="recordList"></ul>
+		<p>your results:</p>
+        <p>{genres}</p>
+        <p>{time}</p>
 
 
-		<script define:vars={{ records }}>
+		<script define:vars={{ records, url }}>
 		
+        console.log(url)
+
+        // console.log("hallo allemaal")
+         const urlClient = document.URL
+            console.log("client url HALLOO?")
+            console.log(urlClient)
 
 			const recordsList = document.querySelector("#recordList");
 			const recordsListItems =
@@ -147,6 +157,8 @@ const records = data.releases;
 			//  show all records already
 			// 👉 4. Optional: show all records initially
 			renderList(genres[0]);
+
+
 		</script>
 	</body>
 </html>

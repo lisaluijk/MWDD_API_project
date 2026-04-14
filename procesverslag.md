@@ -249,3 +249,25 @@ const allGenres = [];
 1400 in de trein hih
 1415 omgezet naar checkboxes
 
+1715 get it into the next page
+we debugged that :) 1810
+
+13 april 1925 tijd ophalen?
+
+
+
+https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new#:~:text=The%20new%20operator%20lets%20developers,that%20has%20a%20constructor%20function.
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new#:~:text=The%20new%20operator%20lets%20developers,that%20has%20a%20constructor%20function.
+
+https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
+
+https://developer.mozilla.org/en-US/docs/Web/API/URL
+
+https://stackoverflow.com/questions/1034621/get-the-current-url-with-javascript
