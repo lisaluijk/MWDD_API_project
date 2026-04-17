@@ -8,7 +8,6 @@ const response = await fetch(discogsURL);
 const data = await response.json();
 const records = data.releases;
 
-
 // source gpt
 const url = Astro.url;
 // const url = document.url;
@@ -18,8 +17,8 @@ const time = url.searchParams.get("listenTime");
 
 // console.log(url)
 // console.log(genres)
-console.log("this is the url!!!!")
-console.log(Astro.request.url);
+// console.log("this is the url!!!!");
+// console.log(Astro.request.url);
 
 // let displayRecords = records
 
@@ -37,34 +36,32 @@ console.log(Astro.request.url);
 		<link rel="stylesheet" href="./src/styles/style.css" />
 	</head>
 	<body>
-		<p>Hi welcome</p>
-		<h1>What are you in the mood for?</h1>
+		<!-- <p>Hi welcome</p> -->
+		<h1>Your results:</h1>
 
-		<p>your results:</p>
-        <p>{genres}</p>
-        <p>{time}</p>
+		<p>{genres}</p>
+		<p>{time}</p>
 
+		<ul id="recordList"></ul>
 
-		<script define:vars={{ records, url }}>
-		
-        console.log(url)
+		<script define:vars={{ records, url, genres, time }}>
+			// console.log(url);
 
-        // console.log("hallo allemaal")
-         const urlClient = document.URL
-            console.log("client url HALLOO?")
-            console.log(urlClient)
+			const chosenGenres = genres;
+			// console.log(chosenGenres);
+
+			// const urlClient = document.URL;
 
 			const recordsList = document.querySelector("#recordList");
 			const recordsListItems =
 				document.querySelectorAll("#recordList > *");
 			console.log(recordsListItems);
 
-			const filterButton = document.querySelector("#filter");
+			// const filterButton = document.querySelector("#filter");
 
 			// console.log(button);
 			// console.log(filteredRecords);
 			// let displayRecords = records;
-
 
 			// filterButton.addEventListener("click", () => {
 			// 	const filteredRecords = records.filter((r) =>
@@ -90,52 +87,78 @@ console.log(Astro.request.url);
 			// 	});
 			// });
 
-
 			// get filter buttons!!!
 			// get data to browser
 			// const displayRecords = JSON.parse(`{JSON.stringify(records)}`);
-			const displayRecords = records;
-
+			let displayRecords = records;
 
 			// change buttoncontainer to fieldset
-			const buttonContainer = document.querySelector("#genreButtons");
+			// const buttonContainer = document.querySelector("#genreButtons");
 			const list = document.querySelector("#recordList");
 
 			// get genres
-			const genres = [
-				...new Set(
-					displayRecords.flatMap(
-						(record) => record.basic_information.genres || [],
-					),
-				),
-			];
+			// const genres = [
+			// 	...new Set(
+			// 		displayRecords.flatMap(
+			// 			(record) => record.basic_information.genres || [],
+			// 		),
+			// 	),
+			// ];
 
 			// create filter buttons
-			genres.forEach((genre) => {
-				const checkbox = document.createElement("input");
-				checkbox.type = "checkbox";
-				checkbox.name = "genres";
-				checkbox.value = genre;
-				
-				const checkboxLabel = document.createElement("label")
-				checkboxLabel.textContent = genre;
+			// genres.forEach((genre) => {
+			// 	const checkbox = document.createElement("input");
+			// 	checkbox.type = "checkbox";
+			// 	checkbox.name = "genres";
+			// 	checkbox.value = genre;
 
-				checkbox.addEventListener("click", () => {
-					renderList(genre);
-				});
+			// 	const checkboxLabel = document.createElement("label");
+			// 	checkboxLabel.textContent = genre;
 
-				checkboxLabel.appendChild(checkbox)
-				buttonContainer.appendChild(checkboxLabel);
-			});
+			// 	checkbox.addEventListener("click", () => {
+			// 		renderList(genre);
+			// 	});
+
+			// 	checkboxLabel.appendChild(checkbox);
+			// 	buttonContainer.appendChild(checkboxLabel);
+			// });
 
 			// filter function
 			// change function name and list
 			function renderList(selectedGenre) {
 				list.innerHTML = "";
 
-				const filtered = displayRecords.filter((record) =>
-					record.basic_information.genres?.includes(selectedGenre),
-				);
+				// chosenGenres.forEach((genre) => {
+				// 	displayRecords = displayRecords.filter((record) =>
+				// 		record.basic_information.genres?.includes(
+				// 			selectedGenre,
+				// 		),
+				// 	);
+				// });
+
+				const filtered = displayRecords.filter((record) => {
+					const recordGenres = record.basic_information.genres || [];
+
+					return chosenGenres.some((g) => recordGenres.includes(g));
+				});
+
+				// displayRecords = displayRecords.filter((record) =>
+				// 	record.basic_information.genres?.includes(selectedGenre),
+				// );
+
+				// const filtered = chosenGenres.forEach((genre) => {
+				// 	displayRecords.filter((record) =>
+				// 		record.basic_information.genres?.includes(genre)
+				// 	);
+				// });
+
+				// const filtered = displayRecords.filter((record) =>
+				// 	record.basic_information.genres?.includes(selectedGenre),
+				// );
+
+				// const filtered = displayRecords.filter((record) =>
+				// 	record.basic_information.genres?.includes(chosenGenres.some),
+				// );
 
 				filtered.forEach((record) => {
 					const li = document.createElement("li");
@@ -152,13 +175,19 @@ console.log(Astro.request.url);
 
 					list.appendChild(li);
 				});
+
+				console.log(displayRecords)
+
+				
+
 			}
+
+
+			
 
 			//  show all records already
 			// 👉 4. Optional: show all records initially
 			renderList(genres[0]);
-
-
 		</script>
 	</body>
 </html>

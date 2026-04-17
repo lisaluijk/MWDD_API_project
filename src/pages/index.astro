@@ -38,18 +38,17 @@ const records = data.releases;
 			<button type="submit">verstuur</button>
 		</form>
 
-		<ul id="recordList"></ul>
+		<!-- <ul id="recordList"></ul> -->
 
 
 		<script define:vars={{ records }}>
 		
 
-			const recordsList = document.querySelector("#recordList");
-			const recordsListItems =
-				document.querySelectorAll("#recordList > *");
-			console.log(recordsListItems);
+			// const recordsList = document.querySelector("#recordList");
+			// const recordsListItems =
+			// 	document.querySelectorAll("#recordList > *");
+			// console.log(recordsListItems);
 
-			const filterButton = document.querySelector("#filter");
 
 			// console.log(button);
 			// console.log(filteredRecords);
@@ -91,7 +90,7 @@ const records = data.releases;
 
 			// change buttoncontainer to fieldset
 			const buttonContainer = document.querySelector("#genreButtons");
-			const list = document.querySelector("#recordList");
+			// const list = document.querySelector("#recordList");
 
 			// get genres
 			const genres = [
@@ -113,9 +112,9 @@ const records = data.releases;
 				const checkboxLabel = document.createElement("label")
 				checkboxLabel.textContent = genre;
 
-				checkbox.addEventListener("click", () => {
-					renderList(genre);
-				});
+				// checkbox.addEventListener("click", () => {
+				// 	renderList(genre);
+				// });
 
 				checkboxLabel.appendChild(checkbox)
 				buttonContainer.appendChild(checkboxLabel);
@@ -123,33 +122,33 @@ const records = data.releases;
 
 			// filter function
 			// change function name and list
-			function renderList(selectedGenre) {
-				list.innerHTML = "";
+			// function renderList(selectedGenre) {
+			// 	list.innerHTML = "";
 
-				const filtered = displayRecords.filter((record) =>
-					record.basic_information.genres?.includes(selectedGenre),
-				);
+			// 	const filtered = displayRecords.filter((record) =>
+			// 		record.basic_information.genres?.includes(selectedGenre),
+			// 	);
 
-				filtered.forEach((record) => {
-					const li = document.createElement("li");
+			// 	filtered.forEach((record) => {
+			// 		const li = document.createElement("li");
 
-					const img = document.createElement("img");
-					img.src = record.basic_information.cover_image;
-					img.alt = record.basic_information.title;
+			// 		const img = document.createElement("img");
+			// 		img.src = record.basic_information.cover_image;
+			// 		img.alt = record.basic_information.title;
 
-					const title = document.createElement("p");
-					title.textContent = record.basic_information.title;
+			// 		const title = document.createElement("p");
+			// 		title.textContent = record.basic_information.title;
 
-					li.appendChild(img);
-					li.appendChild(title);
+			// 		li.appendChild(img);
+			// 		li.appendChild(title);
 
-					list.appendChild(li);
-				});
-			}
+			// 		list.appendChild(li);
+			// 	});
+			// }
 
 			//  show all records already
 			// 👉 4. Optional: show all records initially
-			renderList(genres[0]);
+			// renderList(genres[0]);
 		</script>
 	</body>
 </html>
