@@ -75,10 +75,18 @@ const time = url.searchParams.get("listenTime");
 					const masterURL = record.basic_information.master_url
 					console.log(masterURL)
 
+					
+
 					// changed await to async
-					const masterResponse = await fetch(masterURL);
-					const masterData = await masterResponse.json();
-					const masterInformation = masterData.releases;
+					async function getTrackDuration() {
+					
+						const masterResponse = await fetch(masterURL);
+						const masterData = await masterResponse.json();
+						const masterInformation = masterData.releases;
+					}
+
+					getTrackDuration()
+					// console.log(masterInformation)
 
 					const li = document.createElement("li");
 

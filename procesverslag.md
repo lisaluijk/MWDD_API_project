@@ -271,3 +271,8 @@ https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
 https://developer.mozilla.org/en-US/docs/Web/API/URL
 
 https://stackoverflow.com/questions/1034621/get-the-current-url-with-javascript
+
+22/04
+930 site hosten via render
+11:10 gelukt.
+1200 de tracktijden krijgen?
