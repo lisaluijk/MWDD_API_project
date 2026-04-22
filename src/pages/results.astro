@@ -36,7 +36,6 @@ const time = url.searchParams.get("listenTime");
 		<link rel="stylesheet" href="./src/styles/style.css" />
 	</head>
 	<body>
-		<!-- <p>Hi welcome</p> -->
 		<h1>Your results:</h1>
 
 		<p>{genres}</p>
@@ -45,122 +44,42 @@ const time = url.searchParams.get("listenTime");
 		<ul id="recordList"></ul>
 
 		<script define:vars={{ records, url, genres, time }}>
-			// console.log(url);
 
 			const chosenGenres = genres;
-			// console.log(chosenGenres);
 
-			// const urlClient = document.URL;
 
 			const recordsList = document.querySelector("#recordList");
 			const recordsListItems =
 				document.querySelectorAll("#recordList > *");
 			console.log(recordsListItems);
 
-			// const filterButton = document.querySelector("#filter");
+			
 
-			// console.log(button);
-			// console.log(filteredRecords);
-			// let displayRecords = records;
-
-			// filterButton.addEventListener("click", () => {
-			// 	const filteredRecords = records.filter((r) =>
-			// 		r.basic_information.genres?.includes("Reggae"),
-			// 	);
-
-			// 	displayRecords = filteredRecords;
-			// 	console.log("test");
-
-			// 	recordsListItems.forEach((listItem) => {
-			// 		listItem.remove();
-			// 	});
-
-			// 	displayRecords.forEach((record) => {
-			// 		const li = document.createElement("li");
-			// 		const img = document.createElement("img");
-			// 		img.src = record.basic_information.cover_image;
-			// 		img.alt = record.basic_information.title;
-
-			// 		li.appendChild(img);
-
-			// 		recordsList.appendChild(li);
-			// 	});
-			// });
-
-			// get filter buttons!!!
-			// get data to browser
-			// const displayRecords = JSON.parse(`{JSON.stringify(records)}`);
+			
 			let displayRecords = records;
 
-			// change buttoncontainer to fieldset
-			// const buttonContainer = document.querySelector("#genreButtons");
 			const list = document.querySelector("#recordList");
 
-			// get genres
-			// const genres = [
-			// 	...new Set(
-			// 		displayRecords.flatMap(
-			// 			(record) => record.basic_information.genres || [],
-			// 		),
-			// 	),
-			// ];
-
-			// create filter buttons
-			// genres.forEach((genre) => {
-			// 	const checkbox = document.createElement("input");
-			// 	checkbox.type = "checkbox";
-			// 	checkbox.name = "genres";
-			// 	checkbox.value = genre;
-
-			// 	const checkboxLabel = document.createElement("label");
-			// 	checkboxLabel.textContent = genre;
-
-			// 	checkbox.addEventListener("click", () => {
-			// 		renderList(genre);
-			// 	});
-
-			// 	checkboxLabel.appendChild(checkbox);
-			// 	buttonContainer.appendChild(checkboxLabel);
-			// });
-
-			// filter function
-			// change function name and list
+		
 			function renderList(selectedGenre) {
 				list.innerHTML = "";
 
-				// chosenGenres.forEach((genre) => {
-				// 	displayRecords = displayRecords.filter((record) =>
-				// 		record.basic_information.genres?.includes(
-				// 			selectedGenre,
-				// 		),
-				// 	);
-				// });
-
+			
 				const filtered = displayRecords.filter((record) => {
 					const recordGenres = record.basic_information.genres || [];
 
 					return chosenGenres.some((g) => recordGenres.includes(g));
 				});
 
-				// displayRecords = displayRecords.filter((record) =>
-				// 	record.basic_information.genres?.includes(selectedGenre),
-				// );
-
-				// const filtered = chosenGenres.forEach((genre) => {
-				// 	displayRecords.filter((record) =>
-				// 		record.basic_information.genres?.includes(genre)
-				// 	);
-				// });
-
-				// const filtered = displayRecords.filter((record) =>
-				// 	record.basic_information.genres?.includes(selectedGenre),
-				// );
-
-				// const filtered = displayRecords.filter((record) =>
-				// 	record.basic_information.genres?.includes(chosenGenres.some),
-				// );
-
 				filtered.forEach((record) => {
+					const masterURL = record.basic_information.master_url
+					console.log(masterURL)
+
+					// changed await to async
+					const masterResponse = await fetch(masterURL);
+					const masterData = await masterResponse.json();
+					const masterInformation = masterData.releases;
+
 					const li = document.createElement("li");
 
 					const img = document.createElement("img");
@@ -178,15 +97,9 @@ const time = url.searchParams.get("listenTime");
 
 				console.log(displayRecords)
 
-				
-
 			}
 
-
-			
-
 			//  show all records already
-			// 👉 4. Optional: show all records initially
 			renderList(genres[0]);
 		</script>
 	</body>
