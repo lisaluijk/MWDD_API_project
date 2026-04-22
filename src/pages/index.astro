@@ -1,4 +1,6 @@
 ---
+import "../styles/style.css"
+
 const discogsKey = import.meta.env.DISCOG_TOKEN;
 const userName = "lisa_luijk";
 const discogsURL = `https://api.discogs.com/users/${userName}/collection/folders/0/releases?token=${discogsKey}&per_page=100&sort=artist`;
@@ -19,7 +21,7 @@ const records = data.releases;
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Your record playlist</title>
-		<link rel="stylesheet" href="./src/styles/style.css" />
+		
 	</head>
 	<body>
 		<p>Hi welcome</p>
