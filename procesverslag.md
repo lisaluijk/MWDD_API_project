@@ -275,4 +275,20 @@ https://stackoverflow.com/questions/1034621/get-the-current-url-with-javascript
 22/04
 930 site hosten via render
 11:10 gelukt.
-1200 de tracktijden krijgen?
+1200 de tracktijden krijgen? -> met cyd en jad overleggen of ik het sorteren en fetchen server side moet gaan doen of client side
+1230 alles naar server side verplaatsen.
+1245 ^^^^proberen te snappen waarom het niet werkt -> we gaan straks gewoon ff jad vragen hihi
+1245 front end styling yippy
+`1300 schetsjes gemaakt en font zo verder,  gesprek met sanne
+
+23/04 
+
+1350 server side ding kijken?
+1355 debuggen met jad
+1405 verder met alles naar client side doen
+1415 bug gevond en pauze
+1420 verder code naar serverside
+1430 pauze
+1435 code cleanen result page
+
+

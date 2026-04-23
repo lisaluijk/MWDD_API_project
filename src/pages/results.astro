@@ -1,4 +1,5 @@
 ---
+// @ts-nocheck
 export const prerender = false;
 
 const discogsKey = import.meta.env.DISCOG_TOKEN;
@@ -12,17 +13,36 @@ const records = data.releases;
 const url = Astro.url;
 // const url = document.url;
 
-const genres = url.searchParams.getAll("genres");
+const chosenGenres = url.searchParams.getAll("genres");
 const time = url.searchParams.get("listenTime");
 
-// console.log(url)
-// console.log(genres)
-// console.log("this is the url!!!!");
-// console.log(Astro.request.url);
+// filtering on genres
+const filtered = records.filter((record) => {
+	const recordGenres = record.basic_information.genres || [];
 
-// let displayRecords = records
+	return chosenGenres.some((g) => recordGenres.includes(g));
+});
 
-// console.log(records)
+// getting track data
+filtered.forEach((record) => {
+					const masterURL = record.basic_information.master_url;
+					console.log(masterURL);
+
+					// const masterResponse = await fetch(masterURL);
+					// const masterData = await masterResponse.json();
+					// const masterInformation = masterData.releases;
+
+					async function getTrackDuration() {
+						const masterResponse = await fetch(masterURL);
+						const masterData = await masterResponse.json();
+						
+						console.log(masterData)
+					}
+
+					getTrackDuration();
+					// console.log(masterInformation)
+
+				})
 ---
 
 <html lang="en">
@@ -38,54 +58,42 @@ const time = url.searchParams.get("listenTime");
 	<body>
 		<h1>Your results:</h1>
 
-		<p>{genres}</p>
+		<p>{chosenGenres}</p>
 		<p>{time}</p>
 
 		<ul id="recordList"></ul>
 
-		<script define:vars={{ records, url, genres, time }}>
-
-			const chosenGenres = genres;
-
+		<script define:vars={{ records, url, chosenGenres, time, filtered }}>
+			// @ts-nocheck
+			// const chosenGenres = genres;
 
 			const recordsList = document.querySelector("#recordList");
 			const recordsListItems =
 				document.querySelectorAll("#recordList > *");
 			console.log(recordsListItems);
 
-			
-
-			
 			let displayRecords = records;
 
 			const list = document.querySelector("#recordList");
 
-		
 			function renderList(selectedGenre) {
 				list.innerHTML = "";
 
-			
-				const filtered = displayRecords.filter((record) => {
-					const recordGenres = record.basic_information.genres || [];
 
-					return chosenGenres.some((g) => recordGenres.includes(g));
-				});
+
+				console.log(filtered)
 
 				filtered.forEach((record) => {
-					const masterURL = record.basic_information.master_url
-					console.log(masterURL)
+					// const masterURL = record.basic_information.master_url;
+					// console.log(masterURL);
 
-					
+					// async function getTrackDuration() {
+					// 	const masterResponse = await fetch(masterURL);
+					// 	const masterData = await masterResponse.json();
+					// 	const masterInformation = masterData.releases;
+					// }
 
-					// changed await to async
-					async function getTrackDuration() {
-					
-						const masterResponse = await fetch(masterURL);
-						const masterData = await masterResponse.json();
-						const masterInformation = masterData.releases;
-					}
-
-					getTrackDuration()
+					// getTrackDuration();
 					// console.log(masterInformation)
 
 					const li = document.createElement("li");
@@ -103,12 +111,11 @@ const time = url.searchParams.get("listenTime");
 					list.appendChild(li);
 				});
 
-				console.log(displayRecords)
-
+				// console.log(displayRecords);
 			}
 
 			//  show all records already
-			renderList(genres[0]);
+			renderList(chosenGenres[0]);
 		</script>
 	</body>
 </html>

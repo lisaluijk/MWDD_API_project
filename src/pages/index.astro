@@ -25,13 +25,14 @@ const records = data.releases;
 	</head>
 	<body>
 		<p>Hi welcome</p>
-		<h1>What are you in the mood for?</h1>
+		
 
 		<form method="GET" action="/results" >
+			<h1>What are you in the mood for?</h1>
 			<label for="amountTime">
-				how long do you want to listen for?
+				How long do you want to listen for?
+				<input id="amountTime" type="text" name="listenTime"/>
 			</label>
-			<input id="amountTime" type="text" name="listenTime"/>
 
 			<fieldset id="genreButtons">
 				<legend>What genres do you want to listen to?</legend>
