@@ -13,36 +13,24 @@ const records = data.releases;
 const url = Astro.url;
 // const url = document.url;
 
+// get data from url
 const chosenGenres = url.searchParams.getAll("genres");
 const time = url.searchParams.get("listenTime");
 
 // filtering on genres
 const filtered = records.filter((record) => {
 	const recordGenres = record.basic_information.genres || [];
-
 	return chosenGenres.some((g) => recordGenres.includes(g));
 });
 
+const masterData = []
+
 // getting track data
-filtered.forEach((record) => {
-					const masterURL = record.basic_information.master_url;
-					console.log(masterURL);
-
-					// const masterResponse = await fetch(masterURL);
-					// const masterData = await masterResponse.json();
-					// const masterInformation = masterData.releases;
-
-					async function getTrackDuration() {
-						const masterResponse = await fetch(masterURL);
-						const masterData = await masterResponse.json();
-						
-						console.log(masterData)
-					}
-
-					getTrackDuration();
-					// console.log(masterInformation)
-
-				})
+// filtered.forEach(async (record) => { ... }
+for (const record of filtered) {
+	const masterResponse = await fetch(record.basic_information.master_url);
+	masterData.push(await masterResponse.json());
+}
 ---
 
 <html lang="en">
@@ -63,9 +51,11 @@ filtered.forEach((record) => {
 
 		<ul id="recordList"></ul>
 
-		<script define:vars={{ records, url, chosenGenres, time, filtered }}>
+		<script define:vars={{ records, url, chosenGenres, time, filtered, masterData }}>
 			// @ts-nocheck
 			// const chosenGenres = genres;
+			console.log("hier komen masterdata")
+			console.log(masterData)
 
 			const recordsList = document.querySelector("#recordList");
 			const recordsListItems =

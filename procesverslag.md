@@ -1,4 +1,4 @@
-# MWDD_HCD
+# MWDD_API
 
 
 <details>
@@ -25,7 +25,7 @@ Ik werk hieraan om mijn time management te verbeteren, omdat ik merk dat ik door
 
 </details>
 
-## Human centered design
+## API
 
 ## Check-outs
 
@@ -35,24 +35,21 @@ Ik werk hieraan om mijn time management te verbeteren, omdat ik merk dat ik door
 ### Maandag 30 maart | checkout met: Lynn
 
 #### Wat heb ik vandaag gedaan?
-- **09:30–1025 - kickoff opdracht
-1030 1145 workshop astro
-1200 - 1230 concepten bedenken
-1230 concept uitwerken
-1300 concept checken
-1310 concept verbeteren
-1330 concept is goedgekeujrd!
-1335 pauze
-1420 werk en smashing conference fixen
-1440 concepten uitschrijven
-1500 api's inladen beginnen
-
+- **09:30–10:25** — Kick-off opdracht  
+- **10:30–11:45** — Workshop Astro  
+- **12:00–12:30** — Concepten bedenken  
+- **12:30–13:00** — Concept uitgewerkt (discogs api, platenplaylist)
+- **13:00–13:10** — Concept gecheckt  
+- **13:10–13:30** — Concept verbeterd  
+- **13:30–13:35** — Concept goedgekeurd  
+- **13:35–14:20** — Pauze  
+- **14:20–14:40** — Werk en Smashing Conference dingen geregeld  
+- **14:40–15:00** — Conceptidee uitgeschreven  
+- **15:00–16:00** — Begonnen met discogs API inladen  
+- **16:00–16:10** — Daily checkout 
 
 #### Gebruikte bronnen
-
-
-#### Resultaten uit deskresearch
-
+- [tutorial discogs API](https://www.alexrabin.com/blog/discogs-api-tutorial)
 
 #### Concept ideeën
 
@@ -81,7 +78,7 @@ wat voorkeuren aangeven en dan krijg je een nummer die je kan zingen tijdens kar
 - open brewerie -> kleine brouwerijen en ciderijen
 - cats -> heel veel shcattige katten api's
 - etsy -> misschien een kadofinder of iets anders leuks
-- 
+
 
 #### Mijn definitieve concept
 
@@ -106,14 +103,13 @@ api's
 - Bacon -> ???? (it is a secret )
 
 #### Wat heb ik geleerd?
-
-
-
+Beetje api kennis dat ik nog had van blok tech is weer omhoog gekomen maar het is nog niet volledig gelukt om de discogs api in te laden.
 
 #### Wat ga ik volgende keer doen?
-
+Discogs Api verder inladen.
 
 #### Kleine reflectie van vandaag
+Ging prima vandaag. Ik ben blij dat ik al een goed concept heb zodat ik daarmee uit de voeten kan.
 
 </details>
 
@@ -121,27 +117,21 @@ api's
 <details>
 <summary>Dag 2</summary>
 
-### Donderdag 2 april | checkout met: 
+### Donderdag 2 april 
 
 #### Wat heb ik vandaag gedaan?
 945 api inladen van discogs
-
-
-
-#### Bevindingen gebruikerstest
-
-
-
-#### Concept ideeën
-
+- **09:45–12:00** — Discogs API inladen met hulp van Teun
+- **12:00–12:45** — Voortgangsgesprek
+- **12:45–14:00** — Geprobeerd verder te werken aan de opdracht maar dat is helaas niet echt gelukt
 
 
 #### Gebruikte bronnen
-- https://www.alexrabin.com/blog/discogs-api-tutorial
+- [tutorial discogs API](https://www.alexrabin.com/blog/discogs-api-tutorial)
 
 
-#### Feecback
-platenwinkel -> fysieke idee -> scrolldriven idee
+#### Feedback voortgangsgesprek
+platenwinkel -> fysieke wereld -> scrolldriven idee
 misschien ook je platen kunnen filteren 
 Haal meer ook uit het echte leven en hoe die flow is
 gaat ook om hoe het eruit ziet niet alleen functionaliteit dus vind daar een balans
@@ -154,65 +144,61 @@ of een app met mijn omgeving/profiel voor inspo
 het is oke om naar andere te kijken als je er uiteindelijk iets unieks van maakt. -> dar is hoe het werkt en dat is ook oke!
 zeker voor ux beter goed gejat dan slecht bedacht
 
-feedback voor anders
+feedback voor anderen
 planning is handig -> wat wil ik afhebbenm per week
-proces -> hoe ben je aan ideeën gekomen /tot ideeen gekomen
+procces -> hoe ben je aan ideeën gekomen /tot ideeen gekomen
 wat heb je aan praatjes gehad?
-1
-
 
 
 #### Wat heb ik geleerd?
-
-
-
-#### Wat ga ik volgende keer doen?
--
-#### Welke afwegingen heb ik genomen en waar heb ik over na gedacht
-
+Hoe ik de discogs API kan inladen
 
 #### Kleine reflectie van vandaag
+Behalve dat ik alleen in de ochtend wat heb gedaan ben ik blij dat het me is gelukt om de api in te laden.
 
 </details>
 
+
+
+<details>
+<summary>Weekly checkout | week 1</summary>
+
+
 ## Weekly check-out | week 1 
 
-
-### Leerdoel 1 – CSS-animaties & micro-animaties
-
-
-### Leerdoel 2 – Tooling, code-architectuur & efficiëntie
- 
-
-### Leerdoel 3 – Itereren binnen het ontwerpproces
+</details>
 
 
-### Feedback van voortgangsgesprek
+<details>
+<summary>Dag 3</summary>
 
+### Woensdag 8 april (ziek)
 
-### Wat wil ik volgende week doen
+#### Wat heb ik vandaag gedaan?
+- **14:55–15:15** — DLO doorgenomen op basis van feedback en randvoorwaarden → concept verder uitgewerkt met wireframes  
+- **15:15–15:30** — Gekeken naar het inladen van API met de personal key/code  
+- **15:40–16:00** — Research gedaan hoe data inladen en concept verder uitgedacht  
+- **16:30–17:00** — Onderzoek gedaan naar het ophalen van de duur van nummers
 
+</details>
 
-8 april (ziek)
-1455 dlo doornemen op basis van feedback randvoorwaarden -> concept uitwerken met wireframes enzo
-1515 1530 kijken naar code inladen api
+<details>
+<summary>Dag 4</summary>
 
-1540 1600 research en uidenken verder
-1630 onderzoek naar die minuten
+### Donderdag 9 april 
 
-9 april 
-1000 filteren 
-1045 workshop local storage
-1110 verder werken
-1230 pauze
-1345 pan revisen en maken eig 
-1405 records updaten 
-1450 ik kan filteren yay
-niet heel veel nuttigs meer
-1530 daily check ou
-1600 ob
+#### Wat heb ik vandaag gedaan?
+- **10:00–10:45** — Filteren op rockgenre aan begonnen
+- **10:45–11:10** — Workshop Local Storage  
+- **11:10–12:30** — Verder gewerkt aan het filter 
+- **12:30–13:45** — Pauze  
+- **13:45–14:05** — Plan gemaakt en verder gewe4rkt
+- **14:05–14:50** — gefilterdere records zichtbaar krijgen 
+- **14:50–15:30** — Filtering werkend gekregen (🎉)  
+- **15:30–16:00** — Daily check-out  
+- **16:00–17L00** — Weekly Nerd  
 
-
+#### Aantekeningen workshop local storage
 geen gevoelige data opslaan want scripts kunnen dit lezen
 local storage alleen in een script aan de client side nooit op de server kant
 alles wordt opgeslagen als string :(
@@ -220,75 +206,114 @@ het is makkelijk als je objecten in local storage opslaan en die moet je omzette
 window.localStorage is hetzelfde
 session storage werkt hetzelfde maar dan weg als je tabblad sluit
 
+#### Gebruikte bronnen
+
+- [rest api tutorial](https://youtu.be/LzOtbUw6f_o?si=eGxFUZ1Ha0KtKXUD)
+- [fetch tutorial](https://youtu.be/cuEtnrL9-H0?si=1GsPsvdsegPV-4_e)
+- [nog een fetch tutroial](https://youtu.be/37vxWr0WgQk?si=wbm5apYqIMd7o1BF)
+
+</details>
 
 
+<details>
+<summary>Voortgangsgesprek week 2</summary>
+
+### Vrijdag 10 april (ziek)
+
+#### Wat heb ik vandaag gedaan?
+- **10:30–10:45** — Alle genres opgehaald van mijn platen (op een betere manier)
+- **10:45–11:40** — filterknoppen aangemaakt voor alle genres  
+- **14:00–14:15** — filterknoppen omgezet naar checkboxes (research gedaan naar wat de best practice is) 
+- **14:15–17:15** — De resultaten van de "form" "doorsturen" naar de volgende pagina.
+- **17:15–18:10** — Navigatie naar volgende pagina werkend gekregen en gedebugd  
 
 
+#### Gebruikte bronnen
+- [Create HTML elements with JavaScript (createElement)](https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement)
+- [Using the `new` operator to create objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new#:~:text=The%20new%20operator%20lets%20developers,that%20has%20a%20constructor%20function.)
+- [Working with Map objects in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
+- [Working with Set objects in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)
+- [Working with URLs in JavaScript (URL API)](https://developer.mozilla.org/en-US/docs/Web/API/URL)
+- [Get the current URL using JavaScript](https://stackoverflow.com/questions/1034621/get-the-current-url-with-javascript)
+
+</details>
 
 
-https://youtu.be/LzOtbUw6f_o?si=eGxFUZ1Ha0KtKXUD
-https://youtu.be/cuEtnrL9-H0?si=1GsPsvdsegPV-4_e
-https://youtu.be/37vxWr0WgQk?si=wbm5apYqIMd7o1BF
+<details>
+<summary>Dag 5</summary>
+
+### Woensdag 22 april 
+
+#### Wat heb ik vandaag gedaan?
+
+- **09:30–11:10** — Site gehost via Render (Gelukt met hulp van Rafi, Mats en Jeppe)  
+- **11:10–12:00** — Pauzevan code naar server-side  
+- **12:45–13:00** — Proberen erachter te komen waarom het nu niet meer werkt
+- **13:00–13:50** — Ini mini begin aan Front-end styling, schetsen design 
+- **14:00-14:45** — gesprek met Sanne (daarna naar huis gegaan omdat ik me niet goed voelde)
+
+</details>
+
+<details>
+<summary>Dag 6</summary>
+
+### Donderdag 23 april 
+
+#### Wat heb ik vandaag gedaan?
+
+- **13:50–13:55** — Opnieuw naar server-side bug gekeken  
+- **13:55–14:05** — Debuggen met Jad  
+- **14:05–14:15** — Verder gegaan code serverside verplaatsen 
+- **14:15–14:20** — Nieuwe bug gevonden  
+- **14:20–14:30** — Verder gewerkt aan server-side code  
+- **14:30–14:35** — Pauze  
+- **14:35–15:00** — Code opgeschoond voor de results page  
+
+</details>
 
 
-10 april (ziek)
-1030 alle genres krijgen
-
-const allGenres = [];
-			console.log(allGenres)
-			
-			// get all possible genres
-			records.forEach((record) => {
-				allGenres.push(record.basic_information.genres)
-			})
-
-            dit had ik nu sneller
-
-1045 knopjes aanmaken voor alle genres
-1140 dat is gelukt maar nu de volgende stap, eerst ff pauze tho
-1400 in de trein hih
-1415 omgezet naar checkboxes
-
-1715 get it into the next page
-we debugged that :) 1810
-
-13 april 1925 tijd ophalen?
+<details>
+<summary>Vakantie</summary>
 
 
+### Donderdag 30 april 
 
-https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
+#### Wat heb ik vandaag gedaan?
 
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new#:~:text=The%20new%20operator%20lets%20developers,that%20has%20a%20constructor%20function.
+16:30 read me opschonen (halfuur mee bezig leugen haha...)
+1730 pauze
 
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
 
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
+2200 - tijd inladen?? ghahaha sike dat lukt natuurlijk niet 
+2230 
 
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new#:~:text=The%20new%20operator%20lets%20developers,that%20has%20a%20constructor%20function.
+03/05 
+20 00 geprobeerd te beginnen maaar breakdown
+2130 poging...?
 
-https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
 
-https://developer.mozilla.org/en-US/docs/Web/API/URL
+probleem:
+ik moet van alle records de master url opvragen voor de tijd. als je meeer dan 60 platen in een genre hebt kan dit niet omdat de rate limit van de discogs api 60 per seconde is. 
 
-https://stackoverflow.com/questions/1034621/get-the-current-url-with-javascript
+mogeljke oplossingen:
+- alles 1 keer fetchen en dan lokaal opslaan op de browser van de user
+daarna alleen nieuwe platen fetchen
 
-22/04
-930 site hosten via render
-11:10 gelukt.
-1200 de tracktijden krijgen? -> met cyd en jad overleggen of ik het sorteren en fetchen server side moet gaan doen of client side
-1230 alles naar server side verplaatsen.
-1245 ^^^^proberen te snappen waarom het niet werkt -> we gaan straks gewoon ff jad vragen hihi
-1245 front end styling yippy
-`1300 schetsjes gemaakt en font zo verder,  gesprek met sanne
+- 60 random platen fetchen uit de collectie en daar de playlist mee maken.
 
-23/04 
+- de gebruiker laten wachten met een leuke laadanimatie
 
-1350 server side ding kijken?
-1355 debuggen met jad
-1405 verder met alles naar client side doen
-1415 bug gevond en pauze
-1420 verder code naar serverside
-1430 pauze
-1435 code cleanen result page
+ander probleem -> veel platen hebben uberhaupt geen tijd per nummer of tracklist uberhaupt. 
+
+oplossing voor elk genre opzoeken hoe lang een track ongever duurt en kijken naar het aantal nummers om een schatting te maken
+
+andere oplossing helemaal geen tijd eraan binden en je geeft aan hoeveel platen je wilt luisteren -> dat is vervelend want je hebt ook singletjes dus dat werkt helaas niet zo goed. 
+
+miss gewoon een soort playlist generator en dan kan je met local storage afvinken welke je al hebt gehad en telkens terug komen om te voorkomen dat je een plaat vaak opnieuw luisterd. 
+
+ik weet even niet meer wat ik nu moet doen....
+
+03/05
+eigenlijk 2 opties gokken hoe lang een plaat duurt en best case is het exact 
 
 
