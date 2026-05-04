@@ -338,8 +338,22 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 1040 start 
 1045 randimizen
 1110 nou het is geshuffled hoor. ik snap het gelukkig wel dus dat is fijn nu dan het aantal platen laten zien.
+1130 nou dat werkt YAY, nu dan dat cleanen en frontend gaan doen denk ik
+ff pauze...
+1200 oeps dit had ik verwacht tho... plan geschreven
+1205 designen yippie
+1210 starten
+1230 lunch hihi
+1400 well fuck...
+
 
 
 bronnen
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
+
+plan 
+wat ik nu heb frontenden en vormgeven, basically een bak css eroverheen pleuren
+code cleanen in de js
+dan kijken naar randvoorwaarden
+het leifst nog verbeteren en meer toevoegen maar dat gaat hem gewoon niet worden en ben er wss tegen die tijd ook echt klaar mee....
 

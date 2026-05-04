@@ -69,47 +69,7 @@ for (const record of filtered) {
 
 			const list = document.querySelector("#recordList");
 
-			// vgm is dit niet meer nodig maar ik laat het nog ff staan.
-			function renderList(selectedGenre) {
-				list.innerHTML = "";
-
-				// console.log(filtered)
-
-				filtered.forEach((record) => {
-					// const masterURL = record.basic_information.master_url;
-					// console.log(masterURL);
-
-					// async function getTrackDuration() {
-					// 	const masterResponse = await fetch(masterURL);
-					// 	const masterData = await masterResponse.json();
-					// 	const masterInformation = masterData.releases;
-					// }
-
-					// getTrackDuration();
-					// console.log(masterInformation)
-
-					const li = document.createElement("li");
-
-					const img = document.createElement("img");
-					img.src = record.basic_information.cover_image;
-					img.alt = record.basic_information.title;
-
-					const title = document.createElement("p");
-					title.textContent = record.basic_information.title;
-
-					li.appendChild(img);
-					li.appendChild(title);
-
-					list.appendChild(li);
-				});
-
-				// console.log(displayRecords);
-			}
-
-			//  show all records already
-			renderList(chosenGenres[0]);
-
-			// aantal platen laten zien
+			// aantal platen laten zien omzetten van string naar integer
 			recordAmount = parseInt(time);
 
 			/*
@@ -124,7 +84,6 @@ for (const record of filtered) {
 				);
 			}
 			*/
-
 
 			// shuffelen door telkens twee records met elkaar te swappen en een soort deconstruct iets om code lines te besparen.
 			function shuffle(arr) {
@@ -143,9 +102,41 @@ for (const record of filtered) {
 				return copy;
 			}
 
-			const shuffledRecords = shuffle(filtered)
-			console.log(shuffledRecords)
+			const shuffledRecords = shuffle(filtered);
+			console.log(shuffledRecords);
 
+			const selectedRecords = shuffledRecords.slice(0, recordAmount);
+
+			selectedRecords.forEach((record) => {
+				const li = document.createElement("li");
+
+				const img = document.createElement("img");
+				img.src = record.basic_information.cover_image;
+				img.alt = record.basic_information.title;
+
+				const title = document.createElement("p");
+				title.textContent = record.basic_information.title;
+
+				li.appendChild(img);
+				li.appendChild(title);
+
+				list.appendChild(li);
+			});
+
+			// console.log(displayRecords);
+
+			// get track duration
+			// const masterURL = record.basic_information.master_url;
+			// console.log(masterURL);
+
+			// async function getTrackDuration() {
+			// 	const masterResponse = await fetch(masterURL);
+			// 	const masterData = await masterResponse.json();
+			// 	const masterInformation = masterData.releases;
+			// }
+
+			// getTrackDuration();
+			// console.log(masterInformation)
 		</script>
 	</body>
 </html>
