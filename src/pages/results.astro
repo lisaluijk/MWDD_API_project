@@ -23,6 +23,7 @@ const filtered = records.filter((record) => {
 	return chosenGenres.some((g) => recordGenres.includes(g));
 });
 
+/*
 const masterData = []
 
 // getting track data
@@ -31,6 +32,7 @@ for (const record of filtered) {
 	const masterResponse = await fetch(record.basic_information.master_url);
 	masterData.push(await masterResponse.json());
 }
+*/
 ---
 
 <html lang="en">
@@ -51,11 +53,12 @@ for (const record of filtered) {
 
 		<ul id="recordList"></ul>
 
-		<script define:vars={{ records, url, chosenGenres, time, filtered, masterData }}>
+		<script define:vars={{ records, url, chosenGenres, time, filtered }}>
 			// @ts-nocheck
 			// const chosenGenres = genres;
+			/*
 			console.log("hier komen masterdata")
-			console.log(masterData)
+			console.log(masterData)*/
 
 			const recordsList = document.querySelector("#recordList");
 			const recordsListItems =
@@ -66,12 +69,11 @@ for (const record of filtered) {
 
 			const list = document.querySelector("#recordList");
 
+			// vgm is dit niet meer nodig maar ik laat het nog ff staan.
 			function renderList(selectedGenre) {
 				list.innerHTML = "";
 
-
-
-				console.log(filtered)
+				// console.log(filtered)
 
 				filtered.forEach((record) => {
 					// const masterURL = record.basic_information.master_url;
@@ -106,6 +108,44 @@ for (const record of filtered) {
 
 			//  show all records already
 			renderList(chosenGenres[0]);
+
+			// aantal platen laten zien
+			recordAmount = parseInt(time);
+
+			/*
+			if (
+				typeof recordAmount === "string" ||
+				recordAmount instanceof String
+			) {
+				console.log("jup issa stirng jammerdan");
+			} else {
+				console.log(
+					"whoop we kunnen door jippie we could use a win :')",
+				);
+			}
+			*/
+
+
+			// shuffelen door telkens twee records met elkaar te swappen en een soort deconstruct iets om code lines te besparen.
+			function shuffle(arr) {
+				// ... = spread operator?
+				// used to make a copy otherwise you are referencing to the same array with different variables
+				const copy = [...arr];
+
+				// ga door de array heen en wissel telkens een record met een andere record
+				for (let i = copy.length - 1; i > 0; i--) {
+					const j = Math.floor(Math.random() * (i + 1));
+
+					// array destructuring assignment(?) basically scheelt lines of code omdat je het kan swappen terwijl het wel op elkaar berust zeg maar, beetje de css vibes met dat swappen
+					[copy[i], copy[j]] = [copy[j], copy[i]];
+				}
+
+				return copy;
+			}
+
+			const shuffledRecords = shuffle(filtered)
+			console.log(shuffledRecords)
+
 		</script>
 	</body>
 </html>

@@ -289,7 +289,12 @@ session storage werkt hetzelfde maar dan weg als je tabblad sluit
 
 03/05 
 20 00 geprobeerd te beginnen maaar breakdown
-2130 poging...?
+2130 poging...? gebrainstormd over oplossing voor probleem, geprobeerd te kijken naar de randvoorwaarden maar ik kon het gewoon niet. 
+2155 aaantal platen werkend krijgen proberen
+2230 halfuur gedaan over een fucking string parsen naar een integer yay.... tbf ook wel even van een mooi nummer genoten....
+
+2250 gekeken naar shuffleen en fisher yates shuffle geleerd ofzo? kijk maar in chat wat ik allemaal heb gedaan. Ik voel me erg leeg dus ga zo stoppen denk ik. IK weet dat ik moet doorgaan maar ik kan het gewoon echt niet. Zo maar ff journallen denk ik. ga nu ook niet nog die origin opschrijvdn hoor 
+
 
 
 probleem:
@@ -316,4 +321,25 @@ ik weet even niet meer wat ik nu moet doen....
 03/05
 eigenlijk 2 opties gokken hoe lang een plaat duurt en best case is het exact 
 
+of hoeveel platen wil je luisteren en 1 of 2 kant? en dan wel of geen singels en tellen die mee of niet?
+
+ik denk miss gewoon dat doen en we halen ook nog wel extra info op in een detailscherm .... wat wss toch niet gaat lukken maar goed ik kan daar nu echt eventjes niet overna denken :'(
+
+    doe maar gewoon aantal platen
+
+bronnen 
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+
+
+04/05
+
+1040 start 
+1045 randimizen
+1110 nou het is geshuffled hoor. ik snap het gelukkig wel dus dat is fijn nu dan het aantal platen laten zien.
+
+
+bronnen
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
 
