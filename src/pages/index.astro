@@ -31,7 +31,7 @@ const records = data.releases;
 				<h1>What do you want to listen to today?</h1>
 				<label for="amountTime">
 					How many records do you want to play?
-					<input id="amountTime" type="number" name="listenTime" />
+					<input id="amountTime" type="number" name="listenTime" class="px-corners-s"/>
 				</label>
 
 				<fieldset id="genreButtons">
@@ -105,6 +105,7 @@ const records = data.releases;
 				checkbox.type = "checkbox";
 				checkbox.name = "genres";
 				checkbox.value = genre;
+				checkbox.classList.add("px-corners-s");
 
 				const checkboxLabel = document.createElement("label");
 				checkboxLabel.textContent = genre;

@@ -366,4 +366,18 @@ dan kijken naar randvoorwaarden
 het leifst nog verbeteren en meer toevoegen maar dat gaat hem gewoon niet worden en ben er wss tegen die tijd ook echt klaar mee....
 
 05/05 
-1040 verder met vormgeven
+1040 verder met vormgeven button hihi
+1050 font en checkbox
+1125 pauze?
+1220... verder
+1315 pauze met brent
+1530 verder werken en carrousel jippie -> alles gekopieerd en doorgelezen
+1605pauze
+1610 3d effect trial
+
+
+bronnen:
+
+https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Overflow/Carousels
+
+https://developer.mozilla.org/en-US/docs/Web/HTML/How_to/Use_data_attributes

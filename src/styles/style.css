@@ -1,18 +1,28 @@
 :root {
     --bg-main: #1a1625;
-    --bg-panel: #f7f7f3;
-    --accent-purple: #B49EF1;
-    --shadow-purple: #715dc0;
-    --highlight-purple: #dec8f6;
+    --bg-panel: #f2f2eb;
+    --bg-panel-shadow: #ddd9d4;
+    --bg-panel-highlight: #fdfdfd;
+    --accent-purple: #a78ee9;
+    --accent-hover-purple: #8a69e4;
+    --shadow-purple: #7044bc;
+    --highlight-purple: #d1c0fa;
     --accent-pink: #ff77c8;
     --accent-blue: #6db7ff;
 
-    --text-main: #e6e1ff;
-    --text-dim: #9a92b3;
+    --text-main: #302f37;
+    --text-dim: #8272ad;
 
-    --border-light: #cfc7ff;
+    --border-light: #8272ad;
     --border-dark: #414047;
 
+}
+
+@font-face {
+    font-family: 'PressStart2P';
+    src: url('../asssets/PressStart2P-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 /* .pixel-box {
@@ -26,14 +36,18 @@
 
 .windowBox {
     background-color: var(--bg-panel);
+    background: linear-gradient(180deg, var(--bg-panel-highlight) 0rem, var(--bg-panel-highlight) 0.20rem, transparent 0.25rem, transparent calc(100% - 0.2rem), var(--bg-panel-shadow) calc(100% - 0.25rem)), linear-gradient(90deg, var(--bg-panel-highlight) 0rem, var(--bg-panel-highlight) 0.20rem, transparent 0.25rem, transparent calc(100% - 0.25rem), var(--bg-panel-shadow) calc(100% - 0.25rem)), var(--bg-panel);
+
 
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    padding: 0.5rem;
+    gap: 0.3rem;
+    padding: 0.3rem;
 
     & span {
         border: 2px solid pink;
+        background: var(--shadow-purple);
+        color: white;
 
         padding: 0.2rem;
     }
@@ -270,7 +284,11 @@
 
 
 
-
+h1 {
+    color: var(--text-main);
+    font-family: "PressStart2P", monospace, Helvetica, sans-serif;
+    font-size: 1.5rem;
+}
 
 img {
     height: 200px;
@@ -287,7 +305,7 @@ body {
     font-family: monospace;
     font-size: 1rem;
     background-color: var(--bg-color);
-    color: var(--text-color);
+    color: var(--text-main);
 }
 
 
@@ -304,7 +322,12 @@ button {
         /* 2px 2px 0 var(--border-light), */
         inset -2px -2px 0 var(--border-dark);
 
+        /* bron : https://codefoodpixels.com/ */
     background: linear-gradient(180deg, var(--highlight-purple) 0rem, var(--highlight-purple) 0.20rem, transparent 0.25rem, transparent calc(100% - 0.2rem), var(--shadow-purple) calc(100% - 0.25rem)), linear-gradient(90deg, var(--highlight-purple) 0rem, var(--highlight-purple) 0.20rem, transparent 0.25rem, transparent calc(100% - 0.25rem), var(--shadow-purple) calc(100% - 0.25rem)), var(--accent-purple);
+
+    &:hover {
+        background: linear-gradient(180deg, var(--accent-purple) 0rem, var(--accent-purple) 0.20rem, transparent 0.25rem, transparent calc(100% - 0.2rem), var(--shadow-purple) calc(100% - 0.25rem)), linear-gradient(90deg, var(--accent-purple) 0rem, var(--accent-purple) 0.20rem, transparent 0.25rem, transparent calc(100% - 0.25rem), var(--shadow-purple) calc(100% - 0.25rem)), var(--accent-hover-purple);
+    }
 
 }
 
@@ -313,7 +336,8 @@ button:active {
         inset 2px 2px 0 var(--border-dark);
     transform: translate(2px, 2px);
 
-    background: linear-gradient(180deg, var(--shadow-purple) 0rem, var(--shadow-purple) 0.20rem, transparent 0.25rem, transparent calc(100% - 0.2rem), var(--highlight-purple) calc(100% - 0.25rem)), linear-gradient(90deg, var(--shadow-purple) 0rem, var(--shadow-purple) 0.20rem, transparent 0.25rem, transparent calc(100% - 0.25rem), var(--highlight-purple) calc(100% - 0.25rem)), var(--accent-purple);
+    /* background: linear-gradient(180deg, var(--shadow-purple) 0rem, var(--shadow-purple) 0.20rem, transparent 0.25rem, transparent calc(100% - 0.2rem), var(--highlight-purple) calc(100% - 0.25rem)), linear-gradient(90deg, var(--shadow-purple) 0rem, var(--shadow-purple) 0.20rem, transparent 0.25rem, transparent calc(100% - 0.25rem), var(--highlight-purple) calc(100% - 0.25rem)), var(--accent-purple); */
+    background: linear-gradient(180deg, var(--shadow-purple) 0rem, var(--shadow-purple) 0.20rem, transparent 0.25rem, transparent calc(100% - 0.2rem), var(--accent-purple) calc(100% - 0.25rem)), linear-gradient(90deg, var(--shadow-purple) 0rem, var(--shadow-purple) 0.20rem, transparent 0.25rem, transparent calc(100% - 0.25rem), var(--accent-purple) calc(100% - 0.25rem)), var(--accent-hover-purple);
 
 }
 
@@ -345,3 +369,170 @@ input {
 .window-body {
   padding: 12px;
 } */
+
+/* fieldset:has(label input[type="checkbox"]) {
+    display: flex;
+    flex-direction: column;
+} */
+
+label {
+    display: flex;
+    /* font-size: 1.2rem; */
+}
+
+label:has(input[type="number"]){
+    flex-direction: column;
+
+    & input {
+        width: min-content;
+        border: solid 2px var(--border-light);
+        margin: 0.5rem 0.2rem;
+    }
+
+}
+
+
+label:has(input[type="checkbox"]){
+    /* display: flex; */
+    padding: 0 .05rem 0.5rem ;
+    color: var(--text-dim);
+    
+}
+
+input[type="checkbox"] {
+    order: -1;
+    /* justify-self: flex-start; */
+    align-self: flex-start;
+}
+
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+legend {
+    padding: 1rem 0 0.5rem ;
+}
+
+
+
+
+/* carrousel results page */
+/* source basic voor carrousel afgeleid van deze site https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Overflow/Carousels */
+
+
+/* creating carrousel */
+/* the ul */
+#recordList {
+    /* width even veranderen naar % zodat het over de parent aat */
+  width: 90vw;
+  height: 300px;
+  padding: 20px;
+  display: flex;
+  gap: 4vw;
+
+  overflow-x: scroll;
+  /* x is hier dus horizontaal */
+  scroll-snap-type: x mandatory;
+}
+
+#recordList li {
+  list-style-type: none;
+  background-color: #eeeeee;
+  border: 1px solid #dddddd;
+  padding: 20px;
+
+  /* % is the size relative to the ul/paent */
+  flex: 0 0 40% ;
+
+  scroll-snap-align: center;
+}
+
+/* creating carrousel buttons */
+#recordList::scroll-button(*) {
+  border: 0;
+  font-size: 2rem;
+  background: none;
+  color: black;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+#recordList::scroll-button(*):hover,
+#recordList::scroll-button(*):focus {
+  opacity: 1;
+}
+
+#recordList::scroll-button(*):active {
+  translate: 1px 1px;
+}
+
+#recordList::scroll-button(*):disabled {
+  opacity: 0.2;
+  cursor: unset;
+}
+
+/* styling buttons */
+#recordList::scroll-button(left) {
+  content: "◄" / "Previous";
+}
+
+#recordList::scroll-button(right) {
+  content: "►" / "Next";
+}
+
+/* positioning with anchor positioning */
+#recordList {
+  anchor-name: --my-carousel;
+}
+
+#recordList::scroll-button(*) {
+  position: absolute;
+  position-anchor: --my-carousel;
+}
+
+#recordList::scroll-button(left) {
+  right: calc(anchor(left) - 70px);
+  bottom: calc(anchor(top) + 13px);
+}
+
+#recordList::scroll-button(right) {
+  left: calc(anchor(right) - 70px);
+  bottom: calc(anchor(top) + 13px);
+}
+
+/* scroll markers */
+/* kijk naar de tweede demo om er echt een tijdlijn van te maken */
+#recordList {
+  scroll-marker-group: after;
+}
+
+#recordList::scroll-marker-group {
+  position: absolute;
+  position-anchor: --my-carousel;
+  top: calc(anchor(bottom) - 70px);
+  justify-self: anchor-center;
+
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+li::scroll-marker {
+    /* content mag eig niet leeg zijn dus kijk ff op de site voo rwat je moet doen */
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-color: transparent;
+  border: 2px solid black;
+  border-radius: 50%;
+  overflow: hidden;
+  text-indent: 16px;
+}
+
+/* waar de scrollmarker is */
+li::scroll-marker:target-current {
+  background-color: black;
+}
