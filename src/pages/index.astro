@@ -1,5 +1,5 @@
 ---
-import "../styles/style.css"
+import "../styles/style.css";
 
 const discogsKey = import.meta.env.DISCOG_TOKEN;
 const userName = "lisa_luijk";
@@ -21,42 +21,38 @@ const records = data.releases;
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Your record playlist</title>
-		
 	</head>
 	<body>
 		<p>Hi welcome</p>
-		
 
-		<form method="GET" action="/results" >
-			<h1>What are you in the mood for?</h1>
-			<label for="amountTime">
-				How long do you want to listen for?
-				<input id="amountTime" type="number" name="listenTime"/>
-			</label>
+		<div class="windowBox px-corners-m">
+			<span class="px-corners-s">playlist_creator.exe</span>
+			<form method="GET" action="/results" class="px-corners-s">
+				<h1>What do you want to listen to today?</h1>
+				<label for="amountTime">
+					How many records do you want to play?
+					<input id="amountTime" type="number" name="listenTime" />
+				</label>
 
-			<fieldset id="genreButtons">
-				<legend>What genres do you want to listen to?</legend>
-			</fieldset>
+				<fieldset id="genreButtons">
+					<legend>What genre(s) do you want to listen to?</legend>
+				</fieldset>
 
-			<button type="submit">verstuur</button>
-		</form>
+				<button type="submit" class="px-corners-m">make me a playlist!</button>
+			</form>
+		</div>
 
 		<!-- <ul id="recordList"></ul> -->
 
-
 		<script define:vars={{ records }}>
-		
-
 			// const recordsList = document.querySelector("#recordList");
 			// const recordsListItems =
 			// 	document.querySelectorAll("#recordList > *");
 			// console.log(recordsListItems);
 
-
 			// console.log(button);
 			// console.log(filteredRecords);
 			// let displayRecords = records;
-
 
 			// filterButton.addEventListener("click", () => {
 			// 	const filteredRecords = records.filter((r) =>
@@ -82,14 +78,12 @@ const records = data.releases;
 			// 	});
 			// });
 
-
 			// get filter buttons!!!
 			// get data to browser
 			// const displayRecords = JSON.parse(`{JSON.stringify(records)}`);
 			const displayRecords = records;
 
-			console.log(displayRecords)
-
+			console.log(displayRecords);
 
 			// change buttoncontainer to fieldset
 			const buttonContainer = document.querySelector("#genreButtons");
@@ -111,15 +105,15 @@ const records = data.releases;
 				checkbox.type = "checkbox";
 				checkbox.name = "genres";
 				checkbox.value = genre;
-				
-				const checkboxLabel = document.createElement("label")
+
+				const checkboxLabel = document.createElement("label");
 				checkboxLabel.textContent = genre;
 
 				// checkbox.addEventListener("click", () => {
 				// 	renderList(genre);
 				// });
 
-				checkboxLabel.appendChild(checkbox)
+				checkboxLabel.appendChild(checkbox);
 				buttonContainer.appendChild(checkboxLabel);
 			});
 

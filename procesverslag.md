@@ -345,11 +345,19 @@ ff pauze...
 1210 starten
 1230 lunch hihi
 1400 well fuck...
+1425 terapie zooi
+1445 bruh just spent an hour making a fucking pixelated border lol
+1545 button is so cute omg
+1455 naar centum hihi
+2115 button
+2135 klaaar met button
 
 
 
 bronnen
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
+
+https://pixelcorners.lukeb.co.uk/?radius=8&multiplier=4
 
 plan 
 wat ik nu heb frontenden en vormgeven, basically een bak css eroverheen pleuren
@@ -357,3 +365,5 @@ code cleanen in de js
 dan kijken naar randvoorwaarden
 het leifst nog verbeteren en meer toevoegen maar dat gaat hem gewoon niet worden en ben er wss tegen die tijd ook echt klaar mee....
 
+05/05 
+1040 verder met vormgeven
