@@ -460,8 +460,6 @@ legend {
 
 #recordList li {
     list-style-type: none;
-    background-color: #eeeeee;
-    border: 1px solid #dddddd;
 
     /* % is the size relative to the ul/paent */
     flex: 0 0 40% 40%;
@@ -610,7 +608,7 @@ li::scroll-marker:target-current {
 }
 
 #recordList .is-active {
-    transform: rotateY(0deg) scale(1);
+    transform: rotateY(0deg);
 
 }
 
