@@ -52,10 +52,16 @@
         padding: 0.2rem;
     }
 
-    & form {
-        /* background: hotpink; */
+    & .content {
         padding: 1rem 2rem;
         gap: 1rem;
+
+    }
+
+
+
+    & form {
+        /* background: hotpink; */
 
         display: flex;
         flex-direction: column;
@@ -66,6 +72,8 @@
         }
 
     }
+
+
 
 
 }
@@ -322,7 +330,7 @@ button {
         /* 2px 2px 0 var(--border-light), */
         inset -2px -2px 0 var(--border-dark);
 
-        /* bron : https://codefoodpixels.com/ */
+    /* bron : https://codefoodpixels.com/ */
     background: linear-gradient(180deg, var(--highlight-purple) 0rem, var(--highlight-purple) 0.20rem, transparent 0.25rem, transparent calc(100% - 0.2rem), var(--shadow-purple) calc(100% - 0.25rem)), linear-gradient(90deg, var(--highlight-purple) 0rem, var(--highlight-purple) 0.20rem, transparent 0.25rem, transparent calc(100% - 0.25rem), var(--shadow-purple) calc(100% - 0.25rem)), var(--accent-purple);
 
     &:hover {
@@ -380,7 +388,7 @@ label {
     /* font-size: 1.2rem; */
 }
 
-label:has(input[type="number"]){
+label:has(input[type="number"]) {
     flex-direction: column;
 
     & input {
@@ -392,11 +400,11 @@ label:has(input[type="number"]){
 }
 
 
-label:has(input[type="checkbox"]){
+label:has(input[type="checkbox"]) {
     /* display: flex; */
-    padding: 0 .05rem 0.5rem ;
+    padding: 0 .05rem 0.5rem;
     color: var(--text-dim);
-    
+
 }
 
 input[type="checkbox"] {
@@ -406,14 +414,14 @@ input[type="checkbox"] {
 }
 
 fieldset {
-  border: 0;
-  padding: 0;
-  margin: 0;
-  min-width: 0;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
 }
 
 legend {
-    padding: 1rem 0 0.5rem ;
+    padding: 1rem 0 0.5rem;
 }
 
 
@@ -423,121 +431,176 @@ legend {
 /* source basic voor carrousel afgeleid van deze site https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Overflow/Carousels */
 
 
-/* creating carrousel */
+/* styling content box */
+.windowBox div {
+    display: flex;
+    flex-direction: column;
+
+}
+
+#recordList {
+    align-self: center;
+    margin: 2rem;
+}
+
+/* creating carousel */
 /* the ul */
 #recordList {
     /* width even veranderen naar % zodat het over de parent aat */
-  width: 90vw;
-  height: 300px;
-  padding: 20px;
-  display: flex;
-  gap: 4vw;
+    width: 90%;
+    height: 40vw;
+    padding: 2rem 2rem 5rem;
+    display: flex;
+    gap: 4vw;
 
-  overflow-x: scroll;
-  /* x is hier dus horizontaal */
-  scroll-snap-type: x mandatory;
+    overflow-x: scroll;
+    /* x is hier dus horizontaal */
+    scroll-snap-type: x mandatory;
 }
 
 #recordList li {
-  list-style-type: none;
-  background-color: #eeeeee;
-  border: 1px solid #dddddd;
-  padding: 20px;
+    list-style-type: none;
+    background-color: #eeeeee;
+    border: 1px solid #dddddd;
 
-  /* % is the size relative to the ul/paent */
-  flex: 0 0 40% 40%;
-  aspect-ratio: 1;
+    /* % is the size relative to the ul/paent */
+    flex: 0 0 40% 40%;
+    aspect-ratio: 1;
 
-  scroll-snap-align: center;
+    scroll-snap-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    & img {
+        width: 100%;
+        height: 100%;
+    }
 }
 
-/* creating carrousel buttons */        
+/* creating carousel buttons */
 /* block end voor volledige scroll */
 #recordList::scroll-button(*) {
-  border: 0;
-  font-size: 2rem;
-  background: none;
-  color: black;
-  opacity: 0.7;
-  cursor: pointer;
+    border: 0;
+    font-size: 2rem;
+    aspect-ratio: 1/1;
+    background: var(--shadow-purple);
+    color: white;
+    opacity: 0.7;
+    cursor: pointer;
 }
+
+#recordList::scroll-button(*) {
+    clip-path: polygon(0px calc(100% - 8px),
+            2px calc(100% - 8px),
+            2px calc(100% - 4px),
+            4px calc(100% - 4px),
+            4px calc(100% - 2px),
+            8px calc(100% - 2px),
+            8px 100%,
+            calc(100% - 8px) 100%,
+            calc(100% - 8px) calc(100% - 2px),
+            calc(100% - 4px) calc(100% - 2px),
+            calc(100% - 4px) calc(100% - 4px),
+            calc(100% - 2px) calc(100% - 4px),
+            calc(100% - 2px) calc(100% - 8px),
+            100% calc(100% - 8px),
+            100% 8px,
+            calc(100% - 2px) 8px,
+            calc(100% - 2px) 4px,
+            calc(100% - 4px) 4px,
+            calc(100% - 4px) 2px,
+            calc(100% - 8px) 2px,
+            calc(100% - 8px) 0px,
+            8px 0px,
+            8px 2px,
+            4px 2px,
+            4px 4px,
+            2px 4px,
+            2px 8px,
+            0px 8px);
+    position: relative;
+}
+
+/* rounded corners */
 
 #recordList::scroll-button(*):hover,
 #recordList::scroll-button(*):focus {
-  opacity: 1;
+    opacity: 1;
 }
 
 #recordList::scroll-button(*):active {
-  translate: 1px 1px;
+    translate: 1px 1px;
 }
 
 #recordList::scroll-button(*):disabled {
-  opacity: 0.2;
-  cursor: unset;
+    opacity: 0.2;
+    cursor: unset;
 }
 
 /* styling buttons */
 #recordList::scroll-button(left) {
-  content: "◄" / "Previous";
+    content: "◄" / "Previous";
 }
 
 #recordList::scroll-button(right) {
-  content: "►" / "Next";
+    content: "►" / "Next";
 }
 
 /* positioning with anchor positioning */
 #recordList {
-  anchor-name: --my-carousel;
+    anchor-name: --my-carousel;
 }
 
 #recordList::scroll-button(*) {
-  position: absolute;
-  position-anchor: --my-carousel;
+    position: absolute;
+    position-anchor: --my-carousel;
 }
 
 #recordList::scroll-button(left) {
-  right: calc(anchor(left) - 70px);
-  bottom: calc(anchor(top) + 13px);
+    right: calc(anchor(left) - 30%);
+    bottom: calc(anchor(bottom) + 1rem);
 }
 
 #recordList::scroll-button(right) {
-  left: calc(anchor(right) - 70px);
-  bottom: calc(anchor(top) + 13px);
+    left: calc(anchor(right) - 30%);
+    bottom: calc(anchor(bottom) + 1rem);
 }
 
 /* scroll markers */
 /* kijk naar de tweede demo om er echt een tijdlijn van te maken */
-#recordList {
-  scroll-marker-group: after;
+/* #recordList {
+    scroll-marker-group: after;
 }
 
 #recordList::scroll-marker-group {
-  position: absolute;
-  position-anchor: --my-carousel;
-  top: calc(anchor(bottom) - 70px);
-  justify-self: anchor-center;
+    position: absolute;
+    position-anchor: --my-carousel;
+    top: calc(anchor(top) - 70px);
+    justify-self: anchor-center;
 
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 
-li::scroll-marker {
+li::scroll-marker { */
     /* content mag eig niet leeg zijn dus kijk ff op de site voo rwat je moet doen */
-  content: "";
-  width: 16px;
-  height: 16px;
-  background-color: transparent;
-  border: 2px solid black;
-  border-radius: 50%;
-  overflow: hidden;
-  text-indent: 16px;
+    /* content: "";
+    width: 16px;
+    height: 16px;
+    background-color: transparent;
+    border: 2px solid black;
+    border-radius: 50%;
+    overflow: hidden;
+    text-indent: 16px;
 }
 
 /* waar de scrollmarker is */
+/*
 li::scroll-marker:target-current {
-  background-color: black;
-}
+    background-color: black;
+} */
 
 
 /* styling for the carrousel effect with the records turning */
@@ -547,23 +610,20 @@ li::scroll-marker:target-current {
 }
 
 #recordList .is-active {
-    /* background: hotpink; */
-    /* color: #6db7ff; */
-     transform: rotateY(0deg) scale(1.2);
+    transform: rotateY(0deg) scale(1);
 
 }
 
 li {
     transform-style: preserve-3d;
-        transition: all 0.3s ease-out;
-        
+    transition: all 0.3s ease-out;
 
 }
 
 .right-of-center {
-         transform: rotateY(-45deg) translateZ(-10rem);
+    transform: rotateY(-45deg) translateZ(-10rem);
 }
 
 .left-of-center {
-         transform: rotateY(45deg) translateZ(-10rem);
+    transform: rotateY(45deg) translateZ(-10rem);
 }

@@ -46,12 +46,17 @@ for (const record of filtered) {
 		<link rel="stylesheet" href="./src/styles/style.css" />
 	</head>
 	<body>
-		<h1>Your results:</h1>
+		<div class="windowBox px-corners-m">
+			<span class="px-corners-s">your_personal_playlist.mp3</span>
+			<div class="px-corners-s content">
+				<h1>Here is your record playlist:</h1>
 
-		<p>{chosenGenres}</p>
-		<p>{time}</p>
+				<p>Your chosen genres: {chosenGenres}</p>
+				<p>The amount of records you wanted: {time}</p>
 
-		<ul id="recordList"></ul>
+				<ul id="recordList"></ul>
+			</div>
+		</div>
 
 		<script define:vars={{ records, url, chosenGenres, time, filtered }}>
 			// @ts-nocheck
@@ -145,11 +150,10 @@ for (const record of filtered) {
 			const recordsListItems =
 				document.querySelectorAll("#recordList > *");
 			console.log(recordsListItems);
-			
-
 
 			function updateActive() {
-				const center = recordsList.scrollLeft + recordsList.offsetWidth / 2;
+				const center =
+					recordsList.scrollLeft + recordsList.offsetWidth / 2;
 
 				recordsListItems.forEach((item) => {
 					const itemCenter = item.offsetLeft + item.offsetWidth / 2;
@@ -161,15 +165,15 @@ for (const record of filtered) {
 					}
 					// eigen code
 					if (itemCenter > center) {
-						item.classList.add("right-of-center")
+						item.classList.add("right-of-center");
 					} else {
-						item.classList.remove("right-of-center")
+						item.classList.remove("right-of-center");
 					}
 
 					if (itemCenter < center) {
-						item.classList.add("left-of-center")
+						item.classList.add("left-of-center");
 					} else {
-						item.classList.remove("left-of-center")
+						item.classList.remove("left-of-center");
 					}
 				});
 			}

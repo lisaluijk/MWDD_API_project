@@ -348,7 +348,7 @@ ff pauze...
 1425 terapie zooi
 1445 bruh just spent an hour making a fucking pixelated border lol
 1545 button is so cute omg
-1455 naar centum hihi
+1455 pauze
 2115 button
 2135 klaaar met button
 
@@ -399,3 +399,14 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 06/02
 1400 verder met annimatie
 1545 styling result page
+1620 styling the buttons
+1635 pauze
+
+2225 schemading schrijven
+2245 start
+
+2320 pixelating img
+2330 rerdfdzz
+2350 cleanen
+
+https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas
