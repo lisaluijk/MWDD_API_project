@@ -445,12 +445,14 @@ legend {
   padding: 20px;
 
   /* % is the size relative to the ul/paent */
-  flex: 0 0 40% ;
+  flex: 0 0 40% 40%;
+  aspect-ratio: 1;
 
   scroll-snap-align: center;
 }
 
-/* creating carrousel buttons */
+/* creating carrousel buttons */        
+/* block end voor volledige scroll */
 #recordList::scroll-button(*) {
   border: 0;
   font-size: 2rem;
@@ -535,4 +537,33 @@ li::scroll-marker {
 /* waar de scrollmarker is */
 li::scroll-marker:target-current {
   background-color: black;
+}
+
+
+/* styling for the carrousel effect with the records turning */
+#recordList {
+    transition: all 0.5s ease-out;
+    perspective: 20rem;
+}
+
+#recordList .is-active {
+    /* background: hotpink; */
+    /* color: #6db7ff; */
+     transform: rotateY(0deg) scale(1.2);
+
+}
+
+li {
+    transform-style: preserve-3d;
+        transition: all 0.3s ease-out;
+        
+
+}
+
+.right-of-center {
+         transform: rotateY(-45deg) translateZ(-10rem);
+}
+
+.left-of-center {
+         transform: rotateY(45deg) translateZ(-10rem);
 }

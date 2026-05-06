@@ -61,9 +61,9 @@ for (const record of filtered) {
 			console.log(masterData)*/
 
 			const recordsList = document.querySelector("#recordList");
-			const recordsListItems =
-				document.querySelectorAll("#recordList > *");
-			console.log(recordsListItems);
+			// const recordsListItems =
+			// 	document.querySelectorAll("#recordList > *");
+			// console.log(recordsListItems);
 
 			let displayRecords = records;
 
@@ -137,6 +137,45 @@ for (const record of filtered) {
 
 			// getTrackDuration();
 			// console.log(masterInformation)
+
+			// carrousel code
+			// recordslist is container and recordslistitems are items
+			// source gpt
+
+			const recordsListItems =
+				document.querySelectorAll("#recordList > *");
+			console.log(recordsListItems);
+			
+
+
+			function updateActive() {
+				const center = recordsList.scrollLeft + recordsList.offsetWidth / 2;
+
+				recordsListItems.forEach((item) => {
+					const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+
+					if (Math.abs(center - itemCenter) < item.offsetWidth / 2) {
+						item.classList.add("is-active");
+					} else {
+						item.classList.remove("is-active");
+					}
+					// eigen code
+					if (itemCenter > center) {
+						item.classList.add("right-of-center")
+					} else {
+						item.classList.remove("right-of-center")
+					}
+
+					if (itemCenter < center) {
+						item.classList.add("left-of-center")
+					} else {
+						item.classList.remove("left-of-center")
+					}
+				});
+			}
+
+			updateActive();
+			recordsList.addEventListener("scroll", updateActive);
 		</script>
 	</body>
 </html>

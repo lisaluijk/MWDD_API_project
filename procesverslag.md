@@ -374,6 +374,14 @@ het leifst nog verbeteren en meer toevoegen maar dat gaat hem gewoon niet worden
 1530 verder werken en carrousel jippie -> alles gekopieerd en doorgelezen
 1605pauze
 1610 3d effect trial
+1640 weg bij cafee
+1711 thuis
+1755 starten...
+1800 set up for carrousel animation
+1820 nom noms klaarmaken
+1830 carrousel 3d maken hihihih
+1840 animatie fixen
+1850 heel close maar nu naar bevreidingsfestival lol
 
 
 bronnen:
@@ -381,3 +389,13 @@ bronnen:
 https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Overflow/Carousels
 
 https://developer.mozilla.org/en-US/docs/Web/HTML/How_to/Use_data_attributes
+
+https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollLeft
+
+https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetWidth
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/abs
+
+06/02
+1400 verder met annimatie
+1545 styling result page
