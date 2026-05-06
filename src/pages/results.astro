@@ -1,5 +1,7 @@
 ---
 // @ts-nocheck
+import "../styles/style.css";
+
 export const prerender = false;
 
 const discogsKey = import.meta.env.DISCOG_TOKEN;
@@ -43,7 +45,6 @@ for (const record of filtered) {
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Results</title>
-		<link rel="stylesheet" href="./src/styles/style.css" />
 	</head>
 	<body>
 		<div class="windowBox px-corners-m">
