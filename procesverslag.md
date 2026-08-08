@@ -410,3 +410,16 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 2350 cleanen
 
 https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------
+
+08/08/2026
+----------
+
+12:30 starten aan de herkansing
