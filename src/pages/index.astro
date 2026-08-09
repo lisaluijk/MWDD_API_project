@@ -8,9 +8,6 @@ const response = await fetch(discogsURL);
 const data = await response.json();
 const records = data.releases;
 
-// let displayRecords = records
-
-// console.log(records)
 ---
 
 <html lang="en">
@@ -42,42 +39,9 @@ const records = data.releases;
 			</form>
 		</div>
 
-		<!-- <ul id="recordList"></ul> -->
 
 		<script define:vars={{ records }}>
-			// const recordsList = document.querySelector("#recordList");
-			// const recordsListItems =
-			// 	document.querySelectorAll("#recordList > *");
-			// console.log(recordsListItems);
-
-			// console.log(button);
-			// console.log(filteredRecords);
-			// let displayRecords = records;
-
-			// filterButton.addEventListener("click", () => {
-			// 	const filteredRecords = records.filter((r) =>
-			// 		r.basic_information.genres?.includes("Reggae"),
-			// 	);
-
-			// 	displayRecords = filteredRecords;
-			// 	console.log("test");
-
-			// 	recordsListItems.forEach((listItem) => {
-			// 		listItem.remove();
-			// 	});
-
-			// 	displayRecords.forEach((record) => {
-			// 		const li = document.createElement("li");
-			// 		const img = document.createElement("img");
-			// 		img.src = record.basic_information.cover_image;
-			// 		img.alt = record.basic_information.title;
-
-			// 		li.appendChild(img);
-
-			// 		recordsList.appendChild(li);
-			// 	});
-			// });
-
+			// @ts-nocheck
 			// get filter buttons!!!
 			// get data to browser
 			// const displayRecords = JSON.parse(`{JSON.stringify(records)}`);
@@ -118,35 +82,8 @@ const records = data.releases;
 				buttonContainer.appendChild(checkboxLabel);
 			});
 
-			// filter function
-			// change function name and list
-			// function renderList(selectedGenre) {
-			// 	list.innerHTML = "";
 
-			// 	const filtered = displayRecords.filter((record) =>
-			// 		record.basic_information.genres?.includes(selectedGenre),
-			// 	);
-
-			// 	filtered.forEach((record) => {
-			// 		const li = document.createElement("li");
-
-			// 		const img = document.createElement("img");
-			// 		img.src = record.basic_information.cover_image;
-			// 		img.alt = record.basic_information.title;
-
-			// 		const title = document.createElement("p");
-			// 		title.textContent = record.basic_information.title;
-
-			// 		li.appendChild(img);
-			// 		li.appendChild(title);
-
-			// 		list.appendChild(li);
-			// 	});
-			// }
-
-			//  show all records already
-			// 👉 4. Optional: show all records initially
-			// renderList(genres[0]);
+	
 		</script>
 	</body>
 </html>

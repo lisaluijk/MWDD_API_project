@@ -423,3 +423,22 @@ https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manip
 ----------
 
 12:30 starten aan de herkansing
+1300 ingelezen op de opdracht weer en mijn eigen code doorgenomen
+1330 backgrounds gegenereerd met chat en deze bewerkt tot wat ik wil 
+
+Hoe ging het
+ik heb nog niet mega veel gedaan vandaag maar vooral weer een start gemaakt na de heerlijke vakantie. Ik merk wel dat ik gelijk weer in mijn patronen val van voor de vakantie. Overweldigd raken en daardoor dichtklappen. Maar om mezelf daaruit te halen had ik even pauze genomen en daarna ging ik weer zitten en vroeg ik mezelf af wat is de eerste stap? Toen heb ik ervoor gekozen de achtergrond te regelen omdat dit een fijne instap weer was in het project en me ook echt verder zou helpen om alles er goed uit te laten zien. 
+
+Daarna had ik een verjaardag, maar daar heb ik ook nog een beetje nageacht over hoe ik het aan ging pakken. Ik moet niet maar weer lukraak dingen gaan doen maar echt met intentie werken. En het hoeft ook niet allemaal perfect, ik wil het nu gewoon halen binnen de tijd. Daarvoor moet ik accepteren dat het misschien niet allemaal helemaal gaat hoe ik het precies wil. 
+
+09/08
+------------
+
+1300 starten, gekeken bij klasgenoten wat zij hadden om een idee te krijgen van hoe hoog de lat ligt. Dit ligt heel eerlijk gezegd wat lager dan ik dacht dus dat helpt me zeker. 
+1315 
+1400 crashout over kaulo kut wifi
+1530 weer een nieuwe poigng
+
+
+bronnen:
+https://pixelcorners.lukeb.co.uk/?radius=8&multiplier=4 

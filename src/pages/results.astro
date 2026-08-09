@@ -25,16 +25,6 @@ const filtered = records.filter((record) => {
 	return chosenGenres.some((g) => recordGenres.includes(g));
 });
 
-/*
-const masterData = []
-
-// getting track data
-// filtered.forEach(async (record) => { ... }
-for (const record of filtered) {
-	const masterResponse = await fetch(record.basic_information.master_url);
-	masterData.push(await masterResponse.json());
-}
-*/
 ---
 
 <html lang="en">
@@ -61,16 +51,8 @@ for (const record of filtered) {
 
 		<script define:vars={{ records, url, chosenGenres, time, filtered }}>
 			// @ts-nocheck
-			// const chosenGenres = genres;
-			/*
-			console.log("hier komen masterdata")
-			console.log(masterData)*/
 
 			const recordsList = document.querySelector("#recordList");
-			// const recordsListItems =
-			// 	document.querySelectorAll("#recordList > *");
-			// console.log(recordsListItems);
-
 			let displayRecords = records;
 
 			const list = document.querySelector("#recordList");
@@ -78,18 +60,6 @@ for (const record of filtered) {
 			// aantal platen laten zien omzetten van string naar integer
 			recordAmount = parseInt(time);
 
-			/*
-			if (
-				typeof recordAmount === "string" ||
-				recordAmount instanceof String
-			) {
-				console.log("jup issa stirng jammerdan");
-			} else {
-				console.log(
-					"whoop we kunnen door jippie we could use a win :')",
-				);
-			}
-			*/
 
 			// shuffelen door telkens twee records met elkaar te swappen en een soort deconstruct iets om code lines te besparen.
 			function shuffle(arr) {
