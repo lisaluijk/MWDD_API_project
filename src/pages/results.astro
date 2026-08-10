@@ -164,13 +164,36 @@ const filtered = records.filter((record) => {
 			let ticking = false;
 
 			function updateActive() {
-				const center =
-					recordsList.scrollLeft + recordsList.offsetWidth / 2;
+				const isMobile =
+					window.matchMedia("(max-width: 600px)").matches;
+
+				const listRect = recordsList.getBoundingClientRect();
+
+				let listCenter;
+
+				if (isMobile) {
+					listCenter = listRect.top + listRect.height / 2;
+				} else {
+					listCenter = listRect.left + listRect.width / 2;
+				}
 
 				recordsListItems.forEach((item) => {
-					const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+					const itemRect = item.getBoundingClientRect();
 
-					if (Math.abs(center - itemCenter) < item.offsetWidth / 2) {
+					let itemCenter;
+
+					if (isMobile) {
+						itemCenter = itemRect.top + itemRect.height / 2;
+					} else {
+						itemCenter = itemRect.left + itemRect.width / 2;
+					}
+
+					const distance = Math.abs(listCenter - itemCenter);
+
+					if (
+						distance <
+						(isMobile ? itemRect.height : itemRect.width) / 2
+					) {
 						item.classList.add("is-active");
 					} else {
 						item.classList.remove("is-active");
@@ -179,7 +202,7 @@ const filtered = records.filter((record) => {
 
 				ticking = false;
 			}
-
+			
 			function requestUpdate() {
 				if (!ticking) {
 					requestAnimationFrame(updateActive);
