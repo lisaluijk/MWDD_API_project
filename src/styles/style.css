@@ -3,23 +3,52 @@
    ========================================================================== */
 
 :root {
-    --bg-main: #1a1625;
-    --bg-panel: #f2f2eb;
-    --bg-panel-shadow: #ddd9d4;
-    --bg-panel-highlight: #fdfdfd;
+    /* Base colors */
+    --dark-purple: #1a1625;
+    --light-purple: #a78ee9;
+    --hover-purple: #8a69e4;
+    --dark-purple-shadow: #7044bc;
+    --light-purple-highlight: #d1c0fa;
+    --pink: #ff77c8;
+    /* --blue: #6db7ff; */
 
-    --accent-purple: #a78ee9;
-    --accent-hover-purple: #8a69e4;
-    --shadow-purple: #7044bc;
-    --highlight-purple: #d1c0fa;
-    --accent-pink: #ff77c8;
-    --accent-blue: #6db7ff;
+    --light-panel: #f2f2eb;
+    --panel-shadow: #ddd9d4;
+    --panel-highlight: #fdfdfd;
 
-    --text-main: #302f37;
-    --text-dim: #8272ad;
+    --dark-text: #302f37;
+    --dim-text: #8272ad;
 
-    --border-light: #8272ad;
-    --border-dark: #414047;
+    --light-border: #8272ad;
+    --dark-border: #414047;
+
+    --blue: #6894b7;
+
+    /* Window */
+    --window-background: var(--light-panel);
+    --window-highlight: var(--panel-highlight);
+    --window-shadow: var(--panel-shadow);
+
+    /* Window content */
+    --window-label-background: var(--blue);
+
+    /* Buttons */
+    --button-background: var(--light-purple);
+    --button-hover-background: var(--hover-purple);
+    --button-highlight: var(--light-purple-highlight);
+    --button-shadow: var(--dark-purple-shadow);
+    --button-border: var(--dark-border);
+
+    /* Text */
+    --text-primary: var(--dark-text);
+    --text-secondary: var(--dim-text);
+
+    /* Borders */
+    --border-primary: var(--light-border);
+    --border-secondary: var(--dark-border);
+
+    /* Carousel */
+    --carousel-button-background: var(--dark-purple-shadow);
 }
 
 
@@ -43,7 +72,7 @@ body {
     font-family: monospace;
     font-size: 1rem;
     background-color: var(--bg-color);
-    color: var(--text-main);
+    color: var(--text-primary);
 }
 
 body {
@@ -53,7 +82,7 @@ body {
 }
 
 h1 {
-    color: var(--text-main);
+    color: var(--text-primary);
     font-family: "PressStart2P", monospace, Helvetica, sans-serif;
     font-size: 1.5rem;
 }
@@ -69,26 +98,23 @@ img {
    ========================================================================== */
 
 .windowBox {
-    background-color: var(--bg-panel);
+    background-color: var(--window-background);
+    width: 70%;
 
     background:
-        linear-gradient(
-            180deg,
-            var(--bg-panel-highlight) 0rem,
-            var(--bg-panel-highlight) 0.20rem,
+        linear-gradient(180deg,
+            var(--window-highlight) 0rem,
+            var(--window-highlight) 0.20rem,
             transparent 0.25rem,
             transparent calc(100% - 0.2rem),
-            var(--bg-panel-shadow) calc(100% - 0.25rem)
-        ),
-        linear-gradient(
-            90deg,
-            var(--bg-panel-highlight) 0rem,
-            var(--bg-panel-highlight) 0.20rem,
+            var(--window-shadow) calc(100% - 0.25rem)),
+        linear-gradient(90deg,
+            var(--window-highlight) 0rem,
+            var(--window-highlight) 0.20rem,
             transparent 0.25rem,
             transparent calc(100% - 0.25rem),
-            var(--bg-panel-shadow) calc(100% - 0.25rem)
-        ),
-        var(--bg-panel);
+            var(--window-shadow) calc(100% - 0.25rem)),
+        var(--window-background);
 
     display: flex;
     flex-direction: column;
@@ -97,7 +123,7 @@ img {
 
     & span {
         border: 2px solid pink;
-        background: var(--shadow-purple);
+        background: var(--window-label-background);
         color: white;
         padding: 0.2rem;
     }
@@ -120,48 +146,53 @@ img {
 
 
 /* ==========================================================================
-   MARK: Pixel Corners - Medium
+   MARK: Utility Classes
    ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Pixelated Corners
+   -------------------------------------------------------------------------- */
 
 /*
     Source:
     https://pixelcorners.lukeb.co.uk/?radius=8&multiplier=4
 */
 
+
+/* ----- Pixelated Corners: Medium ----------------------------------------- */
+
 /* px corner m */
 
 .px-corners-m,
 .px-corners-m--wrapper {
-    clip-path: polygon(
-        0px calc(100% - 8px),
-        2px calc(100% - 8px),
-        2px calc(100% - 4px),
-        4px calc(100% - 4px),
-        4px calc(100% - 2px),
-        8px calc(100% - 2px),
-        8px 100%,
-        calc(100% - 8px) 100%,
-        calc(100% - 8px) calc(100% - 2px),
-        calc(100% - 4px) calc(100% - 2px),
-        calc(100% - 4px) calc(100% - 4px),
-        calc(100% - 2px) calc(100% - 4px),
-        calc(100% - 2px) calc(100% - 8px),
-        100% calc(100% - 8px),
-        100% 8px,
-        calc(100% - 2px) 8px,
-        calc(100% - 2px) 4px,
-        calc(100% - 4px) 4px,
-        calc(100% - 4px) 2px,
-        calc(100% - 8px) 2px,
-        calc(100% - 8px) 0px,
-        8px 0px,
-        8px 2px,
-        4px 2px,
-        4px 4px,
-        2px 4px,
-        2px 8px,
-        0px 8px
-    );
+    clip-path: polygon(0px calc(100% - 8px),
+            2px calc(100% - 8px),
+            2px calc(100% - 4px),
+            4px calc(100% - 4px),
+            4px calc(100% - 2px),
+            8px calc(100% - 2px),
+            8px 100%,
+            calc(100% - 8px) 100%,
+            calc(100% - 8px) calc(100% - 2px),
+            calc(100% - 4px) calc(100% - 2px),
+            calc(100% - 4px) calc(100% - 4px),
+            calc(100% - 2px) calc(100% - 4px),
+            calc(100% - 2px) calc(100% - 8px),
+            100% calc(100% - 8px),
+            100% 8px,
+            calc(100% - 2px) 8px,
+            calc(100% - 2px) 4px,
+            calc(100% - 4px) 4px,
+            calc(100% - 4px) 2px,
+            calc(100% - 8px) 2px,
+            calc(100% - 8px) 0px,
+            8px 0px,
+            8px 2px,
+            4px 2px,
+            4px 4px,
+            2px 4px,
+            2px 8px,
+            0px 8px);
 
     position: relative;
 }
@@ -178,28 +209,26 @@ img {
 .px-corners-m--wrapper .px-corners-m {
     display: block;
 
-    clip-path: polygon(
-        2px 8px,
-        4px 8px,
-        4px 4px,
-        8px 4px,
-        8px 2px,
-        calc(100% - 8px) 2px,
-        calc(100% - 8px) 4px,
-        calc(100% - 4px) 4px,
-        calc(100% - 4px) 8px,
-        calc(100% - 2px) 8px,
-        calc(100% - 2px) calc(100% - 8px),
-        calc(100% - 4px) calc(100% - 8px),
-        calc(100% - 4px) calc(100% - 4px),
-        calc(100% - 8px) calc(100% - 4px),
-        calc(100% - 8px) calc(100% - 2px),
-        8px calc(100% - 2px),
-        8px calc(100% - 4px),
-        4px calc(100% - 4px),
-        4px calc(100% - 8px),
-        2px calc(100% - 8px)
-    );
+    clip-path: polygon(2px 8px,
+            4px 8px,
+            4px 4px,
+            8px 4px,
+            8px 2px,
+            calc(100% - 8px) 2px,
+            calc(100% - 8px) 4px,
+            calc(100% - 4px) 4px,
+            calc(100% - 4px) 8px,
+            calc(100% - 2px) 8px,
+            calc(100% - 2px) calc(100% - 8px),
+            calc(100% - 4px) calc(100% - 8px),
+            calc(100% - 4px) calc(100% - 4px),
+            calc(100% - 8px) calc(100% - 4px),
+            calc(100% - 8px) calc(100% - 2px),
+            8px calc(100% - 2px),
+            8px calc(100% - 4px),
+            4px calc(100% - 4px),
+            4px calc(100% - 8px),
+            2px calc(100% - 8px));
 }
 
 .px-corners-m::after,
@@ -207,67 +236,65 @@ img {
     content: "";
     position: absolute;
 
-    clip-path: polygon(
-        0px calc(100% - 8px),
-        2px calc(100% - 8px),
-        2px calc(100% - 4px),
-        4px calc(100% - 4px),
-        4px calc(100% - 2px),
-        8px calc(100% - 2px),
-        8px 100%,
-        calc(100% - 8px) 100%,
-        calc(100% - 8px) calc(100% - 2px),
-        calc(100% - 4px) calc(100% - 2px),
-        calc(100% - 4px) calc(100% - 4px),
-        calc(100% - 2px) calc(100% - 4px),
-        calc(100% - 2px) calc(100% - 8px),
-        100% calc(100% - 8px),
-        100% 8px,
-        calc(100% - 2px) 8px,
-        calc(100% - 2px) 4px,
-        calc(100% - 4px) 4px,
-        calc(100% - 4px) 2px,
-        calc(100% - 8px) 2px,
-        calc(100% - 8px) 0px,
-        8px 0px,
-        8px 2px,
-        4px 2px,
-        4px 4px,
-        2px 4px,
-        2px 8px,
-        0px 8px,
-        0px 50%,
-        2px 50%,
-        2px 8px,
-        4px 8px,
-        4px 4px,
-        8px 4px,
-        8px 2px,
-        calc(100% - 8px) 2px,
-        calc(100% - 8px) 4px,
-        calc(100% - 4px) 4px,
-        calc(100% - 4px) 8px,
-        calc(100% - 2px) 8px,
-        calc(100% - 2px) calc(100% - 8px),
-        calc(100% - 4px) calc(100% - 8px),
-        calc(100% - 4px) calc(100% - 4px),
-        calc(100% - 8px) calc(100% - 4px),
-        calc(100% - 8px) calc(100% - 2px),
-        8px calc(100% - 2px),
-        8px calc(100% - 4px),
-        4px calc(100% - 4px),
-        4px calc(100% - 8px),
-        2px calc(100% - 8px),
-        2px 50%,
-        0px 50%
-    );
+    clip-path: polygon(0px calc(100% - 8px),
+            2px calc(100% - 8px),
+            2px calc(100% - 4px),
+            4px calc(100% - 4px),
+            4px calc(100% - 2px),
+            8px calc(100% - 2px),
+            8px 100%,
+            calc(100% - 8px) 100%,
+            calc(100% - 8px) calc(100% - 2px),
+            calc(100% - 4px) calc(100% - 2px),
+            calc(100% - 4px) calc(100% - 4px),
+            calc(100% - 2px) calc(100% - 4px),
+            calc(100% - 2px) calc(100% - 8px),
+            100% calc(100% - 8px),
+            100% 8px,
+            calc(100% - 2px) 8px,
+            calc(100% - 2px) 4px,
+            calc(100% - 4px) 4px,
+            calc(100% - 4px) 2px,
+            calc(100% - 8px) 2px,
+            calc(100% - 8px) 0px,
+            8px 0px,
+            8px 2px,
+            4px 2px,
+            4px 4px,
+            2px 4px,
+            2px 8px,
+            0px 8px,
+            0px 50%,
+            2px 50%,
+            2px 8px,
+            4px 8px,
+            4px 4px,
+            8px 4px,
+            8px 2px,
+            calc(100% - 8px) 2px,
+            calc(100% - 8px) 4px,
+            calc(100% - 4px) 4px,
+            calc(100% - 4px) 8px,
+            calc(100% - 2px) 8px,
+            calc(100% - 2px) calc(100% - 8px),
+            calc(100% - 4px) calc(100% - 8px),
+            calc(100% - 4px) calc(100% - 4px),
+            calc(100% - 8px) calc(100% - 4px),
+            calc(100% - 8px) calc(100% - 2px),
+            8px calc(100% - 2px),
+            8px calc(100% - 4px),
+            4px calc(100% - 4px),
+            4px calc(100% - 8px),
+            2px calc(100% - 8px),
+            2px 50%,
+            0px 50%);
 
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
 
-    background: var(--border-dark);
+    background: var(--border-secondary);
     display: block;
     pointer-events: none;
 }
@@ -277,28 +304,24 @@ img {
 }
 
 
-/* ==========================================================================
-   MARK: Pixel Corners - Small
-   ========================================================================== */
+/* ----- Pixelated Corners: Small ------------------------------------------ */
 
 /* px corner s */
 
 .px-corners-s,
 .px-corners-s--wrapper {
-    clip-path: polygon(
-        0px calc(100% - 2px),
-        2px calc(100% - 2px),
-        2px 100%,
-        calc(100% - 2px) 100%,
-        calc(100% - 2px) calc(100% - 2px),
-        100% calc(100% - 2px),
-        100% 2px,
-        calc(100% - 2px) 2px,
-        calc(100% - 2px) 0px,
-        2px 0px,
-        2px 2px,
-        0px 2px
-    );
+    clip-path: polygon(0px calc(100% - 2px),
+            2px calc(100% - 2px),
+            2px 100%,
+            calc(100% - 2px) 100%,
+            calc(100% - 2px) calc(100% - 2px),
+            100% calc(100% - 2px),
+            100% 2px,
+            calc(100% - 2px) 2px,
+            calc(100% - 2px) 0px,
+            2px 0px,
+            2px 2px,
+            0px 2px);
 
     position: relative;
 }
@@ -315,12 +338,10 @@ img {
 .px-corners-s--wrapper .px-corners-s {
     display: block;
 
-    clip-path: polygon(
-        2px 2px,
-        calc(100% - 2px) 2px,
-        calc(100% - 2px) calc(100% - 2px),
-        2px calc(100% - 2px)
-    );
+    clip-path: polygon(2px 2px,
+            calc(100% - 2px) 2px,
+            calc(100% - 2px) calc(100% - 2px),
+            2px calc(100% - 2px));
 }
 
 .px-corners-s::after,
@@ -328,35 +349,33 @@ img {
     content: "";
     position: absolute;
 
-    clip-path: polygon(
-        0px calc(100% - 2px),
-        2px calc(100% - 2px),
-        2px 100%,
-        calc(100% - 2px) 100%,
-        calc(100% - 2px) calc(100% - 2px),
-        100% calc(100% - 2px),
-        100% 2px,
-        calc(100% - 2px) 2px,
-        calc(100% - 2px) 0px,
-        2px 0px,
-        2px 2px,
-        0px 2px,
-        0px 50%,
-        2px 50%,
-        2px 2px,
-        calc(100% - 2px) 2px,
-        calc(100% - 2px) calc(100% - 2px),
-        2px calc(100% - 2px),
-        2px 50%,
-        0px 50%
-    );
+    clip-path: polygon(0px calc(100% - 2px),
+            2px calc(100% - 2px),
+            2px 100%,
+            calc(100% - 2px) 100%,
+            calc(100% - 2px) calc(100% - 2px),
+            100% calc(100% - 2px),
+            100% 2px,
+            calc(100% - 2px) 2px,
+            calc(100% - 2px) 0px,
+            2px 0px,
+            2px 2px,
+            0px 2px,
+            0px 50%,
+            2px 50%,
+            2px 2px,
+            calc(100% - 2px) 2px,
+            calc(100% - 2px) calc(100% - 2px),
+            2px calc(100% - 2px),
+            2px 50%,
+            0px 50%);
 
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
 
-    background: var(--border-dark);
+    background: var(--border-secondary);
     display: block;
     pointer-events: none;
 }
@@ -365,6 +384,16 @@ img {
     margin: -2px;
 }
 
+/* ==========================================================================
+   MARK: text
+   ========================================================================== */
+h2 {
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
 
 /* ==========================================================================
    MARK: Buttons
@@ -376,81 +405,69 @@ img {
 */
 
 button {
-    background: var(--accent-purple);
+    background: var(--button-background);
     color: white;
-    border: 2px solid var(--border-dark);
+    border: 2px solid var(--button-border);
     padding: 0.7rem 1rem;
     font-size: 1em;
     cursor: pointer;
 
     box-shadow:
-        inset -2px -2px 0 var(--border-dark);
+        inset -2px -2px 0 var(--button-shadow);
 
     background:
-        linear-gradient(
-            180deg,
-            var(--highlight-purple) 0rem,
-            var(--highlight-purple) 0.20rem,
+        linear-gradient(180deg,
+            var(--button-highlight) 0rem,
+            var(--button-highlight) 0.20rem,
             transparent 0.25rem,
             transparent calc(100% - 0.2rem),
-            var(--shadow-purple) calc(100% - 0.25rem)
-        ),
-        linear-gradient(
-            90deg,
-            var(--highlight-purple) 0rem,
-            var(--highlight-purple) 0.20rem,
+            var(--button-shadow) calc(100% - 0.25rem)),
+        linear-gradient(90deg,
+            var(--button-highlight) 0rem,
+            var(--button-highlight) 0.20rem,
             transparent 0.25rem,
             transparent calc(100% - 0.25rem),
-            var(--shadow-purple) calc(100% - 0.25rem)
-        ),
-        var(--accent-purple);
+            var(--button-shadow) calc(100% - 0.25rem)),
+        var(--button-background);
 
     &:hover {
         background:
-            linear-gradient(
-                180deg,
-                var(--accent-purple) 0rem,
-                var(--accent-purple) 0.20rem,
+            linear-gradient(180deg,
+                var(--button-background) 0rem,
+                var(--button-background) 0.20rem,
                 transparent 0.25rem,
                 transparent calc(100% - 0.2rem),
-                var(--shadow-purple) calc(100% - 0.25rem)
-            ),
-            linear-gradient(
-                90deg,
-                var(--accent-purple) 0rem,
-                var(--accent-purple) 0.20rem,
+                var(--button-shadow) calc(100% - 0.25rem)),
+            linear-gradient(90deg,
+                var(--button-background) 0rem,
+                var(--button-background) 0.20rem,
                 transparent 0.25rem,
                 transparent calc(100% - 0.25rem),
-                var(--shadow-purple) calc(100% - 0.25rem)
-            ),
-            var(--accent-hover-purple);
+                var(--button-shadow) calc(100% - 0.25rem)),
+            var(--button-hover-background);
     }
 }
 
 button:active {
     box-shadow:
-        inset 2px 2px 0 var(--border-dark);
+        inset 2px 2px 0 var(--button-shadow);
 
     transform: translate(2px, 2px);
 
     background:
-        linear-gradient(
-            180deg,
-            var(--shadow-purple) 0rem,
-            var(--shadow-purple) 0.20rem,
+        linear-gradient(180deg,
+            var(--button-shadow) 0rem,
+            var(--button-shadow) 0.20rem,
             transparent 0.25rem,
             transparent calc(100% - 0.2rem),
-            var(--accent-purple) calc(100% - 0.25rem)
-        ),
-        linear-gradient(
-            90deg,
-            var(--shadow-purple) 0rem,
-            var(--shadow-purple) 0.20rem,
+            var(--button-background) calc(100% - 0.25rem)),
+        linear-gradient(90deg,
+            var(--button-shadow) 0rem,
+            var(--button-shadow) 0.20rem,
             transparent 0.25rem,
             transparent calc(100% - 0.25rem),
-            var(--accent-purple) calc(100% - 0.25rem)
-        ),
-        var(--accent-hover-purple);
+            var(--button-background) calc(100% - 0.25rem)),
+        var(--button-hover-background);
 }
 
 
@@ -459,7 +476,7 @@ button:active {
    ========================================================================== */
 
 input {
-    border: 2px solid var(--border-dark);
+    border: 2px solid var(--border-secondary);
     padding: 6px;
     font-family: monospace;
 }
@@ -473,14 +490,14 @@ label:has(input[type="number"]) {
 
     & input {
         width: min-content;
-        border: solid 2px var(--border-light);
+        border: solid 2px var(--border-primary);
         margin: 0.5rem 0.2rem;
     }
 }
 
 label:has(input[type="checkbox"]) {
     padding: 0 0.05rem 0.5rem;
-    color: var(--text-dim);
+    color: var(--text-secondary);
 }
 
 input[type="checkbox"] {
@@ -500,15 +517,16 @@ legend {
 }
 
 
+
 /* ==========================================================================
-   MARK: Record Carousel
-   ========================================================================== */
+MARK: Record Carousel
+========================================================================== */
 
 /*
-    Carousel source:
-    https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Overflow/Carousels
+Carousel source:
+https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Overflow/Carousels
 
-    Source basic voor carrousel afgeleid van deze site.
+Source basic voor carrousel afgeleid van deze site.
 */
 
 /* Styling content box */
@@ -522,59 +540,98 @@ legend {
     align-self: center;
     margin: 2rem;
 
-    /* Width even veranderen naar % zodat het over de parent gaat */
     width: 90%;
-    height: 40vw;
+    height: 350px;
     padding: 2rem 2rem 5rem;
 
     display: flex;
     gap: 4vw;
 
-    /* X is hier dus horizontaal */
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
 
-    /* Positioning with anchor positioning */
-    anchor-name: --my-carousel;
+    scroll-padding-inline: 15%;
+    scroll-behavior: smooth;
 
-    /* Styling for the carousel effect with the records turning */
-    transition: all 0.5s ease-out;
-    perspective: 20rem;
+    anchor-name: --my-carousel;
 }
 
-
 /* ==========================================================================
-   MARK: Carousel Items
-   ========================================================================== */
+MARK: Carousel Items
+========================================================================== */
 
 #recordList li {
     list-style-type: none;
 
-    /* % is the size relative to the ul/parent */
-    flex: 0 0 40% 40%;
-    aspect-ratio: 1;
+    width: 70%;
+    height: 300px;
+    flex-shrink: 0;
 
     scroll-snap-align: center;
 
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 0fr;
+    gap: 2rem;
     align-items: center;
 
-    & img {
-        width: 100%;
-        height: 100%;
-    }
-}
+    overflow: hidden;
 
-li {
-    transform-style: preserve-3d;
-    transition: all 0.3s ease-out;
+    transition:
+        grid-template-columns 0.35s ease;
+
+    & img {
+        width: 300px;
+        height: 300px;
+        aspect-ratio: 1;
+        object-fit: cover;
+
+        justify-self: center;
+
+        transition:
+            width 0.35s ease,
+            height 0.35s ease;
+    }
+
+    & .record-info {
+        min-width: 0;
+        overflow: hidden;
+
+        opacity: 0;
+        pointer-events: none;
+
+        transition:
+            opacity 0.2s ease;
+    }
 }
 
 
 /* ==========================================================================
-   MARK: Carousel Buttons
-   ========================================================================== */
+MARK: Active Carousel Item
+========================================================================== */
+
+#recordList li.is-active {
+    grid-template-columns: 1fr 1fr;
+
+    & img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+        object-fit: cover;
+    }
+
+    & .record-info {
+        opacity: 1;
+        pointer-events: auto;
+
+        transition:
+            opacity 0.2s ease 0.15s;
+    }
+}
+
+
+/* ==========================================================================
+MARK: Carousel Buttons
+========================================================================== */
 
 /* Creating carousel buttons */
 
@@ -582,47 +639,49 @@ li {
     border: 0;
     font-size: 2rem;
     aspect-ratio: 1 / 1;
-    background: var(--shadow-purple);
+    background: var(--carousel-button-background);
     color: white;
     opacity: 0.7;
     cursor: pointer;
 
     /* Block end voor volledige scroll */
 
-    clip-path: polygon(
-        0px calc(100% - 8px),
-        2px calc(100% - 8px),
-        2px calc(100% - 4px),
-        4px calc(100% - 4px),
-        4px calc(100% - 2px),
-        8px calc(100% - 2px),
-        8px 100%,
-        calc(100% - 8px) 100%,
-        calc(100% - 8px) calc(100% - 2px),
-        calc(100% - 4px) calc(100% - 2px),
-        calc(100% - 4px) calc(100% - 4px),
-        calc(100% - 2px) calc(100% - 4px),
-        calc(100% - 2px) calc(100% - 8px),
-        100% calc(100% - 8px),
-        100% 8px,
-        calc(100% - 2px) 8px,
-        calc(100% - 2px) 4px,
-        calc(100% - 4px) 4px,
-        calc(100% - 4px) 2px,
-        calc(100% - 8px) 2px,
-        calc(100% - 8px) 0px,
-        8px 0px,
-        8px 2px,
-        4px 2px,
-        4px 4px,
-        2px 4px,
-        2px 8px,
-        0px 8px
-    );
+    clip-path: polygon(0px calc(100% - 8px),
+            2px calc(100% - 8px),
+            2px calc(100% - 4px),
+            4px calc(100% - 4px),
+            4px calc(100% - 2px),
+            8px calc(100% - 2px),
+            8px 100%,
+            calc(100% - 8px) 100%,
+            calc(100% - 8px) calc(100% - 2px),
+            calc(100% - 4px) calc(100% - 2px),
+            calc(100% - 4px) calc(100% - 4px),
+            calc(100% - 2px) calc(100% - 4px),
+            calc(100% - 2px) calc(100% - 8px),
+            100% calc(100% - 8px),
+            100% 8px,
+            calc(100% - 2px) 8px,
+            calc(100% - 2px) 4px,
+            calc(100% - 4px) 4px,
+            calc(100% - 4px) 2px,
+            calc(100% - 8px) 2px,
+            calc(100% - 8px) 0px,
+            8px 0px,
+            8px 2px,
+            4px 2px,
+            4px 4px,
+            2px 4px,
+            2px 8px,
+            0px 8px);
 
     position: absolute;
     position-anchor: --my-carousel;
 }
+
+/* ==========================================================================
+MARK: Carousel Button States
+========================================================================== */
 
 /* Rounded corners / hover states */
 
@@ -640,10 +699,9 @@ li {
     cursor: unset;
 }
 
-
 /* ==========================================================================
-   MARK: Carousel Button Labels
-   ========================================================================== */
+MARK: Carousel Button Labels
+========================================================================== */
 
 #recordList::scroll-button(left) {
     content: "◄" / "Previous";
@@ -653,10 +711,9 @@ li {
     content: "►" / "Next";
 }
 
-
 /* ==========================================================================
-   MARK: Carousel Button Positioning
-   ========================================================================== */
+MARK: Carousel Button Positioning
+========================================================================== */
 
 /* Positioning with anchor positioning */
 
@@ -669,21 +726,3 @@ li {
     left: calc(anchor(right) - 30%);
     bottom: calc(anchor(bottom) + 1rem);
 }
-
-
-/* ==========================================================================
-   MARK: Carousel Record Rotation
-   ========================================================================== */
-
-#recordList .is-active {
-    transform: rotateY(0deg);
-}
-
-.right-of-center {
-    transform: rotateY(-45deg) translateZ(-10rem);
-}
-
-.left-of-center {
-    transform: rotateY(45deg) translateZ(-10rem);
-}
-

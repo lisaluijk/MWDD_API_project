@@ -24,7 +24,6 @@ const filtered = records.filter((record) => {
 	const recordGenres = record.basic_information.genres || [];
 	return chosenGenres.some((g) => recordGenres.includes(g));
 });
-
 ---
 
 <html lang="en">
@@ -60,7 +59,6 @@ const filtered = records.filter((record) => {
 			// aantal platen laten zien omzetten van string naar integer
 			recordAmount = parseInt(time);
 
-
 			// shuffelen door telkens twee records met elkaar te swappen en een soort deconstruct iets om code lines te besparen.
 			function shuffle(arr) {
 				// ... = spread operator?
@@ -90,15 +88,48 @@ const filtered = records.filter((record) => {
 				img.src = record.basic_information.cover_image;
 				img.alt = record.basic_information.title;
 
-				const title = document.createElement("p");
+				const info = document.createElement("div");
+				info.classList.add("record-info");
+
+				const titleInformation = document.createElement("div");
+				titleInformation.classList.add("title-information");
+
+				const title = document.createElement("h2");
 				title.textContent = record.basic_information.title;
 
+				const artist = document.createElement("p");
+				artist.textContent = record.basic_information.artists
+					?.map((artist) => artist.name)
+					.join(", ");
+
+				const year = document.createElement("p");
+				year.textContent = record.basic_information.year;
+
+				titleInformation.appendChild(title);
+				titleInformation.appendChild(artist);
+				titleInformation.appendChild(year);
+
+				const genreInformation = document.createElement("div");
+				genreInformation.classList.add("genre-information");
+
+				const genres = document.createElement("p");
+				genres.textContent =
+					record.basic_information.genres?.join(", ");
+
+				const genresLabel = document.createElement("strong");
+				genresLabel.textContent = "genres:";
+
+				genreInformation.appendChild(genresLabel);
+				genreInformation.appendChild(genres);
+
+				info.appendChild(titleInformation);
+				info.appendChild(genreInformation);
+
 				li.appendChild(img);
-				li.appendChild(title);
+				li.appendChild(info);
 
 				list.appendChild(li);
 			});
-
 			// console.log(displayRecords);
 
 			// get track duration
@@ -115,12 +146,17 @@ const filtered = records.filter((record) => {
 			// console.log(masterInformation)
 
 			// carrousel code
+
+			// carrousel code
 			// recordslist is container and recordslistitems are items
-			// source gpt
+			//
 
 			const recordsListItems =
 				document.querySelectorAll("#recordList > *");
+
 			console.log(recordsListItems);
+
+			let ticking = false;
 
 			function updateActive() {
 				const center =
@@ -134,23 +170,21 @@ const filtered = records.filter((record) => {
 					} else {
 						item.classList.remove("is-active");
 					}
-					// eigen code
-					if (itemCenter > center) {
-						item.classList.add("right-of-center");
-					} else {
-						item.classList.remove("right-of-center");
-					}
-
-					if (itemCenter < center) {
-						item.classList.add("left-of-center");
-					} else {
-						item.classList.remove("left-of-center");
-					}
 				});
+
+				ticking = false;
+			}
+
+			function requestUpdate() {
+				if (!ticking) {
+					requestAnimationFrame(updateActive);
+					ticking = true;
+				}
 			}
 
 			updateActive();
-			recordsList.addEventListener("scroll", updateActive);
+
+			recordsList.addEventListener("scroll", requestUpdate);
 		</script>
 	</body>
 </html>

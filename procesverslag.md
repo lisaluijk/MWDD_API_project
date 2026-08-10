@@ -438,7 +438,14 @@ Daarna had ik een verjaardag, maar daar heb ik ook nog een beetje nageacht over 
 1315 
 1400 crashout over kaulo kut wifi
 1530 weer een nieuwe poigng
+css cleanen en onderzoek doen naar web api
+1620pauze
+1700 verder omg ik kan exth niet meer
+1710 ik kan dit niet
+het moet gewoon simpeler ofzo
+2040 the sun will rise and we will try again
 
+![alt text](image.png)
 
 bronnen:
 https://pixelcorners.lukeb.co.uk/?radius=8&multiplier=4 

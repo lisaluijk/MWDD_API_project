@@ -20,9 +20,8 @@ const records = data.releases;
 		<title>Your record playlist</title>
 	</head>
 	<body>
-		<p>Hi welcome</p>
 
-		<div class="windowBox px-corners-m">
+		<section class="windowBox px-corners-m">
 			<span class="px-corners-s">playlist_creator.exe</span>
 			<form method="GET" action="/results" class="px-corners-s content">
 				<h1>What do you want to listen to today?</h1>
@@ -37,7 +36,7 @@ const records = data.releases;
 
 				<button type="submit" class="px-corners-m">make me a playlist!</button>
 			</form>
-		</div>
+		</section>
 
 
 		<script define:vars={{ records }}>
