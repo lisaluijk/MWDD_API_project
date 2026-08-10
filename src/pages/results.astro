@@ -125,7 +125,12 @@ const filtered = records.filter((record) => {
 				info.appendChild(titleInformation);
 				info.appendChild(genreInformation);
 
-				li.appendChild(img);
+				const imageContainer = document.createElement("div");
+				imageContainer.classList.add("record-image");
+
+				imageContainer.appendChild(img);
+
+				li.appendChild(imageContainer);
 				li.appendChild(info);
 
 				list.appendChild(li);

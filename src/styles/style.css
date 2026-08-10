@@ -570,37 +570,39 @@ MARK: Carousel Items
     scroll-snap-align: center;
 
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 2rem;
     align-items: center;
 
     overflow: hidden;
 
-    & img {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 1;
-        object-fit: cover;
+    & .record-image {
+        width: 300px;
+        height: 300px;
 
         justify-self: center;
 
-        grid-column: 1 / -1;
-
         transition:
-            width 0.35s ease;
+            width 0.35s ease,
+            height 0.35s ease;
+    }
+
+    & img {
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
     }
 
     & .record-info {
         min-width: 0;
-        overflow: hidden;
-
         opacity: 0;
         pointer-events: none;
 
-        transition:
-            opacity 0.2s ease;
+        transition: opacity 0.2s ease;
     }
 }
+
 
 
 /* ==========================================================================
@@ -609,18 +611,19 @@ MARK: Active Carousel Item
 
 #recordList li.is-active {
 
-    & img {
-        grid-column: 1;
+    & .record-image {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+
+        justify-self: start;
     }
 
     & .record-info {
-        grid-column: 2;
-
         opacity: 1;
         pointer-events: auto;
 
-        transition:
-            opacity 0.2s ease 0.15s;
+        transition: opacity 0.2s ease 0.15s;
     }
 }
 
