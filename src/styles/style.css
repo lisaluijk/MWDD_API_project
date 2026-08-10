@@ -570,26 +570,24 @@ MARK: Carousel Items
     scroll-snap-align: center;
 
     display: grid;
-    grid-template-columns: 1fr 0fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 2rem;
     align-items: center;
 
     overflow: hidden;
 
-    transition:
-        grid-template-columns 0.35s ease;
-
     & img {
-        width: 300px;
-        height: 300px;
+        width: 100%;
+        height: auto;
         aspect-ratio: 1;
         object-fit: cover;
 
         justify-self: center;
 
+        grid-column: 1 / -1;
+
         transition:
-            width 0.35s ease,
-            height 0.35s ease;
+            width 0.35s ease;
     }
 
     & .record-info {
@@ -610,16 +608,14 @@ MARK: Active Carousel Item
 ========================================================================== */
 
 #recordList li.is-active {
-    grid-template-columns: 1fr 1fr;
 
     & img {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 1;
-        object-fit: cover;
+        grid-column: 1;
     }
 
     & .record-info {
+        grid-column: 2;
+
         opacity: 1;
         pointer-events: auto;
 
@@ -627,7 +623,6 @@ MARK: Active Carousel Item
             opacity 0.2s ease 0.15s;
     }
 }
-
 
 /* ==========================================================================
 MARK: Carousel Buttons
