@@ -39,10 +39,9 @@ const filtered = records.filter((record) => {
 		<div class="windowBox px-corners-m">
 			<span class="px-corners-s">your_personal_playlist.mp3</span>
 			<div class="px-corners-s content">
-				<h1>Here is your record playlist:</h1>
+				<h1>Here is your record playlist!</h1>
 
-				<p>Your chosen genres: {chosenGenres}</p>
-				<p>The amount of records you wanted: {time}</p>
+				<p>A personalized playlist of <b>{time}</b> records with at least one of the following genres: <b>{chosenGenres.join(", ")}</b>.</p>
 
 				<ul id="recordList"></ul>
 			</div>
@@ -202,7 +201,7 @@ const filtered = records.filter((record) => {
 
 				ticking = false;
 			}
-			
+
 			function requestUpdate() {
 				if (!ticking) {
 					requestAnimationFrame(updateActive);
