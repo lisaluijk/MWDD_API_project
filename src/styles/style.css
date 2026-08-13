@@ -663,6 +663,8 @@ MARK: Active Carousel Item
     }
 }
 
+
+
 /* ==========================================================================
 MARK: Mobile Record Carousel
 ========================================================================== */
@@ -903,4 +905,22 @@ MARK: Carousel Button Positioning
         display: none;
     }
 
+}
+
+/* visualizer */
+#visualizerBtn.is-active {
+    background:
+        linear-gradient(180deg,
+            var(--button-shadow) 0rem,
+            var(--button-shadow) 0.20rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.2rem),
+            var(--button-background) calc(100% - 0.25rem)),
+        linear-gradient(90deg,
+            var(--button-shadow) 0rem,
+            var(--button-shadow) 0.20rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.25rem),
+            var(--button-background) calc(100% - 0.25rem)),
+        var(--button-hover-background);
 }

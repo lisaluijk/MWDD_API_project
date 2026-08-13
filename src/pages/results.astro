@@ -41,8 +41,23 @@ const filtered = records.filter((record) => {
 			<div class="px-corners-s content">
 				<h1>Here is your record playlist!</h1>
 
-				<p>A personalized playlist of <b>{time}</b> records with at least one of the following genres: <b>{chosenGenres.join(", ")}</b>.</p>
+				<p>
+					A personalized playlist of <b>{time}</b> records with at least
+					one of the following genres: <b>{chosenGenres.join(", ")}</b
+					>.
+				</p>
 
+				<button id="visualizerBtn">♪ open visualizer</button>
+
+				<!-- hidden canvas used to capture the stream for PiP -->
+				<canvas id="visualizerCanvas" style="display:none;"></canvas>
+				<video
+					id="visualizerVideo"
+					style="display:none;"
+					muted
+					playsinline></video>
+
+				<!-- where the records get loaded in -->
 				<ul id="recordList"></ul>
 			</div>
 		</div>
@@ -126,7 +141,7 @@ const filtered = records.filter((record) => {
 
 				const imageContainer = document.createElement("div");
 				imageContainer.classList.add("record-image");
-				imageContainer.classList.add("px-corners-m");
+				imageContainer.classList.add("px-corners-s");
 
 				imageContainer.appendChild(img);
 
@@ -213,6 +228,57 @@ const filtered = records.filter((record) => {
 			updateActive();
 
 			recordsList.addEventListener("scroll", requestUpdate);
+
+			// ==========================================================================
+			// MARK: Visualizer — mic input (Web Audio API)
+			// ==========================================================================
+
+			const visualizerBtn = document.querySelector("#visualizerBtn");
+			const canvas = document.querySelector("#visualizerCanvas");
+			const video = document.querySelector("#visualizerVideo");
+			const ctx = canvas.getContext("2d");
+
+			canvas.width = 480;
+			canvas.height = 270;
+
+			let audioCtx, analyser, source;
+			let isRunning = false;
+
+			async function startMic() {
+				// ask for mic permission and get the audio stream
+				const stream = await navigator.mediaDevices.getUserMedia({
+					audio: true,
+					video: false,
+				});
+
+				// create audio context and analyser
+				audioCtx = new AudioContext();
+				analyser = audioCtx.createAnalyser();
+				analyser.fftSize = 256; // how detailed the frequency data is
+
+				// pipe the mic stream into the analyser
+				source = audioCtx.createMediaStreamSource(stream);
+				source.connect(analyser);
+
+				console.log("Mic connected, analyser ready");
+			}
+
+			visualizerBtn.addEventListener("click", async () => {
+				if (!isRunning) {
+					try {
+						await startMic();
+						isRunning = true;
+						visualizerBtn.textContent = "♪ close visualizer";
+						visualizerBtn.classList.add("is-active");
+					} catch (err) {
+						console.error("Mic error:", err);
+						alert(
+							"Could not access microphone. Please allow microphone access.",
+						);
+					}
+				}
+			});
+			
 		</script>
 	</body>
 </html>
