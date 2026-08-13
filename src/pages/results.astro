@@ -49,7 +49,7 @@ const filtered = records.filter((record) => {
 
 				<button id="visualizerBtn">♪ open visualizer</button>
 
-				<!-- hidden canvas used to capture the stream for PiP -->
+				<!-- one canvas, visible for now -->
 				<canvas id="visualizerCanvas" style="display:none;"></canvas>
 				<video
 					id="visualizerVideo"
@@ -230,7 +230,7 @@ const filtered = records.filter((record) => {
 			recordsList.addEventListener("scroll", requestUpdate);
 
 			// ==========================================================================
-			// MARK: Visualizer — mic input (Web Audio API)
+			// MARK: Visualizer — mic input + canvas drawing (Web Audio API + Canvas API)
 			// ==========================================================================
 
 			const visualizerBtn = document.querySelector("#visualizerBtn");
@@ -241,44 +241,157 @@ const filtered = records.filter((record) => {
 			canvas.width = 480;
 			canvas.height = 270;
 
-			let audioCtx, analyser, source;
+			// 8bit palette — maps low to high amplitude
+			const BAR_COLORS = ["#6894b7", "#a78ee9", "#d1c0fa", "#ff77c8"];
+
+			let audioCtx, analyser, source, animFrameId;
 			let isRunning = false;
 
+			function getBarColor(value) {
+				if (value < 64) return BAR_COLORS[0]; // blue
+				if (value < 128) return BAR_COLORS[1]; // purple
+				if (value < 192) return BAR_COLORS[2]; // light purple
+				return BAR_COLORS[3]; // pink
+			}
+
+			function drawEqualizer(dataArray) {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+				// background
+				ctx.fillStyle = "#1a1625";
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+				// dashed baseline
+				ctx.setLineDash([6, 4]);
+				ctx.strokeStyle = "#414047";
+				ctx.lineWidth = 1;
+				ctx.beginPath();
+				ctx.moveTo(0, canvas.height * 0.75);
+				ctx.lineTo(canvas.width, canvas.height * 0.75);
+				ctx.stroke();
+				ctx.setLineDash([]);
+
+				// bars
+				const barCount = 24;
+				const barWidth = Math.floor(canvas.width / barCount) - 2;
+				const step = Math.floor(
+					analyser.frequencyBinCount / 3 / barCount,
+				);
+				const baseline = canvas.height * 0.75;
+
+				for (let i = 0; i < barCount; i++) {
+					const value = dataArray[i * step];
+
+					// snap to 8px increments for chunky pixel look
+					const rawHeight = (value / 255) * baseline;
+					const barHeight = Math.floor(rawHeight / 8) * 8;
+
+					const x =
+						i * (barWidth + 2) +
+						(canvas.width - barCount * (barWidth + 2)) / 2;
+					const y = baseline - barHeight;
+
+					// draw bar
+					ctx.fillStyle = getBarColor(value);
+					ctx.fillRect(x, y, barWidth, barHeight);
+
+					// horizontal pixel gaps for 8bit look
+					ctx.fillStyle = "#1a1625";
+					for (let seg = 0; seg < barHeight; seg += 8) {
+						ctx.fillRect(x, y + seg, barWidth, 1);
+					}
+				}
+
+				// status label
+				ctx.fillStyle = "#8272ad";
+				ctx.font = "10px monospace";
+				ctx.fillText("♪ listening...", 8, canvas.height - 8);
+			}
+
+			function drawIdle() {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.fillStyle = "#1a1625";
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+				ctx.setLineDash([6, 4]);
+				ctx.strokeStyle = "#414047";
+				ctx.lineWidth = 1;
+				ctx.beginPath();
+				ctx.moveTo(0, canvas.height * 0.75);
+				ctx.lineTo(canvas.width, canvas.height * 0.75);
+				ctx.stroke();
+				ctx.setLineDash([]);
+
+				ctx.fillStyle = "#414047";
+				ctx.font = "10px monospace";
+				ctx.fillText("♪ no signal", 8, canvas.height - 8);
+			}
+
 			async function startMic() {
-				// ask for mic permission and get the audio stream
 				const stream = await navigator.mediaDevices.getUserMedia({
 					audio: true,
 					video: false,
 				});
-
-				// create audio context and analyser
 				audioCtx = new AudioContext();
 				analyser = audioCtx.createAnalyser();
-				analyser.fftSize = 256; // how detailed the frequency data is
+				analyser.fftSize = 256;
 
-				// pipe the mic stream into the analyser
 				source = audioCtx.createMediaStreamSource(stream);
 				source.connect(analyser);
 
-				console.log("Mic connected, analyser ready");
+				const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+				// animation loop
+				function draw() {
+					animFrameId = requestAnimationFrame(draw);
+					analyser.getByteFrequencyData(dataArray);
+					drawEqualizer(dataArray);
+				}
+
+				draw();
+
+				// Picture-in-Picture API — capture canvas as video stream and pop it out
+				const canvasStream = canvas.captureStream(30); // 30fps
+				video.srcObject = canvasStream;
+				await video.play();
+				await video.requestPictureInPicture();
+			}
+
+			function stopVisualizer() {
+				cancelAnimationFrame(animFrameId);
+				if (audioCtx) audioCtx.close();
+				if (document.pictureInPictureElement)
+					document.exitPictureInPicture();
+				drawIdle();
+				isRunning = false;
+				visualizerBtn.textContent = "♪ open visualizer";
+				visualizerBtn.classList.remove("is-active");
 			}
 
 			visualizerBtn.addEventListener("click", async () => {
-				if (!isRunning) {
+				if (isRunning) {
+					stopVisualizer();
+				} else {
 					try {
 						await startMic();
 						isRunning = true;
 						visualizerBtn.textContent = "♪ close visualizer";
 						visualizerBtn.classList.add("is-active");
 					} catch (err) {
-						console.error("Mic error:", err);
+						console.error("Visualizer error:", err);
 						alert(
 							"Could not access microphone. Please allow microphone access.",
 						);
 					}
 				}
 			});
-			
+
+			video.addEventListener("leavepictureinpicture", () => {
+				stopVisualizer();
+			});
+
+			// draw idle state on load
+			drawIdle();
 		</script>
 	</body>
 </html>
