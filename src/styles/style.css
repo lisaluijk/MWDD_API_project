@@ -17,7 +17,7 @@
     --panel-highlight: #fdfdfd;
 
     --dark-text: #302f37;
-    --dim-text: #8272ad;
+    --dim-text: #6e687f;
 
     --light-border: #8272ad;
     --dark-border: #414047;
@@ -105,6 +105,9 @@ h1 {
     color: var(--text-primary);
     font-family: "PressStart2P", monospace, Helvetica, sans-serif;
     font-size: 1.5rem;
+    /* padding: 0; */
+    margin: 0.5rem 0;
+    margin-top: 1rem;
 }
 
 img {
@@ -770,7 +773,7 @@ MARK: Carousel Buttons
 /* Creating carousel buttons */
 
 #recordList::scroll-button(*) {
-    font-size: 2rem;
+    font-size: 1.2rem;
     aspect-ratio: 1 / 1;
     color: white;
     cursor: pointer;
@@ -876,11 +879,11 @@ MARK: Carousel Button Labels
 ========================================================================== */
 
 #recordList::scroll-button(left) {
-    content: "◄" / "Previous";
+    content: "◄◄" / "Previous";
 }
 
 #recordList::scroll-button(right) {
-    content: "►" / "Next";
+    content: "►►" / "Next";
 }
 
 /* ==========================================================================
@@ -890,18 +893,22 @@ MARK: Carousel Button Positioning
 /* Positioning with anchor positioning */
 
 #recordList::scroll-button(left) {
-    right: calc(anchor(left) - 30%);
-    bottom: anchor(bottom);
+    right: calc(anchor(left) - 38%);
+    bottom: calc(anchor(bottom) - 3%);
 }
 
 #recordList::scroll-button(right) {
-    left: calc(anchor(right) - 30%);
-    bottom: anchor(bottom);
+    left: calc(anchor(right) - 38%);
+    bottom: calc(anchor(bottom) - 3%);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1000px) {
 
     #recordList::scroll-button(*) {
+        display: none;
+    }
+
+    #visualizerBtn {
         display: none;
     }
 
@@ -923,4 +930,57 @@ MARK: Carousel Button Positioning
             transparent calc(100% - 0.25rem),
             var(--button-background) calc(100% - 0.25rem)),
         var(--button-hover-background);
+
+    
 }
+
+#visualizerBtn {
+    position: absolute;
+    position-anchor: --my-carousel;
+    left: calc(anchor(right) - 50%);
+    transform: translateX(50%);
+    bottom: calc(anchor(bottom) - 3%);
+    font-size: 1.25rem;
+
+
+    clip-path: polygon(0px calc(100% - 8px),
+            2px calc(100% - 8px),
+            2px calc(100% - 4px),
+            4px calc(100% - 4px),
+            4px calc(100% - 2px),
+            8px calc(100% - 2px),
+            8px 100%,
+            calc(100% - 8px) 100%,
+            calc(100% - 8px) calc(100% - 2px),
+            calc(100% - 4px) calc(100% - 2px),
+            calc(100% - 4px) calc(100% - 4px),
+            calc(100% - 2px) calc(100% - 4px),
+            calc(100% - 2px) calc(100% - 8px),
+            100% calc(100% - 8px),
+            100% 8px,
+            calc(100% - 2px) 8px,
+            calc(100% - 2px) 4px,
+            calc(100% - 4px) 4px,
+            calc(100% - 4px) 2px,
+            calc(100% - 8px) 2px,
+            calc(100% - 8px) 0px,
+            8px 0px,
+            8px 2px,
+            4px 2px,
+            4px 4px,
+            2px 4px,
+            2px 8px,
+            0px 8px);
+
+}
+
+.backLink {
+    width: max-content;
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+
+.backLink:hover {
+    text-decoration: underline;
+}
+

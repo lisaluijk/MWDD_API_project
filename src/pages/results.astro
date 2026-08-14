@@ -39,6 +39,7 @@ const filtered = records.filter((record) => {
 		<div class="windowBox px-corners-m">
 			<span class="px-corners-s">your_personal_playlist.mp3</span>
 			<div class="px-corners-s content">
+				<a href="/" class="backLink">◄ go back</a>
 				<h1>Here is your record playlist!</h1>
 
 				<p>
@@ -47,7 +48,7 @@ const filtered = records.filter((record) => {
 					>.
 				</p>
 
-				<button id="visualizerBtn">♪ open visualizer</button>
+				<button id="visualizerBtn">▶</button>
 
 				<!-- one canvas, visible for now -->
 				<canvas id="visualizerCanvas" style="display:none;"></canvas>
@@ -242,89 +243,164 @@ const filtered = records.filter((record) => {
 			canvas.height = 270;
 
 			// 8bit palette — maps low to high amplitude
-			const BAR_COLORS = ["#6894b7", "#a78ee9", "#d1c0fa", "#ff77c8"];
+			// const BAR_COLORS = ["#6894b7", "#a78ee9", "#d1c0fa", "#ff77c8"];
 
 			let audioCtx, analyser, source, animFrameId;
 			let isRunning = false;
 
-			function getBarColor(value) {
-				if (value < 64) return BAR_COLORS[0]; // blue
-				if (value < 128) return BAR_COLORS[1]; // purple
-				if (value < 192) return BAR_COLORS[2]; // light purple
-				return BAR_COLORS[3]; // pink
+			// function getBarColor(value) {
+			// 	if (value < 64) return BAR_COLORS[0]; // blue
+			// 	if (value < 128) return BAR_COLORS[1]; // purple
+			// 	if (value < 192) return BAR_COLORS[2]; // light purple
+			// 	return BAR_COLORS[3]; // pink
+			// }
+
+			function drawVisualizerWindow() {
+				const padding = 8;
+				const labelHeight = 28;
+				const gap = 5;
+
+				// Main light window background
+				ctx.fillStyle = "#f2f2eb";
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+				// Dark outer border
+				ctx.strokeStyle = "#414047";
+				ctx.lineWidth = 2;
+				ctx.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
+
+				// White top and left highlight
+				ctx.strokeStyle = "#fdfdfd";
+				ctx.beginPath();
+				ctx.moveTo(3, canvas.height - 3);
+				ctx.lineTo(3, 3);
+				ctx.lineTo(canvas.width - 3, 3);
+				ctx.stroke();
+
+				// Grey bottom and right shadow
+				ctx.strokeStyle = "#ddd9d4";
+				ctx.beginPath();
+				ctx.moveTo(canvas.width - 3, 3);
+				ctx.lineTo(canvas.width - 3, canvas.height - 3);
+				ctx.lineTo(3, canvas.height - 3);
+				ctx.stroke();
+
+				// Blue title bar
+				ctx.fillStyle = "#6894b7";
+				ctx.fillRect(
+					padding,
+					padding,
+					canvas.width - padding * 2,
+					labelHeight,
+				);
+
+				// Title-bar border
+				ctx.strokeStyle = "#414047";
+				ctx.lineWidth = 1;
+				ctx.strokeRect(
+					padding,
+					padding,
+					canvas.width - padding * 2,
+					labelHeight,
+				);
+
+				// Title text
+				ctx.fillStyle = "#ffffff";
+				ctx.font = "12px monospace";
+				ctx.fillText("visualizer.exe", padding + 8, padding + 18);
+
+				// Return the area where the equalizer should be drawn
+				return {
+					x: padding,
+					y: padding + labelHeight + gap,
+					width: canvas.width - padding * 2,
+					height: canvas.height - (padding * 2 + labelHeight + gap),
+				};
 			}
 
 			function drawEqualizer(dataArray) {
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				const chart = drawVisualizerWindow();
 
-				// background
-				ctx.fillStyle = "#1a1625";
-				ctx.fillRect(0, 0, canvas.width, canvas.height);
+				// Dark equalizer screen
+				ctx.fillStyle = "#f2f2eb";
+				ctx.fillRect(chart.x, chart.y, chart.width, chart.height);
 
-				// dashed baseline
+				// Dashed baseline
+				const baseline = chart.y + chart.height * 0.75;
+
 				ctx.setLineDash([6, 4]);
 				ctx.strokeStyle = "#414047";
 				ctx.lineWidth = 1;
 				ctx.beginPath();
-				ctx.moveTo(0, canvas.height * 0.75);
-				ctx.lineTo(canvas.width, canvas.height * 0.75);
+				ctx.moveTo(chart.x, baseline);
+				ctx.lineTo(chart.x + chart.width, baseline);
 				ctx.stroke();
 				ctx.setLineDash([]);
 
-				// bars
 				const barCount = 24;
-				const barWidth = Math.floor(canvas.width / barCount) - 2;
+				const barGap = 2;
+				const barWidth = Math.floor(chart.width / barCount) - barGap;
 				const step = Math.floor(
 					analyser.frequencyBinCount / 3 / barCount,
 				);
-				const baseline = canvas.height * 0.75;
 
 				for (let i = 0; i < barCount; i++) {
 					const value = dataArray[i * step];
 
-					// snap to 8px increments for chunky pixel look
-					const rawHeight = (value / 255) * baseline;
+					// Keep the bars chunky by snapping their height to 8px blocks
+					const rawHeight = (value / 255) * (chart.height * 0.7);
 					const barHeight = Math.floor(rawHeight / 8) * 8;
 
-					const x =
-						i * (barWidth + 2) +
-						(canvas.width - barCount * (barWidth + 2)) / 2;
+					const x = chart.x + i * (barWidth + barGap);
 					const y = baseline - barHeight;
 
-					// draw bar
-					ctx.fillStyle = getBarColor(value);
+					// Blue → green → yellow → purple
+					if (value < 64) {
+						ctx.fillStyle = "#6894b7"; // blue
+					} else if (value < 128) {
+						ctx.fillStyle = "#78b89a"; // green
+					} else if (value < 192) {
+						ctx.fillStyle = "#f1cc68"; // yellow
+					} else {
+						ctx.fillStyle = "#a78ee9"; // purple
+					}
+
 					ctx.fillRect(x, y, barWidth, barHeight);
 
-					// horizontal pixel gaps for 8bit look
-					ctx.fillStyle = "#1a1625";
-					for (let seg = 0; seg < barHeight; seg += 8) {
-						ctx.fillRect(x, y + seg, barWidth, 1);
+					// Small horizontal gaps make each bar look pixelated
+					ctx.fillStyle = "#f2f2eb";
+
+					for (let segment = 0; segment < barHeight; segment += 8) {
+						ctx.fillRect(x, y + segment, barWidth, 1);
 					}
 				}
 
-				// status label
-				ctx.fillStyle = "#8272ad";
-				ctx.font = "10px monospace";
-				ctx.fillText("♪ listening...", 8, canvas.height - 8);
 			}
 
 			function drawIdle() {
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				const chart = drawVisualizerWindow();
+
 				ctx.fillStyle = "#1a1625";
-				ctx.fillRect(0, 0, canvas.width, canvas.height);
+				ctx.fillRect(chart.x, chart.y, chart.width, chart.height);
+
+				const baseline = chart.y + chart.height * 0.75;
 
 				ctx.setLineDash([6, 4]);
 				ctx.strokeStyle = "#414047";
 				ctx.lineWidth = 1;
 				ctx.beginPath();
-				ctx.moveTo(0, canvas.height * 0.75);
-				ctx.lineTo(canvas.width, canvas.height * 0.75);
+				ctx.moveTo(chart.x, baseline);
+				ctx.lineTo(chart.x + chart.width, baseline);
 				ctx.stroke();
 				ctx.setLineDash([]);
 
-				ctx.fillStyle = "#414047";
+				ctx.fillStyle = "#8272ad";
 				ctx.font = "10px monospace";
-				ctx.fillText("♪ no signal", 8, canvas.height - 8);
+				ctx.fillText(
+					"♪ no signal",
+					chart.x + 8,
+					chart.y + chart.height - 9,
+				);
 			}
 
 			async function startMic() {
@@ -364,7 +440,7 @@ const filtered = records.filter((record) => {
 					document.exitPictureInPicture();
 				drawIdle();
 				isRunning = false;
-				visualizerBtn.textContent = "♪ open visualizer";
+				visualizerBtn.textContent = "▶";
 				visualizerBtn.classList.remove("is-active");
 			}
 
@@ -375,7 +451,7 @@ const filtered = records.filter((record) => {
 					try {
 						await startMic();
 						isRunning = true;
-						visualizerBtn.textContent = "♪ close visualizer";
+						visualizerBtn.textContent = "⏸";
 						visualizerBtn.classList.add("is-active");
 					} catch (err) {
 						console.error("Visualizer error:", err);
