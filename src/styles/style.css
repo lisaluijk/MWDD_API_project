@@ -17,7 +17,7 @@
     --panel-highlight: #fdfdfd;
 
     --dark-text: #302f37;
-    --dim-text: #8272ad;
+    --dim-text: #6e687f;
 
     --light-border: #8272ad;
     --dark-border: #414047;
@@ -63,11 +63,24 @@
     font-style: normal;
 }
 
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
 
 /* ==========================================================================
    MARK: Base / Page
    ========================================================================== */
 
+
+   
 body {
     font-family: monospace;
     font-size: 1rem;
@@ -79,12 +92,22 @@ body {
     background-image: url("../assets/images/day.png");
     background-size: cover;
     background-position-y: center;
+
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    min-height: 100dvh;
+
 }
 
 h1 {
     color: var(--text-primary);
     font-family: "PressStart2P", monospace, Helvetica, sans-serif;
     font-size: 1.5rem;
+    /* padding: 0; */
+    margin: 0.5rem 0;
+    margin-top: 1rem;
 }
 
 img {
@@ -99,22 +122,30 @@ img {
 
 .windowBox {
     background-color: var(--window-background);
-    width: 70%;
+    margin: 1rem clamp(0.5rem, -2.625rem + 15.625vw, 3rem);
 
-    background:
-        linear-gradient(180deg,
-            var(--window-highlight) 0rem,
-            var(--window-highlight) 0.20rem,
-            transparent 0.25rem,
-            transparent calc(100% - 0.2rem),
-            var(--window-shadow) calc(100% - 0.25rem)),
-        linear-gradient(90deg,
-            var(--window-highlight) 0rem,
-            var(--window-highlight) 0.20rem,
-            transparent 0.25rem,
-            transparent calc(100% - 0.25rem),
-            var(--window-shadow) calc(100% - 0.25rem)),
-        var(--window-background);
+    min-height: unset;
+    height: unset;
+
+     @media (min-width: 1200px) {
+        width: 70%;
+    }
+
+
+
+    background: linear-gradient(180deg,
+        var(--window-highlight) 0rem,
+        var(--window-highlight) 0.20rem,
+        transparent 0.25rem,
+        transparent calc(100% - 0.2rem),
+        var(--window-shadow) calc(100% - 0.25rem)),
+    linear-gradient(90deg,
+        var(--window-highlight) 0rem,
+        var(--window-highlight) 0.20rem,
+        transparent 0.25rem,
+        transparent calc(100% - 0.25rem),
+        var(--window-shadow) calc(100% - 0.25rem)),
+    var(--window-background);
 
     display: flex;
     flex-direction: column;
@@ -129,8 +160,8 @@ img {
     }
 
     & .content {
-        padding: 1rem 2rem;
-        gap: 1rem;
+        padding: 1rem 1.5rem;
+        gap: 0.5rem;
     }
 
     & form {
@@ -540,12 +571,12 @@ Source basic voor carrousel afgeleid van deze site.
     align-self: center;
     margin: 2rem;
 
-    width: 90%;
+    /* width: 90%; */
     height: 350px;
-    padding: 2rem 2rem 5rem;
+    /* padding: 2rem 2rem 5rem; */
 
     display: flex;
-    gap: 4vw;
+    /* gap: 4vw; */
 
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
@@ -554,6 +585,10 @@ Source basic voor carrousel afgeleid van deze site.
     scroll-behavior: smooth;
 
     anchor-name: --my-carousel;
+}
+
+#recordList::-webkit-scrollbar {
+    display: none;
 }
 
 /* ==========================================================================
@@ -601,7 +636,7 @@ MARK: Carousel Items
 
         height: 100%;
         gap: 0.5rem;
-        justify-content: flex-end;
+        justify-content: center;
 
         transition:
             opacity 0.2s ease;
@@ -611,6 +646,7 @@ MARK: Carousel Items
         padding: 1rem 0;
     }
 }
+
 
 
 
@@ -630,25 +666,61 @@ MARK: Active Carousel Item
     }
 }
 
+
+
 /* ==========================================================================
 MARK: Mobile Record Carousel
 ========================================================================== */
-
 @media (max-width: 600px) {
 
-    #recordList {
-        width: 90%;
-        height: 500px;
+    body {
+        min-height: 100dvh;
+    }
 
-        margin: 1rem auto;
-        padding: 2rem 1rem;
+    .windowBox {
+        width: 100%;
+        height: 95dvh;
+        min-height: 0;
+
+        margin: 1rem;
+
+        display: flex;
+        flex-direction: column;
+    }
+
+    .windowBox .content {
+        flex: 1;
+        min-height: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        padding: 1rem;
+        overflow: hidden;
+        border: 2px solid black;
+        padding: 1rem 2rem;
+    }
+
+    h1 {
+        font-size: 1.3rem;
+    }
+
+    /* Carousel */
+    #recordList {
+        flex: 1;
+        min-height: 0;
+
+        height: auto;
+
+        margin: 1rem 0 0;
+        padding: 2rem 0;
 
         flex-direction: column;
 
-        gap: 2rem;
+        gap: 1rem;
 
         overflow-x: hidden;
-        overflow-y: scroll;
+        overflow-y: auto;
 
         scroll-snap-type: y mandatory;
         scroll-padding-block: 35%;
@@ -661,7 +733,6 @@ MARK: Mobile Record Carousel
         flex-shrink: 0;
 
         grid-template-columns: 1fr 0fr;
-
         gap: 1rem;
     }
 
@@ -680,10 +751,19 @@ MARK: Mobile Record Carousel
         min-width: 0;
         overflow: hidden;
 
+        justify-content: center;
+
         opacity: 0;
         pointer-events: none;
     }
 
+    #recordList li .record-info .genre-information {
+        padding: 0;
+    }
+
+    #recordList h2 {
+        font-size: 1.2em;
+    }
 }
 
 /* ==========================================================================
@@ -693,15 +773,29 @@ MARK: Carousel Buttons
 /* Creating carousel buttons */
 
 #recordList::scroll-button(*) {
-    border: 0;
-    font-size: 2rem;
+    font-size: 1.2rem;
     aspect-ratio: 1 / 1;
-    background: var(--carousel-button-background);
     color: white;
-    opacity: 0.7;
     cursor: pointer;
 
-    /* Block end voor volledige scroll */
+    border: 2px solid var(--button-border);
+
+    box-shadow: inset -2px -2px 0 var(--button-shadow);
+
+    background:
+        linear-gradient(180deg,
+            var(--button-highlight) 0rem,
+            var(--button-highlight) 0.20rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.2rem),
+            var(--button-shadow) calc(100% - 0.25rem)),
+        linear-gradient(90deg,
+            var(--button-highlight) 0rem,
+            var(--button-highlight) 0.20rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.25rem),
+            var(--button-shadow) calc(100% - 0.25rem)),
+        var(--button-background);
 
     clip-path: polygon(0px calc(100% - 8px),
             2px calc(100% - 8px),
@@ -732,6 +826,7 @@ MARK: Carousel Buttons
             2px 8px,
             0px 8px);
 
+
     position: absolute;
     position-anchor: --my-carousel;
 }
@@ -742,18 +837,41 @@ MARK: Carousel Button States
 
 /* Rounded corners / hover states */
 
-#recordList::scroll-button(*):hover,
-#recordList::scroll-button(*):focus {
-    opacity: 1;
+#recordList::scroll-button(*):hover {
+    background:
+        linear-gradient(180deg,
+            var(--button-background) 0rem,
+            var(--button-background) 0.20rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.2rem),
+            var(--button-shadow) calc(100% - 0.25rem)),
+        linear-gradient(90deg,
+            var(--button-background) 0rem,
+            var(--button-background) 0.20rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.25rem),
+            var(--button-shadow) calc(100% - 0.25rem)),
+        var(--button-hover-background);
 }
 
 #recordList::scroll-button(*):active {
-    translate: 1px 1px;
-}
+    box-shadow: inset 2px 2px 0 var(--button-shadow);
+    transform: translate(2px, 2px);
 
-#recordList::scroll-button(*):disabled {
-    opacity: 0.2;
-    cursor: unset;
+    background:
+        linear-gradient(180deg,
+            var(--button-shadow) 0rem,
+            var(--button-shadow) 0.20rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.2rem),
+            var(--button-background) calc(100% - 0.25rem)),
+        linear-gradient(90deg,
+            var(--button-shadow) 0rem,
+            var(--button-shadow) 0.20rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.25rem),
+            var(--button-background) calc(100% - 0.25rem)),
+        var(--button-hover-background);
 }
 
 /* ==========================================================================
@@ -761,11 +879,11 @@ MARK: Carousel Button Labels
 ========================================================================== */
 
 #recordList::scroll-button(left) {
-    content: "◄" / "Previous";
+    content: "◄◄" / "Previous";
 }
 
 #recordList::scroll-button(right) {
-    content: "►" / "Next";
+    content: "►►" / "Next";
 }
 
 /* ==========================================================================
@@ -775,19 +893,94 @@ MARK: Carousel Button Positioning
 /* Positioning with anchor positioning */
 
 #recordList::scroll-button(left) {
-    right: calc(anchor(left) - 30%);
-    bottom: calc(anchor(bottom) + 1rem);
+    right: calc(anchor(left) - 38%);
+    bottom: calc(anchor(bottom) - 3%);
 }
 
 #recordList::scroll-button(right) {
-    left: calc(anchor(right) - 30%);
-    bottom: calc(anchor(bottom) + 1rem);
+    left: calc(anchor(right) - 38%);
+    bottom: calc(anchor(bottom) - 3%);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1000px) {
 
     #recordList::scroll-button(*) {
         display: none;
     }
 
+    #visualizerBtn {
+        display: none;
+    }
+
 }
+
+/* visualizer */
+#visualizerBtn.is-active {
+    background:
+        linear-gradient(180deg,
+            var(--button-shadow) 0rem,
+            var(--button-shadow) 0.20rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.2rem),
+            var(--button-background) calc(100% - 0.25rem)),
+        linear-gradient(90deg,
+            var(--button-shadow) 0rem,
+            var(--button-shadow) 0.20rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.25rem),
+            var(--button-background) calc(100% - 0.25rem)),
+        var(--button-hover-background);
+
+    
+}
+
+#visualizerBtn {
+    position: absolute;
+    position-anchor: --my-carousel;
+    left: calc(anchor(right) - 50%);
+    transform: translateX(50%);
+    bottom: calc(anchor(bottom) - 3%);
+    font-size: 1.25rem;
+
+
+    clip-path: polygon(0px calc(100% - 8px),
+            2px calc(100% - 8px),
+            2px calc(100% - 4px),
+            4px calc(100% - 4px),
+            4px calc(100% - 2px),
+            8px calc(100% - 2px),
+            8px 100%,
+            calc(100% - 8px) 100%,
+            calc(100% - 8px) calc(100% - 2px),
+            calc(100% - 4px) calc(100% - 2px),
+            calc(100% - 4px) calc(100% - 4px),
+            calc(100% - 2px) calc(100% - 4px),
+            calc(100% - 2px) calc(100% - 8px),
+            100% calc(100% - 8px),
+            100% 8px,
+            calc(100% - 2px) 8px,
+            calc(100% - 2px) 4px,
+            calc(100% - 4px) 4px,
+            calc(100% - 4px) 2px,
+            calc(100% - 8px) 2px,
+            calc(100% - 8px) 0px,
+            8px 0px,
+            8px 2px,
+            4px 2px,
+            4px 4px,
+            2px 4px,
+            2px 8px,
+            0px 8px);
+
+}
+
+.backLink {
+    width: max-content;
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+
+.backLink:hover {
+    text-decoration: underline;
+}
+

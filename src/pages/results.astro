@@ -39,11 +39,26 @@ const filtered = records.filter((record) => {
 		<div class="windowBox px-corners-m">
 			<span class="px-corners-s">your_personal_playlist.mp3</span>
 			<div class="px-corners-s content">
-				<h1>Here is your record playlist:</h1>
+				<a href="/" class="backLink">◄ go back</a>
+				<h1>Here is your record playlist!</h1>
 
-				<p>Your chosen genres: {chosenGenres}</p>
-				<p>The amount of records you wanted: {time}</p>
+				<p>
+					A personalized playlist of <b>{time}</b> records with at least
+					one of the following genres: <b>{chosenGenres.join(", ")}</b
+					>.
+				</p>
 
+				<button id="visualizerBtn">▶</button>
+
+				<!-- one canvas, visible for now -->
+				<canvas id="visualizerCanvas" style="display:none;"></canvas>
+				<video
+					id="visualizerVideo"
+					style="display:none;"
+					muted
+					playsinline></video>
+
+				<!-- where the records get loaded in -->
 				<ul id="recordList"></ul>
 			</div>
 		</div>
@@ -127,6 +142,7 @@ const filtered = records.filter((record) => {
 
 				const imageContainer = document.createElement("div");
 				imageContainer.classList.add("record-image");
+				imageContainer.classList.add("px-corners-s");
 
 				imageContainer.appendChild(img);
 
@@ -202,7 +218,7 @@ const filtered = records.filter((record) => {
 
 				ticking = false;
 			}
-			
+
 			function requestUpdate() {
 				if (!ticking) {
 					requestAnimationFrame(updateActive);
@@ -213,6 +229,245 @@ const filtered = records.filter((record) => {
 			updateActive();
 
 			recordsList.addEventListener("scroll", requestUpdate);
+
+			// ==========================================================================
+			// MARK: Visualizer — mic input + canvas drawing (Web Audio API + Canvas API)
+			// ==========================================================================
+
+			const visualizerBtn = document.querySelector("#visualizerBtn");
+			const canvas = document.querySelector("#visualizerCanvas");
+			const video = document.querySelector("#visualizerVideo");
+			const ctx = canvas.getContext("2d");
+
+			canvas.width = 480;
+			canvas.height = 270;
+
+			// 8bit palette — maps low to high amplitude
+			// const BAR_COLORS = ["#6894b7", "#a78ee9", "#d1c0fa", "#ff77c8"];
+
+			let audioCtx, analyser, source, animFrameId;
+			let isRunning = false;
+
+			// function getBarColor(value) {
+			// 	if (value < 64) return BAR_COLORS[0]; // blue
+			// 	if (value < 128) return BAR_COLORS[1]; // purple
+			// 	if (value < 192) return BAR_COLORS[2]; // light purple
+			// 	return BAR_COLORS[3]; // pink
+			// }
+
+			function drawVisualizerWindow() {
+				const padding = 8;
+				const labelHeight = 28;
+				const gap = 5;
+
+				// Main light window background
+				ctx.fillStyle = "#f2f2eb";
+				ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+				// Dark outer border
+				ctx.strokeStyle = "#414047";
+				ctx.lineWidth = 2;
+				ctx.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
+
+				// White top and left highlight
+				ctx.strokeStyle = "#fdfdfd";
+				ctx.beginPath();
+				ctx.moveTo(3, canvas.height - 3);
+				ctx.lineTo(3, 3);
+				ctx.lineTo(canvas.width - 3, 3);
+				ctx.stroke();
+
+				// Grey bottom and right shadow
+				ctx.strokeStyle = "#ddd9d4";
+				ctx.beginPath();
+				ctx.moveTo(canvas.width - 3, 3);
+				ctx.lineTo(canvas.width - 3, canvas.height - 3);
+				ctx.lineTo(3, canvas.height - 3);
+				ctx.stroke();
+
+				// Blue title bar
+				ctx.fillStyle = "#6894b7";
+				ctx.fillRect(
+					padding,
+					padding,
+					canvas.width - padding * 2,
+					labelHeight,
+				);
+
+				// Title-bar border
+				ctx.strokeStyle = "#414047";
+				ctx.lineWidth = 1;
+				ctx.strokeRect(
+					padding,
+					padding,
+					canvas.width - padding * 2,
+					labelHeight,
+				);
+
+				// Title text
+				ctx.fillStyle = "#ffffff";
+				ctx.font = "12px monospace";
+				ctx.fillText("visualizer.exe", padding + 8, padding + 18);
+
+				// Return the area where the equalizer should be drawn
+				return {
+					x: padding,
+					y: padding + labelHeight + gap,
+					width: canvas.width - padding * 2,
+					height: canvas.height - (padding * 2 + labelHeight + gap),
+				};
+			}
+
+			function drawEqualizer(dataArray) {
+				const chart = drawVisualizerWindow();
+
+				// Dark equalizer screen
+				ctx.fillStyle = "#f2f2eb";
+				ctx.fillRect(chart.x, chart.y, chart.width, chart.height);
+
+				// Dashed baseline
+				const baseline = chart.y + chart.height * 0.75;
+
+				ctx.setLineDash([6, 4]);
+				ctx.strokeStyle = "#414047";
+				ctx.lineWidth = 1;
+				ctx.beginPath();
+				ctx.moveTo(chart.x, baseline);
+				ctx.lineTo(chart.x + chart.width, baseline);
+				ctx.stroke();
+				ctx.setLineDash([]);
+
+				const barCount = 24;
+				const barGap = 2;
+				const barWidth = Math.floor(chart.width / barCount) - barGap;
+				const step = Math.floor(
+					analyser.frequencyBinCount / 3 / barCount,
+				);
+
+				for (let i = 0; i < barCount; i++) {
+					const value = dataArray[i * step];
+
+					// Keep the bars chunky by snapping their height to 8px blocks
+					const rawHeight = (value / 255) * (chart.height * 0.7);
+					const barHeight = Math.floor(rawHeight / 8) * 8;
+
+					const x = chart.x + i * (barWidth + barGap);
+					const y = baseline - barHeight;
+
+					// Blue → green → yellow → purple
+					if (value < 64) {
+						ctx.fillStyle = "#6894b7"; // blue
+					} else if (value < 128) {
+						ctx.fillStyle = "#78b89a"; // green
+					} else if (value < 192) {
+						ctx.fillStyle = "#f1cc68"; // yellow
+					} else {
+						ctx.fillStyle = "#a78ee9"; // purple
+					}
+
+					ctx.fillRect(x, y, barWidth, barHeight);
+
+					// Small horizontal gaps make each bar look pixelated
+					ctx.fillStyle = "#f2f2eb";
+
+					for (let segment = 0; segment < barHeight; segment += 8) {
+						ctx.fillRect(x, y + segment, barWidth, 1);
+					}
+				}
+
+			}
+
+			function drawIdle() {
+				const chart = drawVisualizerWindow();
+
+				ctx.fillStyle = "#1a1625";
+				ctx.fillRect(chart.x, chart.y, chart.width, chart.height);
+
+				const baseline = chart.y + chart.height * 0.75;
+
+				ctx.setLineDash([6, 4]);
+				ctx.strokeStyle = "#414047";
+				ctx.lineWidth = 1;
+				ctx.beginPath();
+				ctx.moveTo(chart.x, baseline);
+				ctx.lineTo(chart.x + chart.width, baseline);
+				ctx.stroke();
+				ctx.setLineDash([]);
+
+				ctx.fillStyle = "#8272ad";
+				ctx.font = "10px monospace";
+				ctx.fillText(
+					"♪ no signal",
+					chart.x + 8,
+					chart.y + chart.height - 9,
+				);
+			}
+
+			async function startMic() {
+				const stream = await navigator.mediaDevices.getUserMedia({
+					audio: true,
+					video: false,
+				});
+				audioCtx = new AudioContext();
+				analyser = audioCtx.createAnalyser();
+				analyser.fftSize = 256;
+
+				source = audioCtx.createMediaStreamSource(stream);
+				source.connect(analyser);
+
+				const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+				// animation loop
+				function draw() {
+					animFrameId = requestAnimationFrame(draw);
+					analyser.getByteFrequencyData(dataArray);
+					drawEqualizer(dataArray);
+				}
+
+				draw();
+
+				// Picture-in-Picture API — capture canvas as video stream and pop it out
+				const canvasStream = canvas.captureStream(30); // 30fps
+				video.srcObject = canvasStream;
+				await video.play();
+				await video.requestPictureInPicture();
+			}
+
+			function stopVisualizer() {
+				cancelAnimationFrame(animFrameId);
+				if (audioCtx) audioCtx.close();
+				if (document.pictureInPictureElement)
+					document.exitPictureInPicture();
+				drawIdle();
+				isRunning = false;
+				visualizerBtn.textContent = "▶";
+				visualizerBtn.classList.remove("is-active");
+			}
+
+			visualizerBtn.addEventListener("click", async () => {
+				if (isRunning) {
+					stopVisualizer();
+				} else {
+					try {
+						await startMic();
+						isRunning = true;
+						visualizerBtn.textContent = "⏸";
+						visualizerBtn.classList.add("is-active");
+					} catch (err) {
+						console.error("Visualizer error:", err);
+						alert(
+							"Could not access microphone. Please allow microphone access.",
+						);
+					}
+				}
+			});
+
+			video.addEventListener("leavepictureinpicture", () => {
+				stopVisualizer();
+			});
+
+			// draw idle state on load
+			drawIdle();
 		</script>
 	</body>
 </html>
