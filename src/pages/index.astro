@@ -1,13 +1,43 @@
 ---
+// @ts-nocheck
+
 import "../styles/style.css";
 
-const discogsKey = import.meta.env.DISCOG_TOKEN;
+// Discogs API 
+const discogsToken = import.meta.env.DISCOG_TOKEN;
 const userName = "lisa_luijk";
-const discogsURL = `https://api.discogs.com/users/${userName}/collection/folders/0/releases?token=${discogsKey}&per_page=100&sort=artist`;
-const response = await fetch(discogsURL);
-const data = await response.json();
-const records = data.releases;
 
+// url query
+const discogsUrl =
+	`https://api.discogs.com/users/${userName}/collection/folders/0/releases` +
+	`?token=${discogsToken}&per_page=100&sort=artist`;
+
+// Get my Discogs collection.
+const response = await fetch(discogsUrl);
+
+// Error if the request went wrong
+// source: chatGPT
+if (!response.ok) {
+	throw new Error(
+		`Could not load the Discogs collection. Status: ${response.status}`,
+	);
+}
+
+// store the data I need in variables
+const data = await response.json();
+const records = data.releases ?? [];
+
+// Get every genre from the collection, remove duplicates, then sort A–Z.
+// flatMap combines the genres of all records into one array and removes duplicates.
+// source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap
+// source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+const genres = [
+	...new Set(
+		records.flatMap((record) => {
+			return record.basic_information.genres ?? [];
+		}),
+	),
+].sort();
 ---
 
 <html lang="en">
@@ -19,68 +49,53 @@ const records = data.releases;
 		<meta name="generator" content={Astro.generator} />
 		<title>Your record playlist</title>
 	</head>
-	<body>
 
+	<body>
 		<section class="windowBox px-corners-m">
 			<span class="px-corners-s">playlist_creator.exe</span>
+
+			<!--GET sends the selected values to the resultspage so I can use them there-->
 			<form method="GET" action="/results" class="px-corners-s content">
 				<h1>What do you want to listen to today?</h1>
-				<label for="amountTime">
+
+				<label for="recordsAmount">
 					How many records do you want to play?
-					<input id="amountTime" type="number" name="listenTime" class="px-corners-s"/>
+
+					<input
+						id="recordsAmount"
+						name="listenTime"
+						type="number"
+						min="1"
+						max={records.length}
+						required
+						class="px-corners-s"
+					/>
 				</label>
 
 				<fieldset id="genreButtons">
 					<legend>What genre(s) do you want to listen to?</legend>
+
+					<!-- I use the data array I requested server side to make chackboxes with all the genres my records have -->
+					{
+						genres.map((genre) => (
+							<label>
+								<input
+									type="checkbox"
+									name="genres"
+									value={genre}
+									class="px-corners-s"
+								/>
+								{genre}
+							</label>
+						))
+					}
+
 				</fieldset>
 
-				<button type="submit" class="px-corners-m">make me a playlist!</button>
+				<button type="submit" class="px-corners-m">
+					make me a playlist!
+				</button>
 			</form>
 		</section>
-
-
-		<script define:vars={{ records }}>
-			// @ts-nocheck
-			
-			const displayRecords = records;
-
-			console.log(displayRecords);
-
-			// change buttoncontainer to fieldset
-			const buttonContainer = document.querySelector("#genreButtons");
-			// const list = document.querySelector("#recordList");
-
-			// get genres
-			const genres = [
-				...new Set(
-					displayRecords.flatMap(
-						(record) => record.basic_information.genres || [],
-					),
-				),
-			];
-
-			// create filter buttons
-			genres.forEach((genre) => {
-				// source https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
-				const checkbox = document.createElement("input");
-				checkbox.type = "checkbox";
-				checkbox.name = "genres";
-				checkbox.value = genre;
-				checkbox.classList.add("px-corners-s");
-
-				const checkboxLabel = document.createElement("label");
-				checkboxLabel.textContent = genre;
-
-				// checkbox.addEventListener("click", () => {
-				// 	renderList(genre);
-				// });
-
-				checkboxLabel.appendChild(checkbox);
-				buttonContainer.appendChild(checkboxLabel);
-			});
-
-
-	
-		</script>
 	</body>
 </html>
