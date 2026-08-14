@@ -2,27 +2,47 @@
 // @ts-nocheck
 import "../styles/style.css";
 
+// to make sure the page only loads when the user requests it (I need the url parameters)
 export const prerender = false;
 
-const discogsKey = import.meta.env.DISCOG_TOKEN;
+// --------------------------------------------------------------------------
+// Discogs: load my collection
+// --------------------------------------------------------------------------
+
+const discogsToken = import.meta.env.DISCOG_TOKEN;
 const userName = "lisa_luijk";
-const discogsURL = `https://api.discogs.com/users/${userName}/collection/folders/0/releases?token=${discogsKey}&per_page=100&sort=artist`;
-const response = await fetch(discogsURL);
+
+const discogsUrl =
+	`https://api.discogs.com/users/${userName}/collection/folders/0/releases` +
+	`?token=${discogsToken}&per_page=100&sort=artist`;
+
+const response = await fetch(discogsUrl);
+
+// Error if the request went wrong
+// source: chatGPT
+if (!response.ok) {
+	throw new Error(
+		`Could not load the Discogs collection. Status: ${response.status}`,
+	);
+}
+
+// Storing the data I need into variables
 const data = await response.json();
-const records = data.releases;
+const records = data.releases ?? [];
 
-// source gpt
+// --------------------------------------------------------------------------
+// Get the URL parameters from the form on the index page
+// --------------------------------------------------------------------------
 const url = Astro.url;
-// const url = document.url;
-
-// get data from url
 const chosenGenres = url.searchParams.getAll("genres");
-const time = url.searchParams.get("listenTime");
+const requestedAmount = url.searchParams.get("listenTime");
 
-// filtering on genres
-const filtered = records.filter((record) => {
-	const recordGenres = record.basic_information.genres || [];
-	return chosenGenres.some((g) => recordGenres.includes(g));
+// Keep records that have at least one selected genre.
+// source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+const filteredRecords = records.filter((record) => {
+	const recordGenres = record.basic_information.genres ?? [];
+
+	return chosenGenres.some((genre) => recordGenres.includes(genre));
 });
 ---
 
@@ -33,283 +53,295 @@ const filtered = records.filter((record) => {
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Results</title>
+		<title>Your personal playlist</title>
 	</head>
+
 	<body>
 		<div class="windowBox px-corners-m">
 			<span class="px-corners-s">your_personal_playlist.mp3</span>
+
 			<div class="px-corners-s content">
-				<a href="/" class="backLink">◄ go back</a>
+				<a href="/" class="backLink">◄ go back </a>
+
 				<h1>Here is your record playlist!</h1>
 
 				<p>
-					A personalized playlist of <b>{time}</b> records with at least
-					one of the following genres: <b>{chosenGenres.join(", ")}</b
-					>.
+					A personalized playlist of <b>{requestedAmount}</b> records with
+					at least one of the following genres:
+					<b>{chosenGenres.join(", ")}</b>.
 				</p>
 
-				<button id="visualizerBtn">▶</button>
+				<!-- Opens and closes the audio visualizer. -->
+				<button id="visualizerBtn" aria-label="Open visualizer"
+					>▶</button
+				>
 
-				<!-- one canvas, visible for now -->
-				<canvas id="visualizerCanvas" style="display:none;"></canvas>
+				<!--The "canvas equalizer" is captured as a video stream for the picture in picture box. 
+				Because pip does not support canvas and  the newer document pip is not supported in
+				most browsers.-->
+				<!-- Source: chatGPT helped me with finding away around that by having the canvas recorded 
+				 as a video and have that in my pip -->
+				<canvas id="visualizerCanvas" style="display: none;"></canvas>
+
 				<video
 					id="visualizerVideo"
-					style="display:none;"
+					style="display: none;"
 					muted
-					playsinline></video>
+					playsinline
+				>
+				</video>
 
-				<!-- where the records get loaded in -->
+				<!-- Playlist records are added here with JavaScript. -->
 				<ul id="recordList"></ul>
 			</div>
 		</div>
 
-		<script define:vars={{ records, url, chosenGenres, time, filtered }}>
+		<!-- I "import" the variables I made serverside to clientside -->
+		<script define:vars={{ filteredRecords, requestedAmount }}>
 			// @ts-nocheck
 
-			const recordsList = document.querySelector("#recordList");
-			let displayRecords = records;
+			// ==========================================================================
+			// MARK: Playlist generation
+			// ==========================================================================
 
-			const list = document.querySelector("#recordList");
+			const recordList = document.querySelector("#recordList");
 
-			// aantal platen laten zien omzetten van string naar integer
-			recordAmount = parseInt(time);
+			// Convert the value from the URL from string into a number.
+			// If it is missing or invalid, it falls back to zero records.
+			const recordAmount = Number.parseInt(requestedAmount, 10) || 0;
 
-			// shuffelen door telkens twee records met elkaar te swappen en een soort deconstruct iets om code lines te besparen.
-			function shuffle(arr) {
-				// ... = spread operator?
-				// used to make a copy otherwise you are referencing to the same array with different variables
-				const copy = [...arr];
+			//  Returns a shuffled copy of an array. (You swap every record with a random record)
+			//  ... = The original filteredRecords array remains unchanged.
+			function shuffleRecords(records) {
+				const shuffled = [...records];
 
-				// ga door de array heen en wissel telkens een record met een andere record
-				for (let i = copy.length - 1; i > 0; i--) {
-					const j = Math.floor(Math.random() * (i + 1));
+				for (let index = shuffled.length - 1; index > 0; index--) {
+					const randomIndex = Math.floor(Math.random() * (index + 1));
 
-					// array destructuring assignment(?) basically scheelt lines of code omdat je het kan swappen terwijl het wel op elkaar berust zeg maar, beetje de css vibes met dat swappen
-					[copy[i], copy[j]] = [copy[j], copy[i]];
+					// array destructuring assignment: you "swap" the two values
+					// source: chat gpt
+					[shuffled[index], shuffled[randomIndex]] = [
+						shuffled[randomIndex],
+						shuffled[index],
+					];
 				}
 
-				return copy;
+				return shuffled;
 			}
 
-			const shuffledRecords = shuffle(filtered);
-			console.log(shuffledRecords);
+			// Shuffle matching records and only keep the requested amount.
+			const selectedRecords = shuffleRecords(filteredRecords).slice(
+				0,
+				recordAmount,
+			);
 
-			const selectedRecords = shuffledRecords.slice(0, recordAmount);
+			//  function to create a record card for the carousel.
+			function createRecordCard(record) {
+				const information = record.basic_information;
 
-			selectedRecords.forEach((record) => {
-				const li = document.createElement("li");
+				const listItem = document.createElement("li");
 
-				const img = document.createElement("img");
-				img.src = record.basic_information.cover_image;
-				img.alt = record.basic_information.title;
+				// Record cover
+				const imageContainer = document.createElement("div");
+				imageContainer.classList.add("record-image", "px-corners-s");
 
-				const info = document.createElement("div");
-				info.classList.add("record-info");
+				const image = document.createElement("img");
+				image.src = information.cover_image;
+				image.alt = `Cover of ${information.title}`;
+				image.loading = "lazy";
 
+				imageContainer.appendChild(image);
+
+				// Record information
+				const recordInfo = document.createElement("div");
+				recordInfo.classList.add("record-info");
+
+				// title
 				const titleInformation = document.createElement("div");
 				titleInformation.classList.add("title-information");
 
 				const title = document.createElement("h2");
-				title.textContent = record.basic_information.title;
+				title.textContent = information.title;
 
-				const artist = document.createElement("p");
-				artist.textContent = record.basic_information.artists
-					?.map((artist) => artist.name)
-					.join(", ");
+				const artists = document.createElement("p");
+				artists.textContent =
+					information.artists
+						?.map((artist) => artist.name)
+						.join(", ") ?? "Unknown artist";
 
 				const year = document.createElement("p");
-				year.textContent = record.basic_information.year;
+				year.textContent = information.year || "Unknown year";
 
-				titleInformation.appendChild(title);
-				titleInformation.appendChild(artist);
-				titleInformation.appendChild(year);
+				titleInformation.append(title, artists, year);
 
+				// genres
 				const genreInformation = document.createElement("div");
 				genreInformation.classList.add("genre-information");
 
+				const genreLabel = document.createElement("strong");
+				genreLabel.textContent = "genres:";
+
 				const genres = document.createElement("p");
 				genres.textContent =
-					record.basic_information.genres?.join(", ");
+					information.genres?.join(", ") ?? "Unknown";
 
-				const genresLabel = document.createElement("strong");
-				genresLabel.textContent = "genres:";
+				genreInformation.append(genreLabel, genres);
+				recordInfo.append(titleInformation, genreInformation);
 
-				genreInformation.appendChild(genresLabel);
-				genreInformation.appendChild(genres);
+				// full item
+				listItem.append(imageContainer, recordInfo);
 
-				info.appendChild(titleInformation);
-				info.appendChild(genreInformation);
+				return listItem;
+			}
 
-				const imageContainer = document.createElement("div");
-				imageContainer.classList.add("record-image");
-				imageContainer.classList.add("px-corners-s");
-
-				imageContainer.appendChild(img);
-
-				li.appendChild(imageContainer);
-				li.appendChild(info);
-
-				list.appendChild(li);
+			// Add all selected records to the page.
+			selectedRecords.forEach((record) => {
+				recordList.appendChild(createRecordCard(record));
 			});
-			// console.log(displayRecords);
 
-			// get track duration
-			// const masterURL = record.basic_information.master_url;
-			// console.log(masterURL);
+			// ==========================================================================
+			// MARK: Carousel active item
+			// ==========================================================================
 
-			// async function getTrackDuration() {
-			// 	const masterResponse = await fetch(masterURL);
-			// 	const masterData = await masterResponse.json();
-			// 	const masterInformation = masterData.releases;
-			// }
+			const recordListItems =
+				document.querySelectorAll("#recordList > li");
+			let isWaitingForAnimationFrame = false;
 
-			// getTrackDuration();
-			// console.log(masterInformation)
+			// Gives the item closest to the center the active class
+			function updateActiveRecord() {
+				const isMobile = window.matchMedia("(max-width: 600px)").matches;
+				const listBounds = recordList.getBoundingClientRect();
 
-			// carrousel code
-
-			// carrousel code
-			// recordslist is container and recordslistitems are items
-			//
-
-			const recordsListItems =
-				document.querySelectorAll("#recordList > *");
-
-			console.log(recordsListItems);
-
-			let ticking = false;
-
-			function updateActive() {
-				const isMobile =
-					window.matchMedia("(max-width: 600px)").matches;
-
-				const listRect = recordsList.getBoundingClientRect();
-
-				let listCenter;
+				let listCentre;
 
 				if (isMobile) {
-					listCenter = listRect.top + listRect.height / 2;
+					// On mobile, the carousel scrolls vertically.
+					listCentre = listBounds.top + listBounds.height / 2;
 				} else {
-					listCenter = listRect.left + listRect.width / 2;
+					// On desktop, the carousel scrolls horizontally.
+					listCentre = listBounds.left + listBounds.width / 2;
 				}
 
-				recordsListItems.forEach((item) => {
-					const itemRect = item.getBoundingClientRect();
+				recordListItems.forEach((item) => {
+					const itemBounds = item.getBoundingClientRect();
 
-					let itemCenter;
+					let itemCentre;
 
 					if (isMobile) {
-						itemCenter = itemRect.top + itemRect.height / 2;
+						itemCentre = itemBounds.top + itemBounds.height / 2;
 					} else {
-						itemCenter = itemRect.left + itemRect.width / 2;
+						itemCentre = itemBounds.left + itemBounds.width / 2;
 					}
 
-					const distance = Math.abs(listCenter - itemCenter);
+					const distanceToCentre = Math.abs(listCentre - itemCentre);
 
-					if (
-						distance <
-						(isMobile ? itemRect.height : itemRect.width) / 2
-					) {
+					let activeDistance;
+
+					if (isMobile) {
+						activeDistance = itemBounds.height / 2;
+					} else {
+						activeDistance = itemBounds.width / 2;
+					}
+
+					// if the item is close to the center it gets the is-active class
+					// I use the class to animate the record info
+					if (distanceToCentre < activeDistance) {
 						item.classList.add("is-active");
 					} else {
 						item.classList.remove("is-active");
 					}
 				});
 
-				ticking = false;
+				isWaitingForAnimationFrame = false;
 			}
 
-			function requestUpdate() {
-				if (!ticking) {
-					requestAnimationFrame(updateActive);
-					ticking = true;
-				}
+			// requestAnimationFrame prevents updateActiveRecord from running
+			// too often while the user scrolls.
+			// source: chatGPT (I asked to make the carrousel smoother)
+			function requestActiveRecordUpdate() {
+				if (isWaitingForAnimationFrame) return;
+
+				requestAnimationFrame(updateActiveRecord);
+				isWaitingForAnimationFrame = true;
 			}
 
-			updateActive();
-
-			recordsList.addEventListener("scroll", requestUpdate);
+			updateActiveRecord();
+			recordList.addEventListener("scroll", requestActiveRecordUpdate);
 
 			// ==========================================================================
-			// MARK: Visualizer — mic input + canvas drawing (Web Audio API + Canvas API)
+			// MARK: audio visualizer
 			// ==========================================================================
 
-			const visualizerBtn = document.querySelector("#visualizerBtn");
+			const visualizerButton = document.querySelector("#visualizerBtn");
 			const canvas = document.querySelector("#visualizerCanvas");
 			const video = document.querySelector("#visualizerVideo");
-			const ctx = canvas.getContext("2d");
+			const context = canvas.getContext("2d");
 
+			// The internal canvas size determines the PiP video resolution.
 			canvas.width = 480;
 			canvas.height = 270;
 
-			// 8bit palette — maps low to high amplitude
-			// const BAR_COLORS = ["#6894b7", "#a78ee9", "#d1c0fa", "#ff77c8"];
+			let audioContext;
+			let analyser;
+			let microphoneStream;
+			let animationFrameId;
+			let isVisualizerRunning = false;
 
-			let audioCtx, analyser, source, animFrameId;
-			let isRunning = false;
-
-			// function getBarColor(value) {
-			// 	if (value < 64) return BAR_COLORS[0]; // blue
-			// 	if (value < 128) return BAR_COLORS[1]; // purple
-			// 	if (value < 192) return BAR_COLORS[2]; // light purple
-			// 	return BAR_COLORS[3]; // pink
-			// }
-
+			// Source: chat gpt
+			// I could not style the window with css so I had ai draw me the styling in canvas
+			// In document pip I could but it is not aviable for most browsers
 			function drawVisualizerWindow() {
 				const padding = 8;
 				const labelHeight = 28;
 				const gap = 5;
 
-				// Main light window background
-				ctx.fillStyle = "#f2f2eb";
-				ctx.fillRect(0, 0, canvas.width, canvas.height);
+				// Window background and border
+				context.fillStyle = "#f2f2eb";
+				context.fillRect(0, 0, canvas.width, canvas.height);
 
-				// Dark outer border
-				ctx.strokeStyle = "#414047";
-				ctx.lineWidth = 2;
-				ctx.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
+				context.strokeStyle = "#414047";
+				context.lineWidth = 2;
+				context.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
 
-				// White top and left highlight
-				ctx.strokeStyle = "#fdfdfd";
-				ctx.beginPath();
-				ctx.moveTo(3, canvas.height - 3);
-				ctx.lineTo(3, 3);
-				ctx.lineTo(canvas.width - 3, 3);
-				ctx.stroke();
+				// Highlight: top and left
+				context.strokeStyle = "#fdfdfd";
+				context.beginPath();
+				context.moveTo(3, canvas.height - 3);
+				context.lineTo(3, 3);
+				context.lineTo(canvas.width - 3, 3);
+				context.stroke();
 
-				// Grey bottom and right shadow
-				ctx.strokeStyle = "#ddd9d4";
-				ctx.beginPath();
-				ctx.moveTo(canvas.width - 3, 3);
-				ctx.lineTo(canvas.width - 3, canvas.height - 3);
-				ctx.lineTo(3, canvas.height - 3);
-				ctx.stroke();
+				// Shadow: bottom and right
+				context.strokeStyle = "#ddd9d4";
+				context.beginPath();
+				context.moveTo(canvas.width - 3, 3);
+				context.lineTo(canvas.width - 3, canvas.height - 3);
+				context.lineTo(3, canvas.height - 3);
+				context.stroke();
 
-				// Blue title bar
-				ctx.fillStyle = "#6894b7";
-				ctx.fillRect(
+				// Blue application label
+				context.fillStyle = "#6894b7";
+				context.fillRect(
 					padding,
 					padding,
 					canvas.width - padding * 2,
 					labelHeight,
 				);
 
-				// Title-bar border
-				ctx.strokeStyle = "#414047";
-				ctx.lineWidth = 1;
-				ctx.strokeRect(
+				context.strokeStyle = "#414047";
+				context.lineWidth = 1;
+				context.strokeRect(
 					padding,
 					padding,
 					canvas.width - padding * 2,
 					labelHeight,
 				);
 
-				// Title text
-				ctx.fillStyle = "#ffffff";
-				ctx.font = "12px monospace";
-				ctx.fillText("visualizer.exe", padding + 8, padding + 18);
+				context.fillStyle = "#ffffff";
+				context.font = "12px monospace";
+				context.fillText("visualizer.exe", padding + 8, padding + 18);
 
-				// Return the area where the equalizer should be drawn
+				// How much "window" is left for the equalizer
 				return {
 					x: padding,
 					y: padding + labelHeight + gap,
@@ -318,156 +350,193 @@ const filtered = records.filter((record) => {
 				};
 			}
 
-			function drawEqualizer(dataArray) {
+			// Drawing the equalizer bars
+			function drawEqualizer(audioData) {
 				const chart = drawVisualizerWindow();
 
-				// Dark equalizer screen
-				ctx.fillStyle = "#f2f2eb";
-				ctx.fillRect(chart.x, chart.y, chart.width, chart.height);
+				context.fillStyle = "#f2f2eb";
+				context.fillRect(chart.x, chart.y, chart.width, chart.height);
 
-				// Dashed baseline
 				const baseline = chart.y + chart.height * 0.75;
 
-				ctx.setLineDash([6, 4]);
-				ctx.strokeStyle = "#414047";
-				ctx.lineWidth = 1;
-				ctx.beginPath();
-				ctx.moveTo(chart.x, baseline);
-				ctx.lineTo(chart.x + chart.width, baseline);
-				ctx.stroke();
-				ctx.setLineDash([]);
+				// Dashed horizontal line behind the bars.
+				context.setLineDash([6, 4]);
+				context.strokeStyle = "#414047";
+				context.lineWidth = 1;
+				context.beginPath();
+				context.moveTo(chart.x, baseline);
+				context.lineTo(chart.x + chart.width, baseline);
+				context.stroke();
+				context.setLineDash([]);
 
 				const barCount = 24;
 				const barGap = 2;
 				const barWidth = Math.floor(chart.width / barCount) - barGap;
-				const step = Math.floor(
+				const frequencyStep = Math.floor(
 					analyser.frequencyBinCount / 3 / barCount,
 				);
 
-				for (let i = 0; i < barCount; i++) {
-					const value = dataArray[i * step];
+				for (let index = 0; index < barCount; index++) {
+					const value = audioData[index * frequencyStep];
 
-					// Keep the bars chunky by snapping their height to 8px blocks
+					// Snap heights to 8px steps for the pixel-art effect.
 					const rawHeight = (value / 255) * (chart.height * 0.7);
 					const barHeight = Math.floor(rawHeight / 8) * 8;
 
-					const x = chart.x + i * (barWidth + barGap);
+					const x = chart.x + index * (barWidth + barGap);
 					const y = baseline - barHeight;
 
-					// Blue → green → yellow → purple
+					// Bar colour changes based on the sound level.
 					if (value < 64) {
-						ctx.fillStyle = "#6894b7"; // blue
+						context.fillStyle = "#6894b7"; // blue
 					} else if (value < 128) {
-						ctx.fillStyle = "#78b89a"; // green
+						context.fillStyle = "#78b89a"; // green
 					} else if (value < 192) {
-						ctx.fillStyle = "#f1cc68"; // yellow
+						context.fillStyle = "#f1cc68"; // yellow
 					} else {
-						ctx.fillStyle = "#a78ee9"; // purple
+						context.fillStyle = "#a78ee9"; // purple
 					}
 
-					ctx.fillRect(x, y, barWidth, barHeight);
+					context.fillRect(x, y, barWidth, barHeight);
 
-					// Small horizontal gaps make each bar look pixelated
-					ctx.fillStyle = "#f2f2eb";
+					// One-pixel gaps create separated pixel blocks.
+					context.fillStyle = "#f2f2eb";
 
 					for (let segment = 0; segment < barHeight; segment += 8) {
-						ctx.fillRect(x, y + segment, barWidth, 1);
+						context.fillRect(x, y + segment, barWidth, 1);
 					}
 				}
-
 			}
 
-			function drawIdle() {
+			/**
+			 * Draws the visualizer before microphone input begins.
+			 */
+			function drawIdleVisualizer() {
 				const chart = drawVisualizerWindow();
 
-				ctx.fillStyle = "#1a1625";
-				ctx.fillRect(chart.x, chart.y, chart.width, chart.height);
+				context.fillStyle = "#1a1625";
+				context.fillRect(chart.x, chart.y, chart.width, chart.height);
 
 				const baseline = chart.y + chart.height * 0.75;
 
-				ctx.setLineDash([6, 4]);
-				ctx.strokeStyle = "#414047";
-				ctx.lineWidth = 1;
-				ctx.beginPath();
-				ctx.moveTo(chart.x, baseline);
-				ctx.lineTo(chart.x + chart.width, baseline);
-				ctx.stroke();
-				ctx.setLineDash([]);
+				context.setLineDash([6, 4]);
+				context.strokeStyle = "#414047";
+				context.lineWidth = 1;
+				context.beginPath();
+				context.moveTo(chart.x, baseline);
+				context.lineTo(chart.x + chart.width, baseline);
+				context.stroke();
+				context.setLineDash([]);
 
-				ctx.fillStyle = "#8272ad";
-				ctx.font = "10px monospace";
-				ctx.fillText(
+				context.fillStyle = "#8272ad";
+				context.font = "10px monospace";
+				context.fillText(
 					"♪ no signal",
 					chart.x + 8,
 					chart.y + chart.height - 9,
 				);
 			}
 
-			async function startMic() {
-				const stream = await navigator.mediaDevices.getUserMedia({
+			/**
+			 * Requests microphone permission, starts analysing audio,
+			 * and opens the canvas inside a Picture-in-Picture window.
+			 */
+			async function startVisualizer() {
+				microphoneStream = await navigator.mediaDevices.getUserMedia({
 					audio: true,
 					video: false,
 				});
-				audioCtx = new AudioContext();
-				analyser = audioCtx.createAnalyser();
+
+				audioContext = new AudioContext();
+				analyser = audioContext.createAnalyser();
 				analyser.fftSize = 256;
 
-				source = audioCtx.createMediaStreamSource(stream);
-				source.connect(analyser);
+				const microphoneSource =
+					audioContext.createMediaStreamSource(microphoneStream);
 
-				const dataArray = new Uint8Array(analyser.frequencyBinCount);
+				microphoneSource.connect(analyser);
 
-				// animation loop
-				function draw() {
-					animFrameId = requestAnimationFrame(draw);
-					analyser.getByteFrequencyData(dataArray);
-					drawEqualizer(dataArray);
+				const audioData = new Uint8Array(analyser.frequencyBinCount);
+
+				function drawFrame() {
+					animationFrameId = requestAnimationFrame(drawFrame);
+
+					analyser.getByteFrequencyData(audioData);
+					drawEqualizer(audioData);
 				}
 
-				draw();
+				drawFrame();
 
-				// Picture-in-Picture API — capture canvas as video stream and pop it out
-				const canvasStream = canvas.captureStream(30); // 30fps
+				// Turn the canvas drawing into a video stream for native PiP.
+				const canvasStream = canvas.captureStream(30);
+
 				video.srcObject = canvasStream;
 				await video.play();
 				await video.requestPictureInPicture();
 			}
 
+			/**
+			 * Stops animation, microphone access and Picture-in-Picture.
+			 */
 			function stopVisualizer() {
-				cancelAnimationFrame(animFrameId);
-				if (audioCtx) audioCtx.close();
-				if (document.pictureInPictureElement)
+				cancelAnimationFrame(animationFrameId);
+
+				// Stop the actual microphone track, so the browser no longer
+				// displays that the page is using the microphone.
+				microphoneStream?.getTracks().forEach((track) => track.stop());
+				microphoneStream = null;
+
+				audioContext?.close();
+				audioContext = null;
+
+				// Only exit PiP if it is currently open.
+				if (document.pictureInPictureElement) {
 					document.exitPictureInPicture();
-				drawIdle();
-				isRunning = false;
-				visualizerBtn.textContent = "▶";
-				visualizerBtn.classList.remove("is-active");
+				}
+
+				drawIdleVisualizer();
+
+				isVisualizerRunning = false;
+				visualizerButton.textContent = "▶";
+				visualizerButton.setAttribute("aria-label", "Open visualizer");
+				visualizerButton.classList.remove("is-active");
 			}
 
-			visualizerBtn.addEventListener("click", async () => {
-				if (isRunning) {
+			visualizerButton.addEventListener("click", async () => {
+				if (isVisualizerRunning) {
 					stopVisualizer();
-				} else {
-					try {
-						await startMic();
-						isRunning = true;
-						visualizerBtn.textContent = "⏸";
-						visualizerBtn.classList.add("is-active");
-					} catch (err) {
-						console.error("Visualizer error:", err);
-						alert(
-							"Could not access microphone. Please allow microphone access.",
-						);
-					}
+					return;
+				}
+
+				try {
+					await startVisualizer();
+
+					isVisualizerRunning = true;
+					visualizerButton.textContent = "⏸";
+					visualizerButton.setAttribute(
+						"aria-label",
+						"Close visualizer",
+					);
+					visualizerButton.classList.add("is-active");
+				} catch (error) {
+					console.error("Visualizer error:", error);
+
+					alert(
+						"Could not access the microphone. Please allow microphone access.",
+					);
+
+					stopVisualizer();
 				}
 			});
 
+			// Also stop mic access when the user closes the native PiP window.
 			video.addEventListener("leavepictureinpicture", () => {
-				stopVisualizer();
+				if (isVisualizerRunning) {
+					stopVisualizer();
+				}
 			});
 
-			// draw idle state on load
-			drawIdle();
+			drawIdleVisualizer();
 		</script>
 	</body>
 </html>
