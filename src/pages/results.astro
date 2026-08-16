@@ -1,6 +1,8 @@
 ---
 // @ts-nocheck
-import "../styles/style.css";
+
+import "../styles/general.css";
+import "../styles/results.css";
 
 // to make sure the page only loads when the user requests it (I need the url parameters)
 export const prerender = false;
@@ -145,12 +147,26 @@ const filteredRecords = records.filter((record) => {
 				const imageContainer = document.createElement("div");
 				imageContainer.classList.add("record-image", "px-corners-s");
 
-				const image = document.createElement("img");
-				image.src = information.cover_image;
-				image.alt = `Cover of ${information.title}`;
-				image.loading = "lazy";
+				const coverImage = information.cover_image;
 
-				imageContainer.appendChild(image);
+				// if there is no cove image a simple record gets "drawn" with css in place
+				if (coverImage) {
+					const image = document.createElement("img");
+					image.src = coverImage;
+					image.alt = `Cover of ${information.title}`;
+					image.loading = "lazy";
+
+					imageContainer.appendChild(image);
+				} else {
+					const recordPlaceholder = document.createElement("div");
+					recordPlaceholder.classList.add("record-placeholder");
+
+					const recordTitle = document.createElement("span");
+					recordTitle.textContent = information.title;
+
+					recordPlaceholder.appendChild(recordTitle);
+					imageContainer.appendChild(recordPlaceholder);
+				}
 
 				// Record information
 				const recordInfo = document.createElement("div");
@@ -207,18 +223,55 @@ const filteredRecords = records.filter((record) => {
 				document.querySelectorAll("#recordList > li");
 			let isWaitingForAnimationFrame = false;
 
-			// Gives the item closest to the center the active class
+			// Gives the item closest to the carousel centre the "is-active" class.
 			function updateActiveRecord() {
-				const isMobile = window.matchMedia("(max-width: 600px)").matches;
-				const listBounds = recordList.getBoundingClientRect();
+				const isMobile =
+					window.matchMedia("(max-width: 600px)").matches;
 
+				/*
+				source: chatGPT
+				On mobile, the first and final records cannot naturally reach the
+				vertical centre without adding visible empty space.
+
+				Instead, make the first record active at the top and the final
+				record active at the bottom of the list.
+				*/
+				if (isMobile) {
+					const isAtStart = recordList.scrollTop <= 1;
+
+					const isAtEnd =
+						Math.ceil(
+							recordList.scrollTop + recordList.clientHeight,
+						) >= recordList.scrollHeight;
+
+					if (isAtStart) {
+						recordListItems.forEach((item, index) => {
+							item.classList.toggle("is-active", index === 0);
+						});
+
+						isWaitingForAnimationFrame = false;
+						return;
+					}
+
+					if (isAtEnd) {
+						recordListItems.forEach((item, index) => {
+							const isLastItem =
+								index === recordListItems.length - 1;
+
+							item.classList.toggle("is-active", isLastItem);
+						});
+
+						isWaitingForAnimationFrame = false;
+						return;
+					}
+				}
+
+				const listBounds = recordList.getBoundingClientRect();
 				let listCentre;
 
 				if (isMobile) {
-					// On mobile, the carousel scrolls vertically.
 					listCentre = listBounds.top + listBounds.height / 2;
 				} else {
-					// On desktop, the carousel scrolls horizontally.
 					listCentre = listBounds.left + listBounds.width / 2;
 				}
 
@@ -226,43 +279,37 @@ const filteredRecords = records.filter((record) => {
 					const itemBounds = item.getBoundingClientRect();
 
 					let itemCentre;
-
-					if (isMobile) {
-						itemCentre = itemBounds.top + itemBounds.height / 2;
-					} else {
-						itemCentre = itemBounds.left + itemBounds.width / 2;
-					}
-
-					const distanceToCentre = Math.abs(listCentre - itemCentre);
-
 					let activeDistance;
 
 					if (isMobile) {
+						itemCentre = itemBounds.top + itemBounds.height / 2;
 						activeDistance = itemBounds.height / 2;
 					} else {
+						itemCentre = itemBounds.left + itemBounds.width / 2;
 						activeDistance = itemBounds.width / 2;
 					}
 
-					// if the item is close to the center it gets the is-active class
-					// I use the class to animate the record info
-					if (distanceToCentre < activeDistance) {
-						item.classList.add("is-active");
-					} else {
-						item.classList.remove("is-active");
-					}
+					const distanceToCentre = Math.abs(listCentre - itemCentre);
+					const isActive = distanceToCentre < activeDistance;
+
+					item.classList.toggle("is-active", isActive);
 				});
 
 				isWaitingForAnimationFrame = false;
 			}
 
-			// requestAnimationFrame prevents updateActiveRecord from running
-			// too often while the user scrolls.
-			// source: chatGPT (I asked to make the carrousel smoother)
+			/*
+			source: chatGPT (asked to make the scrolling smoother)
+			Only one update is scheduled per animation frame while the user scrolls.
+			This avoids unnecessarily running the function many times per frame.
+			*/
 			function requestActiveRecordUpdate() {
-				if (isWaitingForAnimationFrame) return;
+				if (isWaitingForAnimationFrame) {
+					return;
+				}
 
-				requestAnimationFrame(updateActiveRecord);
 				isWaitingForAnimationFrame = true;
+				requestAnimationFrame(updateActiveRecord);
 			}
 
 			updateActiveRecord();

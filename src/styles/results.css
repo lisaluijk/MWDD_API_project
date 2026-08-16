@@ -1,0 +1,346 @@
+/* ========================================================================== 
+   MARK: Results page 
+   ========================================================================== */
+
+/* ========================================================================== 
+   MARK: go back link
+   ========================================================================== */
+.backLink {
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+
+.backLink:hover {
+    text-decoration: underline;
+}
+
+/* ========================================================================== 
+   MARK: Results page — record carousel
+   ========================================================================== */
+
+/* Carousel
+   Source: https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Overflow/Carousels */
+#recordList {
+    align-self: center;
+    display: flex;
+    margin: 2rem;
+    padding-bottom: 3rem;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 15%;
+    scroll-behavior: smooth;
+    anchor-name: --my-carousel;
+}
+
+#recordList::-webkit-scrollbar {
+    display: none;
+}
+
+/* A record starts with only its album cover visible. */
+#recordList li {
+    display: grid;
+    grid-template-columns: 1fr 0fr;
+    flex-shrink: 0;
+    gap: 2rem;
+    align-items: center;
+    width: 60%;
+    height: clamp(15rem, 25vw, 18.75rem);    
+    overflow: hidden;
+    list-style-type: none;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    transition: 0.4s ease;
+}
+
+#recordList li img {
+    display: block;
+    justify-self: center;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    transition: 0.4s ease;
+}
+
+/* Fallback for if there is no album image*/
+.record-placeholder {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        var(--record-hole) 0 3%,
+        var(--record-label) 3.5% 28%,
+        var(--record-vinyl) 28.5% 100%
+    );
+}
+
+/* source: https://css-tricks.com/snippets/svg/curved-text-along-path/ */
+.record-placeholder span {
+    display: block;
+    width: 40%;
+    overflow: hidden;
+    color: var(--window-background);
+    font-size: clamp(0.55rem, 1vw, 0.8rem);
+    line-height: 1.3;
+    text-align: center;
+    transform: translateY(-15px);
+    text-overflow: ellipsis;
+}
+
+#recordList li .record-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    height: 100%;
+    gap: 0.5rem;
+    justify-content: center;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s ease;
+}
+
+#recordList li .record-info .genre-information {
+    padding: 1rem 0;
+}
+
+/* When the record is centered */
+#recordList li.is-active {
+    grid-template-columns: 1fr 1fr;
+}
+
+#recordList li.is-active .record-info {
+    opacity: 1;
+    transition: opacity 0.2s ease 0.15s;
+}
+
+/* ========================================================================== 
+   MARK: carousel buttons
+   ========================================================================== */
+
+#recordList::scroll-button(*) {
+    position: absolute;
+    position-anchor: --my-carousel;
+    aspect-ratio: 1 / 1;
+    border: 2px solid var(--button-border);
+    background:
+        linear-gradient(
+            180deg,
+            var(--button-highlight) 0rem,
+            var(--button-highlight) 0.2rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.2rem),
+            var(--button-shadow) calc(100% - 0.25rem)
+        ),
+        linear-gradient(
+            90deg,
+            var(--button-highlight) 0rem,
+            var(--button-highlight) 0.2rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.25rem),
+            var(--button-shadow) calc(100% - 0.25rem)
+        ),
+        var(--button-background);
+    box-shadow: inset -2px -2px 0 var(--button-shadow);
+    clip-path: polygon(
+        0px calc(100% - 8px),
+        2px calc(100% - 8px),
+        2px calc(100% - 4px),
+        4px calc(100% - 4px),
+        4px calc(100% - 2px),
+        8px calc(100% - 2px),
+        8px 100%,
+        calc(100% - 8px) 100%,
+        calc(100% - 8px) calc(100% - 2px),
+        calc(100% - 4px) calc(100% - 2px),
+        calc(100% - 4px) calc(100% - 4px),
+        calc(100% - 2px) calc(100% - 4px),
+        calc(100% - 2px) calc(100% - 8px),
+        100% calc(100% - 8px),
+        100% 8px,
+        calc(100% - 2px) 8px,
+        calc(100% - 2px) 4px,
+        calc(100% - 4px) 4px,
+        calc(100% - 4px) 2px,
+        calc(100% - 8px) 2px,
+        calc(100% - 8px) 0px,
+        8px 0px,
+        8px 2px,
+        4px 2px,
+        4px 4px,
+        2px 4px,
+        2px 8px,
+        0px 8px
+    );
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+#recordList::scroll-button(*):hover {
+    background:
+        linear-gradient(
+            180deg,
+            var(--button-background) 0rem,
+            var(--button-background) 0.2rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.2rem),
+            var(--button-shadow) calc(100% - 0.25rem)
+        ),
+        linear-gradient(
+            90deg,
+            var(--button-background) 0rem,
+            var(--button-background) 0.2rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.25rem),
+            var(--button-shadow) calc(100% - 0.25rem)
+        ),
+        var(--button-hover-background);
+}
+
+#recordList::scroll-button(*):active {
+    transform: translate(2px, 2px);
+    background:
+        linear-gradient(
+            180deg,
+            var(--button-shadow) 0rem,
+            var(--button-shadow) 0.2rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.2rem),
+            var(--button-background) calc(100% - 0.25rem)
+        ),
+        linear-gradient(
+            90deg,
+            var(--button-shadow) 0rem,
+            var(--button-shadow) 0.2rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.25rem),
+            var(--button-background) calc(100% - 0.25rem)
+        ),
+        var(--button-hover-background);
+    box-shadow: inset 2px 2px 0 var(--button-shadow);
+}
+
+#recordList::scroll-button(left) {
+    right: calc(anchor(left) - 38%);
+    bottom: calc(anchor(bottom) - 3%);
+    content: "◄◄" / "Previous";
+}
+
+#recordList::scroll-button(right) {
+    bottom: calc(anchor(bottom) - 3%);
+    left: calc(anchor(right) - 38%);
+    content: "►►" / "Next";
+}
+
+/* ========================================================================== 
+   MARK: Results page — visualizer button
+   ========================================================================== */
+
+#visualizerBtn {
+    position: absolute;
+    position-anchor: --my-carousel;
+    bottom: calc(anchor(bottom) - 3%);
+    left: calc(anchor(right) - 50%);
+    transform: translateX(50%);
+    clip-path: polygon(
+        0px calc(100% - 8px),
+        2px calc(100% - 8px),
+        2px calc(100% - 4px),
+        4px calc(100% - 4px),
+        4px calc(100% - 2px),
+        8px calc(100% - 2px),
+        8px 100%,
+        calc(100% - 8px) 100%,
+        calc(100% - 8px) calc(100% - 2px),
+        calc(100% - 4px) calc(100% - 2px),
+        calc(100% - 4px) calc(100% - 4px),
+        calc(100% - 2px) calc(100% - 4px),
+        calc(100% - 2px) calc(100% - 8px),
+        100% calc(100% - 8px),
+        100% 8px,
+        calc(100% - 2px) 8px,
+        calc(100% - 2px) 4px,
+        calc(100% - 4px) 4px,
+        calc(100% - 4px) 2px,
+        calc(100% - 8px) 2px,
+        calc(100% - 8px) 0px,
+        8px 0px,
+        8px 2px,
+        4px 2px,
+        4px 4px,
+        2px 4px,
+        2px 8px,
+        0px 8px
+    );
+    font-size: 1.25rem;
+}
+
+#visualizerBtn.is-active {
+    background:
+        linear-gradient(
+            180deg,
+            var(--button-shadow) 0rem,
+            var(--button-shadow) 0.2rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.2rem),
+            var(--button-background) calc(100% - 0.25rem)
+        ),
+        linear-gradient(
+            90deg,
+            var(--button-shadow) 0rem,
+            var(--button-shadow) 0.2rem,
+            transparent 0.25rem,
+            transparent calc(100% - 0.25rem),
+            var(--button-background) calc(100% - 0.25rem)
+        ),
+        var(--button-hover-background);
+}
+
+/* ========================================================================== 
+   MARK:  responsivness
+   ========================================================================== */
+
+@media (max-width: 1000px) {
+    #recordList::scroll-button(*),
+    #visualizerBtn {
+        display: none;
+    }
+}
+/* swap carousel direction */
+@media (max-width: 600px) {
+    #recordList {
+        flex: 1;
+        flex-direction: column;
+        min-height: 0;
+        height: auto;
+        gap: 1rem;
+        margin: 1rem 0 0;
+        padding-block: 3rem;
+        overflow-x: hidden;
+        overflow-y: auto;
+        scroll-snap-type: y mandatory;
+        scroll-padding-block: 0;
+        padding-left: 0;
+    }
+
+    #recordList li {
+        width: 100%;
+        height: clamp(9rem, 45vw, 11.25rem);
+        gap: 1rem;
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+    }
+
+
+    #recordList li .record-info .genre-information {
+        padding: 0;
+    }
+
+    #recordList h2 {
+        font-size: 1.2em;
+    }
+}
