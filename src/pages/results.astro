@@ -149,7 +149,7 @@ const filteredRecords = records.filter((record) => {
 
 				const coverImage = information.cover_image;
 
-				// if there is no cove image a simple record gets "drawn" with css in place
+				// if there is no cove image a simple record gets "drawn" with css instead
 				if (coverImage) {
 					const image = document.createElement("img");
 					image.src = coverImage;
@@ -219,14 +219,14 @@ const filteredRecords = records.filter((record) => {
 			// MARK: Carousel active item
 			// ==========================================================================
 
-			const recordListItems =
-				document.querySelectorAll("#recordList > li");
+			const recordListItems = document.querySelectorAll("#recordList > li");
 			let isWaitingForAnimationFrame = false;
 
 			// Gives the item closest to the carousel centre the "is-active" class.
+			// I do this so I can add information when the record is active
 			function updateActiveRecord() {
-				const isMobile =
-					window.matchMedia("(max-width: 600px)").matches;
+
+				const isMobile = window.matchMedia("(max-width: 600px)").matches;
 
 				/*
 				source: chatGPT
@@ -255,8 +255,7 @@ const filteredRecords = records.filter((record) => {
 
 					if (isAtEnd) {
 						recordListItems.forEach((item, index) => {
-							const isLastItem =
-								index === recordListItems.length - 1;
+							const isLastItem = index === recordListItems.length - 1;
 
 							item.classList.toggle("is-active", isLastItem);
 						});
@@ -266,6 +265,7 @@ const filteredRecords = records.filter((record) => {
 					}
 				}
 
+				// calculate center of the recordlist
 				const listBounds = recordList.getBoundingClientRect();
 				let listCentre;
 
@@ -275,6 +275,7 @@ const filteredRecords = records.filter((record) => {
 					listCentre = listBounds.left + listBounds.width / 2;
 				}
 
+				// Give record closest to that center active class
 				recordListItems.forEach((item) => {
 					const itemBounds = item.getBoundingClientRect();
 
@@ -319,12 +320,17 @@ const filteredRecords = records.filter((record) => {
 			// MARK: audio visualizer
 			// ==========================================================================
 
+			// inspiration sources: 
+			// https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API
+			// https://www.youtube.com/watch?v=f0dwg99EVfo
+			// https://www.youtube.com/watch?v=Yvz_axxWG4Y
+			// https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial
+			
 			const visualizerButton = document.querySelector("#visualizerBtn");
 			const canvas = document.querySelector("#visualizerCanvas");
 			const video = document.querySelector("#visualizerVideo");
 			const context = canvas.getContext("2d");
 
-			// The internal canvas size determines the PiP video resolution.
 			canvas.width = 480;
 			canvas.height = 270;
 
